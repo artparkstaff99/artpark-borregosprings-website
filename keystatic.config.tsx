@@ -67,7 +67,7 @@ export default config({
           links: true,
           images: {
             directory: 'public/site/images',
-            publicPath: '/public/site/images',
+            publicPath: '/site/images',
             schema: {
               title: fields.text({
                 label: 'Caption',
