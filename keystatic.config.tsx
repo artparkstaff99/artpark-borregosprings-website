@@ -6,28 +6,30 @@ import {
   singleton,
   LocalConfig,
   CloudConfig,
-} from '@keystatic/core'
-import { ShowcaseYouTubeVideo } from './components/showcase-youtube-video'
+} from "@keystatic/core";
+import { ShowcaseYouTubeVideo } from "./components/showcase-youtube-video";
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = true; // process.env.NODE_ENV === "production";
 
-const localMode: LocalConfig['storage'] = {
-  kind: 'local',
-}
-
-const remoteMode: CloudConfig['storage'] = {
-  kind: 'cloud',
-  pathPrefix: 'prod',
-}
+// const localMode: LocalConfig["storage"] = {
+//   kind: "local",
+// };
+//
+// const remoteMode: CloudConfig['storage'] = {
+//   kind: 'cloud',
+//   pathPrefix: 'prod',
+// }
 
 export default config({
-  storage: isProd ? remoteMode : localMode,
-  cloud: {
-    project: 'simonswiss/keystatic-101',
-  },
+  storage: isProd
+    ? { kind: "github", repo: "pkellner/artpark-nextjs-proto1" }
+    : { kind: "local" },
+  // cloud: {
+  //   project: "simonswiss/keystatic-101",
+  // },
   ui: {
     brand: {
-      name: 'Keystatic mini course',
+      name: "Keystatic mini course",
       mark: () => (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -47,32 +49,32 @@ export default config({
       ),
     },
     navigation: {
-      writing: ['posts', 'authors'],
-      'Footer links': ['socialLinks'],
+      writing: ["posts", "authors"],
+      "Footer links": ["socialLinks"],
     },
   },
   collections: {
     posts: collection({
-      label: 'Posts',
-      entryLayout: 'content',
-      slugField: 'title',
-      path: 'content/posts/*',
-      format: { contentField: 'content' },
+      label: "Posts",
+      entryLayout: "content",
+      slugField: "title",
+      path: "content/posts/*",
+      format: { contentField: "content" },
       schema: {
-        title: fields.slug({ name: { label: 'Title' } }),
+        title: fields.slug({ name: { label: "Title" } }),
         content: fields.document({
-          label: 'Content',
+          label: "Content",
           formatting: true,
           dividers: true,
           links: true,
           images: true,
           componentBlocks: {
-            'youtube-video': component({
-              label: 'YouTube Video',
+            "youtube-video": component({
+              label: "YouTube Video",
               schema: {
                 youtubeVideoId: fields.text({
-                  label: 'YouTube Video ID',
-                  description: 'The ID of the YouTube video (not the full URL)',
+                  label: "YouTube Video ID",
+                  description: "The ID of the YouTube video (not the full URL)",
                   validation: {
                     length: {
                       min: 1,
@@ -82,7 +84,9 @@ export default config({
               },
               preview: (props) =>
                 props.fields.youtubeVideoId.value ? (
-                  <ShowcaseYouTubeVideo videoId={props.fields.youtubeVideoId.value} />
+                  <ShowcaseYouTubeVideo
+                    videoId={props.fields.youtubeVideoId.value}
+                  />
                 ) : (
                   <p>Please enter a YouTube video ID</p>
                 ),
@@ -91,84 +95,84 @@ export default config({
         }),
         authors: fields.array(
           fields.relationship({
-            label: 'Authors',
-            collection: 'authors',
+            label: "Authors",
+            collection: "authors",
             validation: {
               isRequired: true,
             },
           }),
           {
-            label: 'Authors',
-            itemLabel: (item) => item.value || 'Please select an author',
-          }
+            label: "Authors",
+            itemLabel: (item) => item.value || "Please select an author",
+          },
         ),
       },
     }),
     authors: collection({
-      label: 'Authors',
-      slugField: 'name',
-      path: 'content/authors/*',
-      format: { data: 'json' },
+      label: "Authors",
+      slugField: "name",
+      path: "content/authors/*",
+      format: { data: "json" },
       schema: {
-        name: fields.slug({ name: { label: 'Name' } }),
-        'cloud-avatar': fields.cloudImage({
-          label: 'Avatar (Cloud)',
+        name: fields.slug({ name: { label: "Name" } }),
+        "cloud-avatar": fields.cloudImage({
+          label: "Avatar (Cloud)",
         }),
         showcase: fields.blocks(
           {
             link: {
-              label: 'Link',
+              label: "Link",
               schema: fields.object({
                 label: fields.text({
-                  label: 'Label',
+                  label: "Label",
                   validation: {
                     length: {
                       min: 1,
                     },
                   },
                 }),
-                url: fields.url({ label: 'URL' }),
+                url: fields.url({ label: "URL" }),
               }),
-              itemLabel: (item) => 'Link: ' + item.fields.label.value,
+              itemLabel: (item) => "Link: " + item.fields.label.value,
             },
             youtubeVideoId: {
-              label: 'YouTube Video ID',
+              label: "YouTube Video ID",
               schema: fields.text({
-                label: 'YouTube Video ID',
+                label: "YouTube Video ID",
                 validation: {
                   length: {
                     min: 1,
                   },
                 },
               }),
-              itemLabel: (item) => 'YouTube ID: ' + item.value,
+              itemLabel: (item) => "YouTube ID: " + item.value,
             },
           },
           {
-            label: 'Showcase',
-          }
+            label: "Showcase",
+          },
         ),
       },
     }),
   },
   singletons: {
     socialLinks: singleton({
-      label: 'Social Links',
-      path: 'content/social-links',
+      label: "Social Links",
+      path: "content/social-links",
       schema: {
         twitter: fields.text({
-          label: 'Twitter',
-          description: 'The twitter handle (not full URL!)',
+          label: "Twitter",
+          description: "The twitter handle (not full URL!)",
         }),
         github: fields.text({
-          label: 'GitHub',
-          description: 'The GitHub username (not full URL!)',
+          label: "GitHub",
+          description: "The GitHub username (not full URL!)",
         }),
         linkedin: fields.text({
-          label: 'LinkedIn',
-          description: 'The LinkedIn ID (not full URL!)',
+          label: "LinkedIn",
+          description: "The LinkedIn ID (not full URL!)",
         }),
       },
     }),
   },
-})
+});
