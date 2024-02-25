@@ -1,4 +1,4 @@
-import { DocumentRenderer } from '@keystatic/core/renderer'
+import { DocumentRenderer } from '@keystatic/core/renderer';
 import { notFound } from 'next/navigation'
 
 import { reader } from '../../reader'
