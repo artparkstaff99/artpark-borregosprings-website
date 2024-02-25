@@ -65,7 +65,17 @@ export default config({
           formatting: true,
           dividers: true,
           links: true,
-          images: true,
+          images: {
+            directory: 'public/site/images',
+            publicPath: '/public/site/images',
+            schema: {
+              title: fields.text({
+                label: 'Caption',
+                description:
+                  'The text to display under the image in a caption.',
+              }),
+            },
+          },
           componentBlocks: {
             "youtube-video": component({
               label: "YouTube Video",
