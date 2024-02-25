@@ -21,12 +21,15 @@ const isProd = true; // process.env.NODE_ENV === "production";
 // }
 
 export default config({
-  storage: isProd
-    ? { kind: "github", repo: "pkellner/artpark-nextjs-proto1" }
-    : { kind: "local" },
-  // cloud: {
-  //   project: "simonswiss/keystatic-101",
-  // },
+  storage: {
+    kind: 'cloud',
+  },
+  cloud: {
+    project: 'peters-team/pkellner',
+  },
+  // storage: isProd
+  //   ? { kind: "github", repo: "pkellner/artpark-nextjs-proto1" }
+  //   : { kind: "local" },
   ui: {
     brand: {
       name: "Keystatic mini course",
