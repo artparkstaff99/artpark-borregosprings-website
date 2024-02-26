@@ -106,13 +106,24 @@ export default config({
           {
             label: "Authors",
             validation: { length: { min: 1 } },
-            itemLabel: (props) => props.value || "Please select an author",
+            itemLabel: (props: any) => props.value || "Please select an author",
           },
         ),
         content: fields.document({
           formatting: true,
           dividers: true,
           links: true,
+          images: {
+            directory: "public/site/images",
+            publicPath: "/site/images",
+            schema: {
+              title: fields.text({
+                label: "Caption",
+                description:
+                  "The text to display under the image in a caption.",
+              }),
+            },
+          },
           layouts: [
             [1, 1],
             [1, 1, 1],
