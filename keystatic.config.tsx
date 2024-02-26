@@ -25,6 +25,7 @@ export default config({
       label: "Home",
       path: "content/pages/home/",
       schema: {
+
         special_banner_top_show: fields.checkbox({
           label: "Show Special Banner at Top of Page",
         }),
@@ -34,12 +35,23 @@ export default config({
         special_banner_top_es: fields.text({
           label: "Special Banner at Top of Page (Spanish)",
         }),
-        copy_right_message_after_c_en: fields.text({
+
+        top_left_header_en: fields.text({
+          label: "Message in header top left (English)",
+        }),
+        top_left_header_es: fields.text({
+          label: "Message in header top left (Spanish)",
+        }),
+
+
+        copyright_message_after_c_en: fields.text({
           label: "CopyRight Message After c On Bottom of Page (English)",
         }),
-        copy_right_message_after_c_es: fields.text({
+        copyright_message_after_c_es: fields.text({
           label: "CopyRight Message After c On Bottom of Page (Spanish)",
         }),
+
+
         bottom_right_message_en: fields.text({
           label: "Message Showing on Bottom Right of Page (English)",
         }),
