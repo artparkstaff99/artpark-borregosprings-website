@@ -25,13 +25,44 @@ export default config({
       label: "Home",
       path: "content/pages/home/",
       schema: {
-        heading: fields.document({
+        special_banner_top_show: fields.checkbox({
+          label: "Show Special Banner at Top of Page",
+        }),
+        special_banner_top_en: fields.text({
+          label: "Special Banner at Top of Page (English)",
+        }),
+        special_banner_top_es: fields.text({
+          label: "Special Banner at Top of Page (Spanish)",
+        }),
+        copy_right_message_after_c_en: fields.text({
+          label: "CopyRight Message After c On Bottom of Page (English)",
+        }),
+        copy_right_message_after_c_es: fields.text({
+          label: "CopyRight Message After c On Bottom of Page (Spanish)",
+        }),
+        bottom_right_message_en: fields.text({
+          label: "Message Showing on Bottom Right of Page (English)",
+        }),
+        bottom_right_message_es: fields.text({
+          label: "Message Showing on Bottom Right of Page(Spanish)",
+        }),
+
+
+        heading_en: fields.document({
           formatting: {
             inlineMarks: {
               bold: true,
             },
           },
-          label: "Heading (note: text that is bolded will show up in red)",
+          label: "English Heading (note: text that is bolded will show up in blue)",
+        }),
+        heading_es: fields.document({
+          formatting: {
+            inlineMarks: {
+              bold: true,
+            },
+          },
+          label: "Spanish Heading (note: text that is bolded will show up in blue)",
         }),
       },
     }),

@@ -1,8 +1,10 @@
 import { usePathname } from "next/navigation";
-import Image from "next/image";
-import Logo from "../assets/logo.svg";
 import { cx } from "../utils/cx";
 import React from "react";
+import { useLanguage } from "./default-language-provider";
+import ToggleLanguageButton from "./toggle-language-button";
+
+
 
 export const baseClasses =
   "no-underline justify-center items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 text-gray-800 px-0 hover:text-cyan-700 hover:bg-none bg-none font-medium shrink-0";
@@ -41,9 +43,40 @@ const KeystaticBanner = () => {
   );
 };
 
+// function ToggleLanguageButton(props: { onClick: () => void, language: "en" | "es" }) {
+//   return <button onClick={props.onClick}
+//                  className="px-4 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-700 transition-colors">
+//     {props.language === "en" ? "ES" : "EN"}
+//   </button>;
+// }
+// function ToggleLanguageButton(props: { onClick: () => void, language: "en" | "es" }) {
+//   return (
+//     <button
+//       onClick={props.onClick}
+//       className="flex items-center justify-center px-4 py-2 space-x-2 bg-blue-500 hover:bg-blue-700 transition duration-150 ease-in-out text-white font-semibold rounded-lg shadow"
+//     >
+//       {props.language === "en" ? (
+//         <>
+//           <span className="text-xs">🇪🇸</span>
+//           <span>ES</span>
+//         </>
+//       ) : (
+//         <>
+//           <span className="text-xs">🇺🇸</span>
+//           <span>EN</span>
+//         </>
+//       )}
+//     </button>
+//   );
+// }
+
+
+
 const Header = () => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = React.useState(false);
+
+  const { language } = useLanguage(); // Use the custom hook
 
   const MobileMenu = () => {
     return (
@@ -146,6 +179,9 @@ const Header = () => {
             </a>
           ))}
         </nav>
+        <div className="flex items-center space-x-4">
+          <ToggleLanguageButton />
+        </div>
       </div>
       {menuOpen ? <MobileMenu /> : null}
     </header>

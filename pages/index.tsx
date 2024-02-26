@@ -10,23 +10,23 @@ import Divider from "../components/Divider";
 import { inject } from "../utils/slugHelpers";
 import { cx } from "../utils/cx";
 import maybeTruncateTextBlock from "../utils/maybeTruncateTextBlock";
+import { useLanguage } from "../components/default-language-provider";
 
 const reader = createReader("", config);
 
 async function getHomeData() {
   const reader = createReader("", config);
   const homePage = await reader.singletons.home.read();
-  const homePageHeading = await (homePage?.heading() || []);
-
   return {
     ...homePage,
-    heading: homePageHeading,
+    heading_en: await (homePage?.heading_en() || []),
+    heading_es: await (homePage?.heading_es() || []),
   };
 }
 
 async function getPostData() {
   const postSlugs = await reader.collections.posts.list();
-  const postData = await Promise.all(
+  return await Promise.all(
     postSlugs.map(async (slug) => {
       const post = await reader.collections.posts.read(slug);
       const content = (await post?.content()) || [];
@@ -36,17 +36,16 @@ async function getPostData() {
         slug,
         ...({ type: "post" } as const),
       };
-    })
+    }),
   );
-  return postData;
 }
 
 async function getExternalArticleData() {
   const externalArticles = await reader.collections.externalArticles.list();
   const externalArticleData = await Promise.all(
     externalArticles.map((slug) =>
-      inject(slug, reader.collections.externalArticles)
-    )
+      inject(slug, reader.collections.externalArticles),
+    ),
   );
   return externalArticleData.map((article) => ({
     ...({ type: "externalArticle" } as const),
@@ -57,7 +56,7 @@ async function getExternalArticleData() {
 async function getAllAuthors() {
   const authorsList = await reader.collections.authors.list();
   const allAuthors = await Promise.all(
-    authorsList.map((slug) => inject(slug, reader.collections.authors))
+    authorsList.map((slug) => inject(slug, reader.collections.authors)),
   );
   return allAuthors;
 }
@@ -97,13 +96,16 @@ export default function Home({
     return 0;
   });
 
+  const { language } = useLanguage();
+  //console.log("languageAbbr", languageAbbr.language);
+
   return (
     <div className="px-4 md:px-28 max-w-7xl mx-auto">
       <Seo />
-      {home.heading && (
+      {home.heading_en && home.heading_es && (
         <>
           <DocumentRenderer
-            document={home.heading}
+            document={language === "en" ? home.heading_en : home.heading_es}
             renderers={{
               inline: {
                 bold: ({ children }) => {
