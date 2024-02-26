@@ -6,6 +6,8 @@ import {
   LocalConfig,
   singleton,
 } from "@keystatic/core";
+
+
 import { ComponentBlocks } from "./components/ComponentBlocks";
 
 const storage: LocalConfig["storage"] | GitHubConfig["storage"] =
