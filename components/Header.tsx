@@ -59,7 +59,7 @@ const Header = ({ home }: { home: any }) => {
         <KeystaticBanner message={language === "en" ? home.special_banner_top_en : home.special_banner_top_es} />
       )}
       <div className="flex justify-between items-center px-4 md:px-28 py-4 md:py-10 h-full">
-        <Link href="/" passHref>
+        <Link href="/" >
           <p className="no-underline text-xl font-bold" aria-label="Link to home page">
             🌎 &nbsp; {language === "en" ? home.top_left_header_en : home.top_left_header_es}
           </p>
@@ -76,7 +76,7 @@ const Header = ({ home }: { home: any }) => {
         </nav>
         <nav className="items-center space-x-8 hidden min-[768px]:flex text-2xl">
           {NavItems.map((item) => (
-            <Link key={item.slug} href={item.slug} passHref>
+            <Link key={item.slug} href={item.slug} >
               <p className={cx(
                 baseClasses,
                 pathname === item.slug ? "border-text-cyan-700 border-b-2" : "border-transparent",

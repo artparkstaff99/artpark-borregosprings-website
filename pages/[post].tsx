@@ -128,7 +128,7 @@ export default function Post({
     const showPost = language === currentLanguage;
 
     return (
-      <div style={{ display: showPost ? "block" : "none" }}>
+      <div key={currentLanguage} style={{ display: showPost ? "block" : "none" }}>
         <div className="flex min-h-screen flex-col font-sans bg-neutral-200/80">
           <Header home={home} />
           <main className="max-w-none flex flex-1 flex-col">

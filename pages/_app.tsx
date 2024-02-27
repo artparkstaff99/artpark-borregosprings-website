@@ -4,6 +4,8 @@ import "../styles/global.css";
 import "../styles/scoped-preflight.css";
 
 import { LanguageProvider } from "../components/default-language-provider";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export async function getStaticProps({ locale } : { locale: string }) {
   return {
@@ -14,7 +16,6 @@ export async function getStaticProps({ locale } : { locale: string }) {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-
   return (
     <LanguageProvider defaultLanguage={pageProps.locale ?? "en"}>
       <Component {...pageProps} />

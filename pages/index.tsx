@@ -49,7 +49,7 @@ export default function Home({
   const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
-    setLanguage(navigator.language === "es" ? "es" : "en");
+    //setLanguage(navigator.language === "es" ? "es" : "en");
     setShowResult(true);
   }, []);
 
@@ -127,7 +127,7 @@ export default function Home({
                         : "en";
                       const showPost = postLanguage === language;
                       return (
-                        <div style={{ display: showPost ? "block" : "none" }}>
+                        <div key={post.slug} style={{ display: showPost ? "block" : "none" }}>
                           <Card
                             image={`/images/posts/${post.slug}/${post.coverImage}`}
                             title={post.title}

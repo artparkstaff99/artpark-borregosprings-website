@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+//import useLocalStorage from "../utils/useLocalStorage";
 
 type AllowedLanguage = "en" | "es";
 
@@ -22,10 +23,17 @@ export interface ILanguageProviderProps {
 }
 
 export function LanguageProvider({
-  children,
-  defaultLanguage,
-}: ILanguageProviderProps) {
-  const [language, setLanguage] = useState<AllowedLanguage>(defaultLanguage);
+                                   children,
+                                   defaultLanguage,
+                                 }: ILanguageProviderProps) {
+  const [language, setLang] = useState<AllowedLanguage>(defaultLanguage);
+  //const [language, setLanguage] = useLocalStorage<AllowedLanguage>("language", defaultLanguage)
+
+  // Update this function to log a message every time it's called
+  const setLanguage = (newLanguage: AllowedLanguage) => {
+    //console.log(`Language changed to: ${newLanguage}`); // Log the language change
+    setLang(newLanguage); // Update the state
+  };
 
   const value: ILanguageContext = {
     language,
