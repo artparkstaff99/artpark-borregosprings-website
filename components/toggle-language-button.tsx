@@ -10,7 +10,7 @@ function ToggleLanguageButton() {
   };
 
   // Hover titles for accessibility and user guidance
-  const hoverTitle = language === "en" ? "Switch to Spanish" : "Switch to English";
+  const hoverTitle = language === "en" ? "cambiar al español" : "Switch to English";
 
   return (
     <div

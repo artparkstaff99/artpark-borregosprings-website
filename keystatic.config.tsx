@@ -73,9 +73,6 @@ export default config({
           label: "About Menu Item (Spanish)",
         }),
 
-
-
-
         heading_en: fields.document({
           formatting: {
             inlineMarks: {
@@ -109,6 +106,17 @@ export default config({
             [1, 2, 1],
           ],
           label: "Content",
+          images: {
+            directory: "public/images/about",
+            publicPath: "/images/about",
+            schema: {
+              title: fields.text({
+                label: "Caption",
+                description:
+                  "The text to display under the image in a caption.",
+              }),
+            },
+          },
           componentBlocks: ComponentBlocks,
         }),
       },
@@ -175,8 +183,8 @@ export default config({
           dividers: true,
           links: true,
           images: {
-            directory: "public/site/images",
-            publicPath: "/site/images",
+            directory: "public/images/posts/content",
+            publicPath: "/images/posts/content",
             schema: {
               title: fields.text({
                 label: "Caption",
