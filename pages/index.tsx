@@ -15,7 +15,10 @@ import { getAllAuthors, getExternalArticleData, getHomeData, getPostData } from 
 
 
 
-export async function getStaticProps() {
+export async function getStaticProps({ locale } : { locale: string }) {
+
+  // locale is "en" or "es"
+
   const [home, posts, externalArticles, authors] = await Promise.all([
     getHomeData(),
     getPostData(),
