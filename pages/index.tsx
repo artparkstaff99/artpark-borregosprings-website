@@ -4,7 +4,7 @@ import type { InferGetStaticPropsType } from "next";
 
 import { DocumentRenderer } from "@keystatic/core/renderer";
 
-import Seo from "../components/Seo";
+// import Seo from "../components/Seo";
 import Divider from "../components/Divider";
 import { cx } from "../utils/cx";
 import maybeTruncateTextBlock from "../utils/maybeTruncateTextBlock";
