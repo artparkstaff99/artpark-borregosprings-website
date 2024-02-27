@@ -110,11 +110,8 @@ export default config({
             directory: "public/images/about",
             publicPath: "/images/about",
             schema: {
-              title: fields.text({
-                label: "Caption",
-                description:
-                  "The text to display under the image in a caption.",
-              }),
+              alt: fields.text({ label: "Alt text" }) as any,
+              title: fields.text({ label: "Title" }) as any,
             },
           },
           componentBlocks: ComponentBlocks,
@@ -186,11 +183,8 @@ export default config({
             directory: "public/images/posts/content",
             publicPath: "/images/posts/content",
             schema: {
-              title: fields.text({
-                label: "Caption",
-                description:
-                  "The text to display under the image in a caption.",
-              }),
+              alt: fields.text({ label: "Alt text" }) as any,
+              title: fields.text({ label: "Title" }) as any,
             },
           },
           layouts: [
