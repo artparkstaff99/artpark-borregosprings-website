@@ -15,8 +15,6 @@ export async function getStaticProps({ locale } : { locale: string }) {
 
 function MyApp({ Component, pageProps }: AppProps) {
 
-  //console.log('MyApp pageProps', pageProps,pageProps.locale);
-
   return (
     <LanguageProvider defaultLanguage={pageProps.locale ?? "en"}>
       <Component {...pageProps} />
