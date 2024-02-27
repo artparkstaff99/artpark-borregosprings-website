@@ -12,13 +12,11 @@ import { useLanguage } from "../components/default-language-provider";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { getAllAuthors, getExternalArticleData, getHomeData, getPostData } from "../utils/get-static-page-utils";
-
-
+import { useState } from "react";
 
 export async function getStaticProps({ locale } : { locale: string }) {
 
   // locale is "en" or "es"
-
   const [home, posts, externalArticles, authors] = await Promise.all([
     getHomeData(),
     getPostData(),
@@ -32,6 +30,7 @@ export async function getStaticProps({ locale } : { locale: string }) {
       posts,
       externalArticles,
       authors,
+      locale
     },
   };
 }
@@ -40,8 +39,15 @@ export default function Home({
   home,
   posts,
   externalArticles,
+  locale,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const allPosts = [...posts, ...externalArticles];
+
+  const [showResult, setShowResult] = useState(false);
+
+  // just do posts for now...
+  //const allPosts = [...posts, ...externalArticles];
+
+  const allPosts = posts;
   const orderedPostFeed = allPosts.sort((a, b) => {
     if (a?.publishedDate && b?.publishedDate) {
       return new Date(a.publishedDate).getTime() <
@@ -95,18 +101,18 @@ export default function Home({
             ) : (
               <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
                 {orderedPostFeed.map((post) => {
-                  if (post.type === "externalArticle") {
-                    return (
-                      <Card
-                        image={`/images/external-articles/${post.slug}/${post.coverImage}`}
-                        title={post.title}
-                        summary={post.summary}
-                        key={post.slug}
-                        link={post.directLink}
-                        externalLink
-                      />
-                    );
-                  }
+                  // if (post.type === "externalArticle") {
+                  //   return (
+                  //     <Card
+                  //       image={`/images/external-articles/${post.slug}/${post.coverImage}`}
+                  //       title={post.title}
+                  //       summary={post.summary}
+                  //       key={post.slug}
+                  //       link={post.directLink}
+                  //       externalLink
+                  //     />
+                  //   );
+                  // }
                   if (post.type === "post") {
                     return (
                       <Card

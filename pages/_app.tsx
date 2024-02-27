@@ -5,9 +5,20 @@ import "../styles/scoped-preflight.css";
 
 import { LanguageProvider } from "../components/default-language-provider";
 
+export async function getStaticProps({ locale } : { locale: string }) {
+  return {
+    props: {
+      locale, // this is from build system
+    },
+  };
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
+
+  //console.log('MyApp pageProps', pageProps,pageProps.locale);
+
   return (
-    <LanguageProvider defaultLanguage="en">
+    <LanguageProvider defaultLanguage={pageProps.locale ?? "en"}>
       <Component {...pageProps} />
     </LanguageProvider>
   );
