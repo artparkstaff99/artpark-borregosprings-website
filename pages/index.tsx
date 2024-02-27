@@ -45,13 +45,13 @@ export default function Home({
   externalArticles,
   locale,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { setLanguage,language } = useLanguage();
+  const { setLanguage, language } = useLanguage();
   const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
     setLanguage(navigator.language === "es" ? "es" : "en");
     setShowResult(true);
-  },[])
+  }, []);
 
   // just do posts for now...
   //const allPosts = [...posts, ...externalArticles];
@@ -68,85 +68,87 @@ export default function Home({
     return 0;
   });
 
-
-
-  return showResult && (
-    <div className="flex min-h-screen flex-col font-sans bg-neutral-200/80">
-      <Header home={home} />
-      <main className="max-w-none flex flex-1 flex-col">
-        <div className="flex-1">
-          <div className="px-4 md:px-28 max-w-7xl mx-auto">
-            {/*<Seo />*/}
-            {home.heading_en && home.heading_es && (
-              <>
-                <DocumentRenderer
-                  document={
-                    language === "en" ? home.heading_en : home.heading_es
-                  }
-                  renderers={{
-                    inline: {
-                      bold: ({ children }) => {
-                        return (
-                          <span className="text-cyan-700">{children}</span>
-                        );
+  return (
+    showResult && (
+      <div className="flex min-h-screen flex-col font-sans bg-neutral-200/80">
+        <Header home={home} />
+        <main className="max-w-none flex flex-1 flex-col">
+          <div className="flex-1">
+            <div className="px-4 md:px-28 max-w-7xl mx-auto">
+              {/*<Seo />*/}
+              {home.heading_en && home.heading_es && (
+                <>
+                  <DocumentRenderer
+                    document={
+                      language === "en" ? home.heading_en : home.heading_es
+                    }
+                    renderers={{
+                      inline: {
+                        bold: ({ children }) => {
+                          return (
+                            <span className="text-cyan-700">{children}</span>
+                          );
+                        },
                       },
-                    },
-                    block: {
-                      paragraph: ({ children }) => {
-                        return (
-                          <h1 className="text-center font-bold text-2xl max-w-xs sm:text-5xl sm:max-w-2xl lg:text-7xl lg:max-w-[60rem] mx-auto">
-                            {children}
-                          </h1>
-                        );
+                      block: {
+                        paragraph: ({ children }) => {
+                          return (
+                            <h1 className="text-center font-bold text-2xl max-w-xs sm:text-5xl sm:max-w-2xl lg:text-7xl lg:max-w-[60rem] mx-auto">
+                              {children}
+                            </h1>
+                          );
+                        },
                       },
-                    },
-                  }}
-                />
-                <Divider />
-              </>
-            )}
-            {orderedPostFeed.length === 0 ? (
-              <h2>There are no posts available</h2>
-            ) : (
-              <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
-                {orderedPostFeed.map((post) => {
-                  // if (post.type === "externalArticle") {
-                  //   return (
-                  //     <Card
-                  //       image={`/images/external-articles/${post.slug}/${post.coverImage}`}
-                  //       title={post.title}
-                  //       summary={post.summary}
-                  //       key={post.slug}
-                  //       link={post.directLink}
-                  //       externalLink
-                  //     />
-                  //   );
-                  // }
-                  if (post.type === "post") {
-                    const postLanguage = post.slug.startsWith("es/")
-                      ? "es"
-                      : "en";
-                    const showPost = postLanguage === language;
-                    return (
-                      <div style={{ display: showPost ? "block" : "none" }}>
-                        <Card
-                          image={`/images/posts/${post.slug}/${post.coverImage}`}
-                          title={post.title}
-                          summary={post.summary}
-                          key={post.slug}
-                          link={`/${post.slug}`}
-                        />
-                      </div>
-                    );
-                  }
-                })}
-              </ul>
-            )}
+                    }}
+                  />
+                  <Divider />
+                </>
+              )}
+              {orderedPostFeed.length === 0 ? (
+                <h2>There are no posts available</h2>
+              ) : (
+                <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
+                  {orderedPostFeed.map((post) => {
+                    // if (post.type === "externalArticle") {
+                    //   return (
+                    //     <Card
+                    //       image={`/images/external-articles/${post.slug}/${post.coverImage}`}
+                    //       title={post.title}
+                    //       summary={post.summary}
+                    //       key={post.slug}
+                    //       link={post.directLink}
+                    //       externalLink
+                    //     />
+                    //   );
+                    // }
+                    if (post.type === "post") {
+                      const postLanguage = post.slug.startsWith("es/")
+                        ? "es"
+                        : "en";
+                      const showPost = postLanguage === language;
+                      return (
+                        <div style={{ display: showPost ? "block" : "none" }}>
+                          <Card
+                            image={`/images/posts/${post.slug}/${post.coverImage}`}
+                            title={post.title}
+                            summary={post.summary}
+                            key={post.slug}
+                            link={`/${post.slug
+                              .replace("es/", "")
+                              .replace("en/", "")}`}
+                          />
+                        </div>
+                      );
+                    }
+                  })}
+                </ul>
+              )}
+            </div>
           </div>
-        </div>
-      </main>
-      <Footer home={home} />
-    </div>
+        </main>
+        <Footer home={home} />
+      </div>
+    )
   );
 }
 
