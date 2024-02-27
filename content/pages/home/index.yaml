@@ -1,12 +1,13 @@
 special_banner_top_show: true
 special_banner_top_en: We are closed today because of high winds. Please stay safe.
 special_banner_top_es: Estamos cerrados hoy debido a fuertes vientos. Por favor, manténgase a salvo.
-
 top_left_header_en: Welcome to the ArtPark!
 top_left_header_es: ¡Bienvenidos al ArtPark!
-
-copyright_message_after_c_en: 2024 Borrego High School
-copyright_message_after_c_es: 2024 Escuela Secundaria Borrego
-
-bottom_right_message_en: With love from the kids at Borrego High
-bottom_right_message_es: Con amor de los niños de Borrego High
+copyright_message_after_c_en: Borrego High School
+copyright_message_after_c_es: Escuela Secundaria Borrego
+bottom_right_message_en: Made With love from the kids at Borrego High
+bottom_right_message_es: Hecho con amor por los niños de Borrego High
+menu_home_en: Home
+menu_home_es: Inicio
+menu_about_en: About
+menu_about_es: Acerca de

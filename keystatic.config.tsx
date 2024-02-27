@@ -56,8 +56,24 @@ export default config({
           label: "Message Showing on Bottom Right of Page (English)",
         }),
         bottom_right_message_es: fields.text({
-          label: "Message Showing on Bottom Right of Page(Spanish)",
+          label: "Home Menu Item (Spanish)",
         }),
+
+        menu_home_en: fields.text({
+          label: "Home Menu Item (English)",
+        }),
+        menu_home_es: fields.text({
+          label: "Home Menu Item (Spanish)",
+        }),
+
+        menu_about_en: fields.text({
+          label: "About Menu Item (English)",
+        }),
+        menu_about_es: fields.text({
+          label: "About Menu Item (Spanish)",
+        }),
+
+
 
 
         heading_en: fields.document({

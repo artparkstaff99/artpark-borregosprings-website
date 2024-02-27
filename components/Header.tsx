@@ -1,82 +1,38 @@
 import { usePathname } from "next/navigation";
 import { cx } from "../utils/cx";
 import React from "react";
-import { useLanguage } from "./default-language-provider";
 import ToggleLanguageButton from "./toggle-language-button";
-
-
+import { useLanguage } from "./default-language-provider";
 
 export const baseClasses =
   "no-underline justify-center items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 text-gray-800 px-0 hover:text-cyan-700 hover:bg-none bg-none font-medium shrink-0";
 
-export const NavItems = [
-  {
-    name: "Home",
-    slug: "/",
-    description:
-      "A collection of readings on the power and potential of biometrics",
-  },
-  {
-    name: "About",
-    slug: "/about",
-    description: "Solaris is a simple blog template for Keystatic.",
-  },
-];
-
-const KeystaticBanner = () => {
+const KeystaticBanner = ({ message }: { message: string }) => {
   return (
     <div className="py-3 external-link bg-black text-white fill-white text-center text-sm">
-      You're looking at a{" "}
-      <img className="my-0 inline" src="/keystatic.svg" alt="Keystatic logo" />{" "}
-      <strong className="text-white">KEYSTATIC</strong> template.{" "}
-      <a
-        href="https://keystatic.com"
-        className="text-white hover:text-text-cyan-700"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn more about Keystatic
-        <span className="sr-only">opens in a new tab</span>
-      </a>{" "}
-      and get this template for free.
+      {message}
     </div>
   );
 };
 
-// function ToggleLanguageButton(props: { onClick: () => void, language: "en" | "es" }) {
-//   return <button onClick={props.onClick}
-//                  className="px-4 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-700 transition-colors">
-//     {props.language === "en" ? "ES" : "EN"}
-//   </button>;
-// }
-// function ToggleLanguageButton(props: { onClick: () => void, language: "en" | "es" }) {
-//   return (
-//     <button
-//       onClick={props.onClick}
-//       className="flex items-center justify-center px-4 py-2 space-x-2 bg-blue-500 hover:bg-blue-700 transition duration-150 ease-in-out text-white font-semibold rounded-lg shadow"
-//     >
-//       {props.language === "en" ? (
-//         <>
-//           <span className="text-xs">🇪🇸</span>
-//           <span>ES</span>
-//         </>
-//       ) : (
-//         <>
-//           <span className="text-xs">🇺🇸</span>
-//           <span>EN</span>
-//         </>
-//       )}
-//     </button>
-//   );
-// }
-
-
-
-const Header = () => {
+const Header = ({ home }: { home: any }) => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const { language } = useLanguage();
 
-  const { language } = useLanguage(); // Use the custom hook
+  const NavItems = [
+    {
+      name: language === "en" ? home.menu_home_en : home.menu_home_es,
+      slug: "/",
+      description:
+        "",
+    },
+    {
+      name: language === "en" ? home.menu_about_en : home.menu_about_es,
+      slug: "/about",
+      description: "",
+    },
+  ];
 
   const MobileMenu = () => {
     return (
@@ -94,7 +50,7 @@ const Header = () => {
               <p
                 className={cx(
                   pathname === item.slug ? "text-text-cyan-700" : "",
-                  "my-0 pb-2 font-bold"
+                  "my-0 pb-2 font-bold",
                 )}
               >
                 {item.name}
@@ -109,14 +65,16 @@ const Header = () => {
 
   return (
     <header className="prose max-w-none border-b-2 md:border-b-0 border-slate-100 mb-10 md:mb-20">
-      <KeystaticBanner />
+      {home.special_banner_top_show === true && (
+        <KeystaticBanner message={language === "en" ? home.special_banner_top_en : home.special_banner_top_es} />
+      )}
       <div className="flex justify-between items-center px-4 md:px-28 py-4 md:py-10 h-full">
         <a
           className="no-underline text-xl font-bold"
           href="/"
           aria-label="Link to home page"
         >
-          🌎 &nbsp; Solaris Daily News
+          🌎 &nbsp; {language === "en" ? home.top_left_header_en : home.top_left_header_es}
         </a>
         {/* Mobile Hamburger Icon button */}
         <nav className="-mr-2 min-[768px]:hidden">
@@ -171,7 +129,7 @@ const Header = () => {
                 baseClasses,
                 pathname === item.slug
                   ? "border-text-cyan-700 border-b-2"
-                  : "border-transparent"
+                  : "border-transparent",
               )}
               href={item.slug}
             >
