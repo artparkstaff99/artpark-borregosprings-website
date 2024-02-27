@@ -20,11 +20,18 @@ import Header from "../components/Header";
 import React from "react";
 import Footer from "../components/Footer";
 import { getHomeData } from "../utils/get-static-page-utils";
+import { useLanguage } from "../components/default-language-provider";
 
 export async function getStaticPaths() {
   const reader = createReader("", config);
   // Get collection of all posts
-  const postSlugs = await reader.collections.posts.list();
+  const postSlugsAll = await reader.collections.posts.list();
+  //  [ 'en/post-1', 'en/post-2', 'es/post-1', 'es/post-2' ] TO [ 'post-1', 'post-2' ]
+  const postSlugs = Array.from(
+    new Set(postSlugsAll.map((item) => item.split("/")[1])),
+  );
+
+  //console.log("/[post] getStaticPaths postSlugs", postSlugs);
   return {
     // Generate paths for each post
     paths: postSlugs.map((slug) => ({
@@ -43,12 +50,27 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
 
   const reader = createReader("", config);
   // Get data for post matching current slug
-  const post = await reader.collections.posts.readOrThrow(slug, {
+
+  const slugEn = `en/${slug}`;
+  const slugEs = `es/${slug}`;
+
+  const postEn = await reader.collections.posts.readOrThrow(slugEn, {
     resolveLinkedFiles: true,
   });
 
-  const authorsData = await Promise.all(
-    post.authors.map(async (authorSlug) => {
+  const postEs = await reader.collections.posts.readOrThrow(slugEs, {
+    resolveLinkedFiles: true,
+  });
+
+  const authorsDataEn = await Promise.all(
+    postEn.authors.map(async (authorSlug) => {
+      const author = await reader.collections.authors.read(authorSlug || "");
+      return { ...author, slug: authorSlug };
+    }),
+  );
+
+  const authorsDataEs = await Promise.all(
+    postEs.authors.map(async (authorSlug) => {
       const author = await reader.collections.authors.read(authorSlug || "");
       return { ...author, slug: authorSlug };
     }),
@@ -58,139 +80,166 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
 
   return {
     props: {
-      post: {
-        ...post,
-        slug,
+      postEn: {
+        ...postEn,
+        slug: slugEn,
       },
-      authors: authorsData,
+      postEs: {
+        ...postEs,
+        slug: slugEs,
+      },
+      authorsEn: authorsDataEn,
+      authorsEs: authorsDataEs,
       home,
     },
   };
 };
 
-export type PostProps = InferGetStaticPropsType<typeof getStaticProps>["post"];
-export type AuthorProps = InferGetStaticPropsType<
-  typeof getStaticProps
->["authors"];
-
-type TheLot = {
-  post: PostProps;
-  authors: AuthorProps;
+export default function Post({
+  postEn,
+  postEs,
+  authorsEn,
+  authorsEs,
+  home,
+}: {
+  postEn: any;
+  postEs: any;
+  authorsEn: any;
+  authorsEs: any;
   home: any;
-};
+}) {
 
-export default function Post({ post, authors, home}: TheLot) {
-  const names = authors.reduce(
-    (acc: string[], author) =>
-      "name" in author ? [...acc, author.name as string] : acc,
-    [],
-  );
-  const formattedNames = new Intl.ListFormat("en-AU")
-    .format(names)
-    .replace("and", "&");
-  return (
-    <div className="flex min-h-screen flex-col font-sans bg-neutral-200/80">
-      <Header home={home} />
-      <main className="max-w-none flex flex-1 flex-col">
-        <div className="flex-1">
-          <div className="max-w-4xl mx-auto px-4 md:px-10">
-            <Seo
-              title={post.title}
-              description={post?.summary}
-              imagePath={
-                post.coverImage
-                  ? `/images/posts/${post.slug}/${post.coverImage}`
-                  : "/images/seo-image.png"
-              }
-            />
-            <div className="flex gap-3 items-center flex-wrap">
-              {authors && <AvatarList authors={authors} />}
-              <p className="font-semibold text-gray-900">{formattedNames}</p>
-            </div>
+  const { language } = useLanguage();
 
-            <div className="mt-4 flex justify-between">
-              <span className="flex gap-1 text-gray-700">
-                {post.publishedDate && (
-                  <p className="">
-                    {dateFormatter(post.publishedDate, "do MMM yyyy")}
-                  </p>
-                )}
-                {post.wordCount && post.wordCount !== 0 ? (
-                  <p className="">· {readTime(post.wordCount)}</p>
-                ) : null}
-              </span>
-            </div>
+  return ["en", "es"].map(function (currentLanguage) {
+    const post = currentLanguage === "en" ? postEn : postEs;
+    const authors = currentLanguage === "en" ? authorsEn : authorsEs;
 
-            <div className="mt-8 prose max-w-none">
-              <h1 className="mt-4">{post.title}</h1>
-              <p className="text-lg">{post.summary}</p>
-              {post.coverImage && (
-                <div className="mt-10 not-prose">
-                  <NextImage
-                    width={1536}
-                    height={800}
-                    src={`/images/posts/${post.slug}/${post.coverImage}`}
-                    alt={`${post.title} Cover image`}
-                    className="w-full rounded-md"
-                  />
-                </div>
-              )}
-              <div className="mt-10">
-                <DocumentRenderer
-                  document={post.content}
-                  componentBlocks={{
-                    inlineCta: (props) => (
-                      <InlineCTA
-                        title={props.title}
-                        summary={props.summary}
-                        linkButton={{
-                          externalLink: props.externalLink,
-                          href: props.href,
-                          label: props.linkLabel,
-                        }}
-                      />
-                    ),
-                    divider: (props) => <Divider noIcon={props.noIcon} />,
-                    banner: (props) => (
-                      <Banner
-                        heading={props.heading}
-                        bodyText={props.bodyText}
-                        externalLink={{
-                          href: props.externalLinkHref,
-                          label: props.externalLinkLabel,
-                        }}
-                      />
-                    ),
-                    youtubeEmbed: (props) => (
-                      <YouTubeEmbed youtubeLink={props.youtubeLink} />
-                    ),
-                    tweetEmbed: (props) => <TweetEmbed tweet={props.tweet} />,
-                    loopingVideo: (props) => (
-                      <LoopingVideo src={props.src} caption={props.caption} />
-                    ),
-                    image: (props) => (
-                      <Image
-                        src={props.src}
-                        alt={props.alt}
-                        caption={props.caption}
-                      />
-                    ),
-                    testimonial: (props) => (
-                      <Testimonial
-                        quote={props.quote}
-                        author={props.author}
-                        workplaceOrSocial={props.workplaceOrSocial}
-                        socialLink={props.socialLink}
-                      />
-                    ),
-                  }}
+    const names = authors.reduce(
+      (acc: string[], author: any) =>
+        "name" in author ? [...acc, author.name as string] : acc,
+      [],
+    );
+
+    const formattedNames = new Intl.ListFormat("en")
+      .format(names)
+      .replace("and", "&");
+
+    const showPost = language === currentLanguage;
+
+    return (
+      <div style={{ display: showPost ? "block" : "none" }}>
+        <div className="flex min-h-screen flex-col font-sans bg-neutral-200/80">
+          <Header home={home} />
+          <main className="max-w-none flex flex-1 flex-col">
+            <div className="flex-1">
+              <div className="max-w-4xl mx-auto px-4 md:px-10">
+                <Seo
+                  title={post.title}
+                  description={post?.summary}
+                  imagePath={
+                    post.coverImage
+                      ? `/images/posts/${post.slug}/${post.coverImage}`
+                      : "/images/seo-image.png"
+                  }
                 />
+                <div className="flex gap-3 items-center flex-wrap">
+                  {authors && <AvatarList authors={authors} />}
+                  <p className="font-semibold text-gray-900">
+                    {formattedNames}
+                  </p>
+                </div>
+
+                <div className="mt-4 flex justify-between">
+                  <span className="flex gap-1 text-gray-700">
+                    {post.publishedDate && (
+                      <p className="">
+                        {dateFormatter(post.publishedDate, "do MMM yyyy")}
+                      </p>
+                    )}
+                    {post.wordCount && post.wordCount !== 0 ? (
+                      <p className="">· {readTime(post.wordCount)}</p>
+                    ) : null}
+                  </span>
+                </div>
+
+                <div className="mt-8 prose max-w-none">
+                  <h1 className="mt-4">{post.title}</h1>
+                  <p className="text-lg">{post.summary}</p>
+                  {post.coverImage && (
+                    <div className="mt-10 not-prose">
+                      <NextImage
+                        width={1536}
+                        height={800}
+                        src={`/images/posts/${post.slug}/${post.coverImage}`}
+                        alt={`${post.title} Cover image`}
+                        className="w-full rounded-md"
+                      />
+                    </div>
+                  )}
+                  <div className="mt-10">
+                    <DocumentRenderer
+                      document={post.content}
+                      componentBlocks={{
+                        inlineCta: (props) => (
+                          <InlineCTA
+                            title={props.title}
+                            summary={props.summary}
+                            linkButton={{
+                              externalLink: props.externalLink,
+                              href: props.href,
+                              label: props.linkLabel,
+                            }}
+                          />
+                        ),
+                        divider: (props) => <Divider noIcon={props.noIcon} />,
+                        banner: (props) => (
+                          <Banner
+                            heading={props.heading}
+                            bodyText={props.bodyText}
+                            externalLink={{
+                              href: props.externalLinkHref,
+                              label: props.externalLinkLabel,
+                            }}
+                          />
+                        ),
+                        youtubeEmbed: (props) => (
+                          <YouTubeEmbed youtubeLink={props.youtubeLink} />
+                        ),
+                        tweetEmbed: (props) => (
+                          <TweetEmbed tweet={props.tweet} />
+                        ),
+                        loopingVideo: (props) => (
+                          <LoopingVideo
+                            src={props.src}
+                            caption={props.caption}
+                          />
+                        ),
+                        image: (props) => (
+                          <Image
+                            src={props.src}
+                            alt={props.alt}
+                            caption={props.caption}
+                          />
+                        ),
+                        testimonial: (props) => (
+                          <Testimonial
+                            quote={props.quote}
+                            author={props.author}
+                            workplaceOrSocial={props.workplaceOrSocial}
+                            socialLink={props.socialLink}
+                          />
+                        ),
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </main>
+          <Footer home={home} />
         </div>
-      </main>
-      <Footer home={home} />
-    </div>
-  );
+      </div>
+    );
+  });
 }

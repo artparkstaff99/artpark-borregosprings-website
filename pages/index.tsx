@@ -11,11 +11,15 @@ import maybeTruncateTextBlock from "../utils/maybeTruncateTextBlock";
 import { useLanguage } from "../components/default-language-provider";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { getAllAuthors, getExternalArticleData, getHomeData, getPostData } from "../utils/get-static-page-utils";
-import { useState } from "react";
+import {
+  getAllAuthors,
+  getExternalArticleData,
+  getHomeData,
+  getPostData,
+} from "../utils/get-static-page-utils";
+import { useEffect, useState } from "react";
 
-export async function getStaticProps({ locale } : { locale: string }) {
-
+export async function getStaticProps({ locale }: { locale: string }) {
   // locale is "en" or "es"
   const [home, posts, externalArticles, authors] = await Promise.all([
     getHomeData(),
@@ -30,7 +34,7 @@ export async function getStaticProps({ locale } : { locale: string }) {
       posts,
       externalArticles,
       authors,
-      locale
+      locale,
     },
   };
 }
@@ -41,8 +45,13 @@ export default function Home({
   externalArticles,
   locale,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-
+  const { setLanguage,language } = useLanguage();
   const [showResult, setShowResult] = useState(false);
+
+  useEffect(() => {
+    setLanguage(navigator.language === "es" ? "es" : "en");
+    setShowResult(true);
+  },[])
 
   // just do posts for now...
   //const allPosts = [...posts, ...externalArticles];
@@ -59,9 +68,9 @@ export default function Home({
     return 0;
   });
 
-  const { language } = useLanguage();
 
-  return (
+
+  return showResult && (
     <div className="flex min-h-screen flex-col font-sans bg-neutral-200/80">
       <Header home={home} />
       <main className="max-w-none flex flex-1 flex-col">
@@ -114,14 +123,20 @@ export default function Home({
                   //   );
                   // }
                   if (post.type === "post") {
+                    const postLanguage = post.slug.startsWith("es/")
+                      ? "es"
+                      : "en";
+                    const showPost = postLanguage === language;
                     return (
-                      <Card
-                        image={`/images/posts/${post.slug}/${post.coverImage}`}
-                        title={post.title}
-                        summary={post.summary}
-                        key={post.slug}
-                        link={`/${post.slug}`}
-                      />
+                      <div style={{ display: showPost ? "block" : "none" }}>
+                        <Card
+                          image={`/images/posts/${post.slug}/${post.coverImage}`}
+                          title={post.title}
+                          summary={post.summary}
+                          key={post.slug}
+                          link={`/${post.slug}`}
+                        />
+                      </div>
                     );
                   }
                 })}
