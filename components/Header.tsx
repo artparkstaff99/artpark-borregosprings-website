@@ -20,6 +20,8 @@ const Header = ({ home }: { home: any }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const { language } = useLanguage();
 
+  //console.log("home", home);
+
   const NavItems = [
     {
       name: language === "en" ? home.menu_home_en : home.menu_home_es,
@@ -55,7 +57,7 @@ const Header = ({ home }: { home: any }) => {
               >
                 {item.name}
               </p>
-              <p className="my-0">{item.description}</p>
+              {/*<p className="my-0">{item.description}</p>*/}
             </a>
           ))}
         </div>
@@ -121,7 +123,7 @@ const Header = ({ home }: { home: any }) => {
           </button>
         </nav>
         {/* Desktop nav */}
-        <nav className="items-center space-x-8 hidden min-[768px]:flex">
+        <nav className="items-center space-x-8 hidden min-[768px]:flex text-2xl">
           {NavItems.map((item) => (
             <a
               key={item.slug}

@@ -1,67 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { InferGetStaticPropsType } from "next";
-import { createReader } from "@keystatic/core/reader";
+
 import { DocumentRenderer } from "@keystatic/core/renderer";
 
-import config from "../keystatic.config";
 import Seo from "../components/Seo";
 import Divider from "../components/Divider";
-import { inject } from "../utils/slugHelpers";
 import { cx } from "../utils/cx";
 import maybeTruncateTextBlock from "../utils/maybeTruncateTextBlock";
 import { useLanguage } from "../components/default-language-provider";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { getAllAuthors, getExternalArticleData, getHomeData, getPostData } from "../utils/get-static-page-utils";
 
-const reader = createReader("", config);
 
-async function getHomeData() {
-  const reader = createReader("", config);
-  const homePage = await reader.singletons.home.read();
-  return {
-    ...homePage,
-    heading_en: await (homePage?.heading_en() || []),
-    heading_es: await (homePage?.heading_es() || []),
-  };
-}
-
-async function getPostData() {
-  const postSlugs = await reader.collections.posts.list();
-  return await Promise.all(
-    postSlugs.map(async (slug) => {
-      const post = await reader.collections.posts.read(slug);
-      const content = (await post?.content()) || [];
-      return {
-        ...post,
-        content,
-        slug,
-        ...({ type: "post" } as const),
-      };
-    }),
-  );
-}
-
-async function getExternalArticleData() {
-  const externalArticles = await reader.collections.externalArticles.list();
-  const externalArticleData = await Promise.all(
-    externalArticles.map((slug) =>
-      inject(slug, reader.collections.externalArticles),
-    ),
-  );
-  return externalArticleData.map((article) => ({
-    ...({ type: "externalArticle" } as const),
-    ...article,
-  }));
-}
-
-async function getAllAuthors() {
-  const authorsList = await reader.collections.authors.list();
-  const allAuthors = await Promise.all(
-    authorsList.map((slug) => inject(slug, reader.collections.authors)),
-  );
-  return allAuthors;
-}
 
 export async function getStaticProps() {
   const [home, posts, externalArticles, authors] = await Promise.all([
@@ -99,7 +51,6 @@ export default function Home({
   });
 
   const { language } = useLanguage();
-  //console.log("languageAbbr", languageAbbr.language);
 
   return (
     <div className="flex min-h-screen flex-col font-sans bg-neutral-200/80">
@@ -107,7 +58,7 @@ export default function Home({
       <main className="max-w-none flex flex-1 flex-col">
         <div className="flex-1">
           <div className="px-4 md:px-28 max-w-7xl mx-auto">
-            <Seo />
+            {/*<Seo />*/}
             {home.heading_en && home.heading_es && (
               <>
                 <DocumentRenderer
