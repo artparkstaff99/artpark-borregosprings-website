@@ -69,7 +69,7 @@ export default function About({ about, home }: { about: any; home: any }) {
       <main className="max-w-none flex flex-1 flex-col">
         <div className="flex-1">
           <div className="mx-auto px-4 md:px-10 prose max-w-4xl">
-            <Seo title="About | Solaris Daily News" />
+            <Seo title="The ArtPark at Borrego Springs" />
             <DocumentRenderer
               document={about.content}
               componentBlocks={{

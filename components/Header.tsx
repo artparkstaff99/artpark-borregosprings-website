@@ -1,6 +1,5 @@
 import { usePathname } from "next/navigation";
-import Image from "next/image";
-import Logo from "../assets/logo.svg";
+import Link from "next/link";
 import { cx } from "../utils/cx";
 import React from "react";
 import ToggleLanguageButton from "./toggle-language-button";
@@ -41,23 +40,23 @@ const Header = ({ home }: { home: any }) => {
         {/* Nav items */}
         <div className="grid grid-flow-row not-prose">
           {NavItems.map((item) => (
-            <a
+            <Link
               key={item.slug}
-              className={
-                "pb-5 first:pt-3 px-3 last:pb-3 pt-5 border-b-2 border-slate-100 border-spacing-2 last:border-b-0 no-underline"
-              }
               href={item.slug}
+              className="pb-5 first:pt-3 px-3 last:pb-3 pt-5 border-b-2 border-slate-100 border-spacing-2 last:border-b-0 no-underline" // This might need adjustment based on your styling approach
             >
-              <p
-                className={cx(
-                  pathname === item.slug ? "text-text-cyan-700" : "",
-                  "my-0 pb-2 font-bold"
-                )}
-              >
-                {item.name}
-              </p>
-              <p className="my-0">{item.description}</p>
-            </a>
+              <span>
+                <p
+                  className={cx(
+                    pathname === item.slug ? "text-text-cyan-700" : "",
+                    "my-0 pb-2 font-bold",
+                  )}
+                >
+                  {item.name}
+                </p>
+                <p className="my-0">{item.description}</p>
+              </span>
+            </Link>
           ))}
         </div>
       </div>
@@ -67,7 +66,13 @@ const Header = ({ home }: { home: any }) => {
   return (
     <header className="prose max-w-none border-b-2 md:border-b-0 border-slate-100 mb-10 md:mb-20">
       {home.special_banner_top_show === true && (
-        <KeystaticBanner message={language === "en" ? home.special_banner_top_en : home.special_banner_top_es} />
+        <KeystaticBanner
+          message={
+            language === "en"
+              ? home.special_banner_top_en
+              : home.special_banner_top_es
+          }
+        />
       )}
       <div className="flex justify-between items-center px-4 md:px-28 py-4 md:py-10 h-full">
         <a
@@ -75,19 +80,26 @@ const Header = ({ home }: { home: any }) => {
           href="/"
           aria-label="Link to home page"
         >
-          <p className="no-underline text-xl font-bold" aria-label="Link to home page">
-          🌎 &nbsp; {language === "en" ? home.top_left_header_en : home.top_left_header_es}
-        </p>
+          <p
+            className="no-underline text-xl font-bold"
+            aria-label="Link to home page"
+          >
+            🌎 &nbsp;{" "}
+            {language === "en"
+              ? home.top_left_header_en
+              : home.top_left_header_es}
+          </p>
         </a>
 
-        <ToggleLanguageButton />
-
+        <span className="mx-3">
+          <ToggleLanguageButton />
+        </span>
 
         {/* Mobile Hamburger Icon button */}
         <nav className="-mr-2 min-[768px]:hidden">
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none"
+            className="mx-3 inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none"
             aria-label="Open menu"
             onClick={() => setMenuOpen(!menuOpen)}
           >
@@ -130,18 +142,19 @@ const Header = ({ home }: { home: any }) => {
         {/* Desktop nav */}
         <nav className="items-center space-x-8 hidden min-[768px]:flex">
           {NavItems.map((item) => (
-            <a
-              key={item.slug}
-              className={cx(
-                baseClasses,
-                pathname === item.slug
-                  ? "border-text-cyan-700 border-b-2"
-                  : "border-transparent"
-              )}
-              href={item.slug}
-            >
-              {item.name}
-            </a>
+            <Link key={item.slug} href={item.slug}>
+              <span
+                className={cx(
+                  baseClasses,
+                  pathname === item.slug
+                    ? "border-text-cyan-700 border-b-2"
+                    : "border-transparent",
+                )}
+                style={{ cursor: "pointer" }} // To mimic link cursor style
+              >
+                {item.name}
+              </span>
+            </Link>
           ))}
         </nav>
       </div>

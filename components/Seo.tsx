@@ -10,11 +10,11 @@ type MetaData = {
 };
 
 const defaultMeta = {
-  title: "Keystatic | Blog Template",
+  title: "The ArtPark in Borrego Springs",
   description:
-    "Solaris Daily News is a fictive blog about biometrics to demo Keystatic. Built by Thinkmill with Tailwind CSS and Next.js.",
+    "The ArtPark is a place for artists to come together and create",
   imagePath: "/images/seo-image.png",
-  imageAlt: "cover image for the Keystatic Blog Template",
+  imageAlt: "The ArtPark",
 };
 
 export default function Seo({
@@ -40,7 +40,7 @@ export default function Seo({
       <meta name="description" content={description} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@site" />
-      <meta name="twitter:creator" content="@thekeystatic" />
+      <meta name="twitter:creator" content="@WeAreBorregoSpr" />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image:alt" content={imageAlt} />
