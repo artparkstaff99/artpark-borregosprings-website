@@ -151,7 +151,7 @@ export const ComponentBlocks = {
       workplaceOrSocial: fields.text({
         label: "Workplace or Social account name",
       }),
-      socialLink: fields.url({
+      socialLink: fields.text({
         label: "Social media link",
       }),
     },
