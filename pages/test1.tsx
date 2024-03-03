@@ -35,49 +35,52 @@ const getRandomItem = (array: string[]) => array[Math.floor(Math.random() * arra
 
 const ImageGroup: React.FC<ImageGroup> = ({ title, images }) => {
   return (
-    <div className="mb-10">
-      <h2 className="text-2xl font-semibold mb-4">{title}</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+    <div className="mb-10 p-4 border-2 border-gray-300 rounded-lg shadow-lg relative">
+      {/* Group title positioned towards the left side of the border */}
+      <div className="absolute top-0 left-0 transform -translate-y-1/2 bg-white px-2 ml-4">
+        <h2 className="text-xl font-semibold">{title}</h2>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 pt-8">
         {images.map((image) => (
-          <div key={image.src} className="flex flex-col">
-            <div className="border-2 border-gray-300 rounded-lg shadow-lg overflow-hidden">
-              {/* Image container to ensure image size consistency */}
-              <div className="w-full h-48">
-                <img src={image.src} alt={image.alt} className="object-cover w-full h-full" />
-              </div>
-              {/* Text container to allow dynamic text size while maintaining overall card size consistency */}
-              <div className="flex-1 p-4 flex flex-col justify-between">
-                <p className="font-bold">{image.name}</p>
-                <p className="text-sm">{image.description}</p>
-              </div>
+          <div key={image.src} className="flex flex-col bg-white border-2 border-gray-300 rounded-lg shadow overflow-hidden">
+            {/* Image container to ensure image size consistency and aspect ratio */}
+            <div className="w-full h-48 flex justify-center items-center overflow-hidden">
+              <img src={image.src} alt={image.alt} className="object-cover" style={{ minWidth: '200px', minHeight: '200px' }} />
+            </div>
+            {/* Text container to ensure description is directly below the name */}
+            <div className="p-4">
+              <p className="font-bold">{image.name}</p>
+              <p className="text-sm">{image.description}</p>
             </div>
           </div>
         ))}
       </div>
-      <hr className="my-4 border-gray-200" />
     </div>
   );
 };
 
 
+
+
+
 const ThreeImageGroups: React.FC = () => {
   const imageSrc = 'https://via.placeholder.com/150'; // Replace with your image placeholder
+  const groupTitles = ["Kids", "School Staff", "ArtPark and Community"]; // Array of group titles
 
   const [imageGroups, setImageGroups] = useState<ImageGroup[]>([]);
 
   useEffect(() => {
     const generateImageGroups = () => {
-      const groups: ImageGroup[] = [];
-      for (let i = 0; i < 3; i++) {
+      const groups: ImageGroup[] = groupTitles.map((title, index) => {
         const numImages = Math.floor(Math.random() * 6) + 2; // Random between 2 and 7
         const images = Array.from({ length: numImages }).map((_) => ({
           src: imageSrc,
-          alt: `Image ${i + 1}`,
+          alt: `Image ${index + 1}`,
           name: generateRandomName(),
           description: generateRandomDescription(),
         }));
-        groups.push({ title: `Group ${i + 1}`, images });
-      }
+        return { title, images };
+      });
       setImageGroups(groups);
     };
 
@@ -92,5 +95,4 @@ const ThreeImageGroups: React.FC = () => {
     </div>
   );
 };
-
 export default ThreeImageGroups;
