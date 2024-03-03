@@ -35,20 +35,20 @@ const getRandomItem = (array: string[]) => array[Math.floor(Math.random() * arra
 
 const ImageGroup: React.FC<ImageGroup> = ({ title, images }) => {
   return (
-    <div className="mb-10 p-4 border-2 border-gray-300 rounded-lg shadow-lg relative">
-      {/* Group title positioned towards the left side of the border */}
-      <div className="absolute top-0 left-0 transform -translate-y-1/2 bg-white px-2 ml-4">
+    <div className="mb-10 p-6 border-4 border-gray-300 rounded-lg shadow-lg relative mt-12">
+      {/* Group title adjusted to flow on the border, with more outer border padding */}
+      <div className="absolute top-0 left-5 -translate-y-1/2 bg-white px-3">
         <h2 className="text-xl font-semibold">{title}</h2>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 pt-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 pt-6">
         {images.map((image) => (
           <div key={image.src} className="flex flex-col bg-white border-2 border-gray-300 rounded-lg shadow overflow-hidden">
-            {/* Image container to ensure image size consistency and aspect ratio */}
-            <div className="w-full h-48 flex justify-center items-center overflow-hidden">
-              <img src={image.src} alt={image.alt} className="object-cover" style={{ minWidth: '200px', minHeight: '200px' }} />
+            {/* Image container with aspect ratio enforcement */}
+            <div className="aspect-w-1 aspect-h-1 w-full">
+              <img src={image.src} alt={image.alt} className="object-cover w-full h-full" />
             </div>
-            {/* Text container to ensure description is directly below the name */}
-            <div className="p-4">
+            {/* Text container with increased padding for more breathing room */}
+            <div className="p-6">
               <p className="font-bold">{image.name}</p>
               <p className="text-sm">{image.description}</p>
             </div>
@@ -63,8 +63,12 @@ const ImageGroup: React.FC<ImageGroup> = ({ title, images }) => {
 
 
 
+
+
+
+
 const ThreeImageGroups: React.FC = () => {
-  const imageSrc = 'https://via.placeholder.com/150'; // Replace with your image placeholder
+  const imageSrc = 'https://via.placeholder.com/400'; // Replace with your image placeholder
   const groupTitles = ["Kids", "School Staff", "ArtPark and Community"]; // Array of group titles
 
   const [imageGroups, setImageGroups] = useState<ImageGroup[]>([]);
