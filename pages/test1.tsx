@@ -66,9 +66,8 @@ const ImageGroup: React.FC<ImageGroup> = ({ title, images }) => {
 
 
 
-
 const ThreeImageGroups: React.FC = () => {
-  const imageSrc = 'https://via.placeholder.com/400'; // Replace with your image placeholder
+  const imageSrc = 'https://via.placeholder.com/150'; // Replace with your image placeholder
   const groupTitles = ["Kids", "School Staff", "ArtPark and Community"]; // Array of group titles
 
   const [imageGroups, setImageGroups] = useState<ImageGroup[]>([]);
@@ -93,10 +92,33 @@ const ThreeImageGroups: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4">
+      {/* Big Title and Short Description */}
+      <div className="text-center my-10">
+        <h1 className="text-4xl font-bold mb-4">The ArtPark Website Project</h1>
+        <p className="text-lg">A collaborative effort to showcase the intersection of art, education, and community spirit.</p>
+      </div>
+
+      {/* Image Groups Rendered Here */}
       {imageGroups.map((group) => (
         <ImageGroup key={group.title} title={group.title} images={group.images} />
       ))}
+
+      {/* Our Story Section */}
+      <div className="my-10">
+        <h2 className="text-3xl font-bold mb-4">Our Story</h2>
+        <p>The inception of the ArtPark website is a testament to the power of collaboration and community spirit. It all began as a joint venture between the dedicated staff of Borrego High School, the creative and enthusiastic students ("The Kids"), the ArtPark itself, and a group of volunteer members from the community.</p>
+        <p>Each party brought their unique strengths and perspectives to the table, creating a melting pot of ideas, skills, and passions.</p>
+        <ul className="list-disc list-inside space-y-2 my-4">
+          <li>The high school staff provided the educational framework and guidance, ensuring that the project aligned with learning objectives and fostered student growth.</li>
+          <li>The students injected vitality, creativity, and fresh ideas into the project, turning it into a vibrant and dynamic platform.</li>
+          <li>The ArtPark offered a canvas for this creativity, a physical and conceptual space where art and nature intersect, inspiring all involved.</li>
+          <li>Meanwhile, the community volunteers contributed their time, expertise, and resources, bridging the gap between the school, the park, and the wider community.</li>
+        </ul>
+        <p>Together, this coalition transformed a simple idea into a flourishing website that showcases the beauty of collaboration, art, and education, making the ArtPark more accessible and engaging for everyone.</p>
+      </div>
     </div>
   );
 };
+
+
 export default ThreeImageGroups;
