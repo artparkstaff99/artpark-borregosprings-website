@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { useLanguage } from "./default-language-provider";
 
 function ToggleLanguageButton() {

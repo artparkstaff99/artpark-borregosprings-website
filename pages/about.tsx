@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createReader } from "@keystatic/core/reader";
 import config from "../keystatic.config";
 import { DocumentRenderer } from "@keystatic/core/renderer";

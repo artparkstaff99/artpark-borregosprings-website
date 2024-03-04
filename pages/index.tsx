@@ -11,12 +11,7 @@ import maybeTruncateTextBlock from "../utils/maybeTruncateTextBlock";
 import { useLanguage } from "../components/default-language-provider";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import {
-  getAllAuthors,
-  getExternalArticleData,
-  getHomeData,
-  getPostData,
-} from "../utils/get-static-page-utils";
+import { getAllAuthors, getExternalArticleData, getHomeData, getPostData } from "../utils/get-static-page-utils";
 import { useEffect, useState } from "react";
 
 export async function getStaticProps({ locale }: { locale: string }) {
@@ -109,18 +104,6 @@ export default function Home({
               ) : (
                 <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
                   {orderedPostFeed.map((post) => {
-                    // if (post.type === "externalArticle") {
-                    //   return (
-                    //     <Card
-                    //       image={`/images/external-articles/${post.slug}/${post.coverImage}`}
-                    //       title={post.title}
-                    //       summary={post.summary}
-                    //       key={post.slug}
-                    //       link={post.directLink}
-                    //       externalLink
-                    //     />
-                    //   );
-                    // }
                     if (post.type === "post") {
                       const postLanguage = post.slug.startsWith("es/")
                         ? "es"

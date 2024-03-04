@@ -1,6 +1,3 @@
-import { usePathname } from "next/navigation";
-import { cx } from "../utils/cx";
-import { baseClasses } from "./Header";
 import { useLanguage } from "./default-language-provider";
 
 export default function Footer({ home }: { home: any }) {

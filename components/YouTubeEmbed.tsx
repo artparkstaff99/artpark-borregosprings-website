@@ -1,4 +1,5 @@
 import { youtubeEmbedId } from "../utils/youtubeEmbedIdGenerator";
+
 const YouTubeEmbed = ({ youtubeLink }: { youtubeLink: string }) => {
   const embedId = youtubeEmbedId(youtubeLink);
   return (

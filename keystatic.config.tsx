@@ -1,11 +1,4 @@
-import {
-  collection,
-  config,
-  fields,
-  GitHubConfig,
-  LocalConfig,
-  singleton,
-} from "@keystatic/core";
+import { collection, config, fields, GitHubConfig, LocalConfig, singleton } from "@keystatic/core";
 
 import { ComponentBlocks } from "./components/ComponentBlocks";
 

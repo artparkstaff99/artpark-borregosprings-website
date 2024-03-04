@@ -1,5 +1,5 @@
 import NextImage from "next/image";
-import type { InferGetStaticPropsType, GetStaticPropsContext } from "next";
+import type { GetStaticPropsContext } from "next";
 import { createReader } from "@keystatic/core/reader";
 import config from "../keystatic.config";
 import dateFormatter from "../utils/dateFormatter";
@@ -129,7 +129,7 @@ export default function Post({
 
     return (
       <div key={currentLanguage} style={{ display: showPost ? "block" : "none" }}>
-        <div className="flex min-h-screen flex-col font-sans bg-neutral-200/80">
+        <div className="flex min-h-screen flex-col font-sans bg-neutral-200">
           <Header home={home} />
           <main className="max-w-none flex flex-1 flex-col">
             <div className="flex-1">
