@@ -49,6 +49,8 @@ export async function getStaticProps() {
   const aboutPage = await reader.singletons.about.read();
   const aboutPageContent = await (aboutPage?.content() || []);
 
+  console.log("/pages/about.tsx: aboutPage:", aboutPage, "aboutPageContent:", aboutPageContent);
+
   const [home] = await Promise.all([getHomeData()]);
 
   return {
@@ -63,6 +65,7 @@ export async function getStaticProps() {
 }
 
 export default function About({ about, home }: { about: any; home: any }) {
+
   return (
     <div className="flex min-h-screen flex-col font-sans bg-neutral-200/80">
       <Header home={home} />

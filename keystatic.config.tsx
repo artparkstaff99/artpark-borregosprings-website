@@ -93,27 +93,12 @@ export default config({
       label: "About",
       path: "content/pages/about/",
       schema: {
-        pageTitle: fields.text({ label: "Top Title (ex: The ArtPark Website Project)" }),
-        topContent: fields.document({
-          formatting: true,
-          dividers: true,
-          links: true,
-          layouts: [
-            [1, 1],
-            [1, 1, 1],
-            [2, 1],
-            [1, 2, 1],
-          ],
-          label: "TopContent (below title)",
-          images: {
-            directory: "public/images/about",
-            publicPath: "/images/about",
-            schema: {
-              alt: fields.text({ label: "Alt text" }) as any,
-              title: fields.text({ label: "Title" }) as any,
-            },
-          },
-          componentBlocks: ComponentBlocks,
+        pageTitle: fields.text({
+          label: "Top Title (ex: The ArtPark Website Project)",
+        }),
+        pageTextBelowTitle: fields.text({
+          label: "Text Below Title (ex: The ArtPark Website Project)",
+          multiline: true,
         }),
 
         group1Title: fields.text({ label: "Group 1 Title (Kids)" }),
