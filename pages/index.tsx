@@ -27,9 +27,6 @@ export async function getStaticProps({ locale }: { locale: string }) {
     props: {
       home,
       posts,
-      externalArticles,
-      authors,
-      locale,
     },
   };
 }
@@ -37,19 +34,14 @@ export async function getStaticProps({ locale }: { locale: string }) {
 export default function Home({
   home,
   posts,
-  externalArticles,
-  locale,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { setLanguage, language } = useLanguage();
+  const { language } = useLanguage();
   const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
     //setLanguage(navigator.language === "es" ? "es" : "en");
     setShowResult(true);
   }, []);
-
-  // just do posts for now...
-  //const allPosts = [...posts, ...externalArticles];
 
   const allPosts = posts;
   const orderedPostFeed = allPosts.sort((a, b) => {

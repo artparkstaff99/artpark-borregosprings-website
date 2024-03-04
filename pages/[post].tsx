@@ -31,7 +31,6 @@ export async function getStaticPaths() {
     new Set(postSlugsAll.map((item) => item.split("/")[1])),
   );
 
-  //console.log("/[post] getStaticPaths postSlugs", postSlugs);
   return {
     // Generate paths for each post
     paths: postSlugs.map((slug) => ({
