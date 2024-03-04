@@ -90,13 +90,6 @@ export async function getStaticProps() {
   const aboutPage = await reader.singletons.about.read();
   const aboutPageContent = await (aboutPage?.content() || []);
 
-  console.log(
-    "/pages/about.tsx: aboutPage:",
-    aboutPage,
-    "aboutPageContent:",
-    aboutPageContent,
-  );
-
   const [home] = await Promise.all([getHomeData()]);
 
   return {
