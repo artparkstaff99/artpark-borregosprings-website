@@ -70,7 +70,7 @@ export default function Home({
 
   return (
     showResult && (
-      <div className="flex min-h-screen flex-col font-sans bg-neutral-200/80">
+      <div className="flex min-h-screen flex-col font-sans bg-neutral-200">
         <Header home={home} />
         <main className="max-w-none flex flex-1 flex-col">
           <div className="flex-1">
