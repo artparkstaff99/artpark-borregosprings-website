@@ -50,6 +50,8 @@ const generateRandomDescription = function () {
 const getRandomItem = (array: string[]) =>
   array[Math.floor(Math.random() * array.length)];
 
+xxx
+
 const ImageGroup: React.FC<ImageGroup> = function ({ title, images }) {
   return (
     <div className="pt-0.5">
