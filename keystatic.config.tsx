@@ -111,6 +111,8 @@ export default config({
           label: "Add Dummy Images for Testing",
         }),
 
+        titleAboveContent: fields.text({ label: "Title Above Content (Our Story)" }),
+
         content: fields.document({
           formatting: true,
           dividers: true,
