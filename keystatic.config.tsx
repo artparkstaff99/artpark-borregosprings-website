@@ -7,7 +7,6 @@ import {
   singleton,
 } from "@keystatic/core";
 
-
 import { ComponentBlocks } from "./components/ComponentBlocks";
 
 const storage: LocalConfig["storage"] | GitHubConfig["storage"] =
@@ -25,7 +24,6 @@ export default config({
       label: "Home",
       path: "content/pages/home/",
       schema: {
-
         special_banner_top_show: fields.checkbox({
           label: "Show Special Banner at Top of Page",
         }),
@@ -43,14 +41,12 @@ export default config({
           label: "Message in header top left (Spanish)",
         }),
 
-
         copyright_message_after_c_en: fields.text({
           label: "CopyRight Message After c On Bottom of Page (English)",
         }),
         copyright_message_after_c_es: fields.text({
           label: "CopyRight Message After c On Bottom of Page (Spanish)",
         }),
-
 
         bottom_right_message_en: fields.text({
           label: "Message Showing on Bottom Right of Page (English)",
@@ -79,7 +75,8 @@ export default config({
               bold: true,
             },
           },
-          label: "English Heading (note: text that is bolded will show up in blue)",
+          label:
+            "English Heading (note: text that is bolded will show up in blue)",
         }),
         heading_es: fields.document({
           formatting: {
@@ -87,7 +84,8 @@ export default config({
               bold: true,
             },
           },
-          label: "Spanish Heading (note: text that is bolded will show up in blue)",
+          label:
+            "Spanish Heading (note: text that is bolded will show up in blue)",
         }),
       },
     }),
@@ -95,6 +93,39 @@ export default config({
       label: "About",
       path: "content/pages/about/",
       schema: {
+        pageTitle: fields.text({ label: "Top Title (ex: The ArtPark Website Project)" }),
+        topContent: fields.document({
+          formatting: true,
+          dividers: true,
+          links: true,
+          layouts: [
+            [1, 1],
+            [1, 1, 1],
+            [2, 1],
+            [1, 2, 1],
+          ],
+          label: "TopContent (below title)",
+          images: {
+            directory: "public/images/about",
+            publicPath: "/images/about",
+            schema: {
+              alt: fields.text({ label: "Alt text" }) as any,
+              title: fields.text({ label: "Title" }) as any,
+            },
+          },
+          componentBlocks: ComponentBlocks,
+        }),
+
+        group1Title: fields.text({ label: "Group 1 Title (Kids)" }),
+        group2Title: fields.text({ label: "Group 2 Title (School Staff)" }),
+        group3Title: fields.text({
+          label: "Group 3 Title (ArtPark and Community)",
+        }),
+
+        addDummyImagesForTesting: fields.checkbox({
+          label: "Add Dummy Images for Testing",
+        }),
+
         content: fields.document({
           formatting: true,
           dividers: true,
@@ -125,6 +156,11 @@ export default config({
       path: "content/authors/*",
       slugField: "name",
       schema: {
+        showAuthor: fields.checkbox({
+          label: "Show Author",
+          description:
+            "Show this author on the site, if unchecked it will not be shown.",
+        }),
         name: fields.slug({
           name: {
             label: "Name",
@@ -134,6 +170,10 @@ export default config({
               },
             },
           },
+        }),
+        description: fields.text({
+          label: "Description",
+          multiline: true,
         }),
         role: fields.text({ label: "Role" }),
         avatar: fields.image({
