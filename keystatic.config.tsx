@@ -10,6 +10,56 @@ const storage: LocalConfig["storage"] | GitHubConfig["storage"] =
         repo: "pkellner/artpark-nextjs-proto1",
       };
 
+function getAboutSingletonConfig(language: string) {
+  return {
+    label: "About",
+    path: `content/pages/about/${language}/`,
+    schema: {
+      pageTitle: fields.text({
+        label: "Top Title (ex: The ArtPark Website Project)",
+      }),
+      pageTextBelowTitle: fields.text({
+        label: "Text Below Title (ex: The ArtPark Website Project)",
+        multiline: true,
+      }),
+
+      group1Title: fields.text({ label: "Group 1 Title (Kids)" }),
+      group2Title: fields.text({ label: "Group 2 Title (School Staff)" }),
+      group3Title: fields.text({
+        label: "Group 3 Title (ArtPark and Community)",
+      }),
+
+      addDummyImagesForTesting: fields.checkbox({
+        label: "Add Dummy Images for Testing",
+      }),
+
+      titleAboveContent: fields.text({ label: "Title Above Content (Our Story)" }),
+
+      content: fields.document({
+        formatting: true,
+        dividers: true,
+        links: true,
+        layouts: [
+          [1, 1],
+          [1, 1, 1],
+          [2, 1],
+          [1, 2, 1],
+        ],
+        label: "Content",
+        images: {
+          directory: "public/images/about",
+          publicPath: "/images/about",
+          schema: {
+            alt: fields.text({ label: "Alt text" }) as any,
+            title: fields.text({ label: "Title" }) as any,
+          },
+        },
+        componentBlocks: ComponentBlocks,
+      }),
+    },
+  }
+}
+
 export default config({
   storage,
   singletons: {
@@ -82,53 +132,8 @@ export default config({
         }),
       },
     }),
-    about: singleton({
-      label: "About",
-      path: "content/pages/about/",
-      schema: {
-        pageTitle: fields.text({
-          label: "Top Title (ex: The ArtPark Website Project)",
-        }),
-        pageTextBelowTitle: fields.text({
-          label: "Text Below Title (ex: The ArtPark Website Project)",
-          multiline: true,
-        }),
-
-        group1Title: fields.text({ label: "Group 1 Title (Kids)" }),
-        group2Title: fields.text({ label: "Group 2 Title (School Staff)" }),
-        group3Title: fields.text({
-          label: "Group 3 Title (ArtPark and Community)",
-        }),
-
-        addDummyImagesForTesting: fields.checkbox({
-          label: "Add Dummy Images for Testing",
-        }),
-
-        titleAboveContent: fields.text({ label: "Title Above Content (Our Story)" }),
-
-        content: fields.document({
-          formatting: true,
-          dividers: true,
-          links: true,
-          layouts: [
-            [1, 1],
-            [1, 1, 1],
-            [2, 1],
-            [1, 2, 1],
-          ],
-          label: "Content",
-          images: {
-            directory: "public/images/about",
-            publicPath: "/images/about",
-            schema: {
-              alt: fields.text({ label: "Alt text" }) as any,
-              title: fields.text({ label: "Title" }) as any,
-            },
-          },
-          componentBlocks: ComponentBlocks,
-        }),
-      },
-    }),
+    aboutEn: singleton(getAboutSingletonConfig("en")),
+    aboutEs: singleton(getAboutSingletonConfig("es")),
   },
   collections: {
     authors: collection({

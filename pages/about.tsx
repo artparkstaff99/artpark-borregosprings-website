@@ -15,6 +15,7 @@ import Testimonial from "../components/Testimonial";
 import Header from "../components/Header";
 import { getHomeData } from "../utils/get-static-page-utils";
 import Footer from "../components/Footer";
+import { useLanguage } from "../components/default-language-provider";
 
 interface Image {
   src: string;
@@ -50,9 +51,8 @@ const generateRandomDescription = function () {
 const getRandomItem = (array: string[]) =>
   array[Math.floor(Math.random() * array.length)];
 
-xxx
-
 const ImageGroup: React.FC<ImageGroup> = function ({ title, images }) {
+  //function ImageGroup({ title, images }: ImageGroup) {
   return (
     <div className="pt-0.5">
       <div className="mb-10 p-6 border-4 border-gray-300 rounded-lg shadow-lg relative mt-12">
@@ -61,7 +61,7 @@ const ImageGroup: React.FC<ImageGroup> = function ({ title, images }) {
           <h2 className="text-xl font-semibold">{title}</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 pt-6">
-          {images.map((image) => (
+          {images.map((image, id) => (
             <div
               key={image.src}
               className="flex flex-col bg-white border-2 border-gray-300 rounded-lg shadow overflow-hidden"
@@ -89,129 +89,163 @@ const ImageGroup: React.FC<ImageGroup> = function ({ title, images }) {
 
 export async function getStaticProps() {
   const reader = createReader("", config);
-  const aboutPage = await reader.singletons.about.read();
-  const aboutPageContent = await (aboutPage?.content() || []);
+  const aboutPageEn = await reader.singletons.aboutEn.read();
+  const aboutPageContentEn = await (aboutPageEn?.content() || []);
+
+  const aboutPageEs = await reader.singletons.aboutEs.read();
+  const aboutPageContentEs = await (aboutPageEs?.content() || []);
 
   const [home] = await Promise.all([getHomeData()]);
 
   return {
     props: {
       home,
-      about: {
-        ...aboutPage,
-        content: aboutPageContent,
+      aboutEn: {
+        ...aboutPageEn,
+        content: aboutPageContentEn,
+      },
+      aboutEs: {
+        ...aboutPageEs,
+        content: aboutPageContentEs,
       },
     },
   };
 }
 
-export default function About({ about, home }: { about: any; home: any }) {
+export default function About({
+  aboutEn,
+  aboutEs,
+  home,
+}: {
+  aboutEn: any;
+  aboutEs: any;
+  home: any;
+}) {
   const imageSrc = "https://via.placeholder.com/150"; // Replace with your image placeholder
-  const groupTitles = [about.group1Title,about.group2Title,about.group3Title]; // Array of group titles
 
-  const [imageGroups, setImageGroups] = useState<ImageGroup[]>([]);
+  const { language } = useLanguage();
 
-  useEffect(() => {
-    const generateImageGroups = () => {
-      const groups: ImageGroup[] = groupTitles.map((title, index) => {
-        const numImages = Math.floor(Math.random() * 6) + 2; // Random between 2 and 7
-        const images = Array.from({ length: numImages }).map((_) => ({
-          src: imageSrc,
-          alt: `Image ${index + 1}`,
-          name: generateRandomName(),
-          description: generateRandomDescription(),
-        }));
-        return { title, images };
-      });
-      setImageGroups(groups);
-    };
+  return ["en", "es"].map((currentLanguage: string) => {
+    const about = currentLanguage === "en" ? aboutEn : aboutEs;
 
-    generateImageGroups();
-  }, []);
+    const groupTitles = [
+      about.group1Title,
+      about.group2Title,
+      about.group3Title,
+    ];
 
-  return (
-    <div className="flex min-h-screen flex-col font-sans bg-neutral-200">
-      <Header home={home} />
-      <main className="max-w-none flex flex-1 flex-col">
-        <div className="flex-1">
-          <div className="mx-auto px-4 md:px-10 prose max-w-4xl">
-            <Seo title="The ArtPark at Borrego Springs" />
+    const [imageGroups, setImageGroups] = useState<ImageGroup[]>([]);
 
-            {/*<div className="container mx-auto px-4">*/}
-            {/* Big Title and Short Description */}
-            <div className="text-center my-10">
-              <h1 className="text-4xl font-bold mb-4">
-                {about.pageTitle}
-              </h1>
-              <p className="text-lg">
-                {about.pageTextBelowTitle}
-              </p>
+    useEffect(() => {
+      const generateImageGroups = () => {
+        const groups: ImageGroup[] = groupTitles.map((title, index) => {
+          const numImages = Math.floor(Math.random() * 6) + 2; // Random between 2 and 7
+          const images = Array.from({ length: numImages }).map((_) => ({
+            src: imageSrc,
+            alt: `Image ${index + 1}`,
+            name: generateRandomName(),
+            description: generateRandomDescription(),
+          }));
+          return { title, images };
+        });
+        setImageGroups(groups);
+      };
+
+      generateImageGroups();
+    }, []);
+
+    const showPost = language === currentLanguage;
+
+    return (
+      <div
+        key={currentLanguage}
+        style={{ display: showPost ? "block" : "none" }}
+      >
+        <div
+          className="flex min-h-screen flex-col font-sans bg-neutral-200"
+          key={currentLanguage}
+        >
+          <Header home={home} />
+          <main className="max-w-none flex flex-1 flex-col">
+            <div className="flex-1">
+              <div className="mx-auto px-4 md:px-10 prose max-w-4xl">
+                <Seo title="The ArtPark at Borrego Springs" />
+
+                {/*<div className="container mx-auto px-4">*/}
+                {/* Big Title and Short Description */}
+                <div className="text-center my-10">
+                  <h1 className="text-4xl font-bold mb-4">{about.pageTitle}</h1>
+                  <p className="text-lg">{about.pageTextBelowTitle}</p>
+                </div>
+
+                {/* Image Groups Rendered Here */}
+                {imageGroups.map((group) => (
+                  <ImageGroup
+                    key={group.title}
+                    title={group.title}
+                    images={group.images}
+                  />
+                ))}
+
+                <h2 className="text-3xl font-bold mb-4">
+                  {about.titleAboveContent}
+                </h2>
+
+                <DocumentRenderer
+                  document={about.content}
+                  componentBlocks={{
+                    inlineCta: (props) => (
+                      <InlineCTA
+                        title={props.title}
+                        summary={props.summary}
+                        linkButton={{
+                          externalLink: props.externalLink,
+                          href: props.href,
+                          label: props.linkLabel,
+                        }}
+                      />
+                    ),
+                    divider: (props) => <Divider noIcon={props.noIcon} />,
+                    banner: (props) => (
+                      <Banner
+                        heading={props.heading}
+                        bodyText={props.bodyText}
+                        externalLink={{
+                          href: props.externalLinkHref,
+                          label: props.externalLinkLabel,
+                        }}
+                      />
+                    ),
+                    youtubeEmbed: (props) => (
+                      <YouTubeEmbed youtubeLink={props.youtubeLink} />
+                    ),
+                    tweetEmbed: (props) => <TweetEmbed tweet={props.tweet} />,
+                    loopingVideo: (props) => (
+                      <LoopingVideo src={props.src} caption={props.caption} />
+                    ),
+                    image: (props) => (
+                      <Image
+                        src={props.src}
+                        alt={props.alt}
+                        caption={props.caption}
+                      />
+                    ),
+                    testimonial: (props) => (
+                      <Testimonial
+                        quote={props.quote}
+                        author={props.author}
+                        workplaceOrSocial={props.workplaceOrSocial}
+                        socialLink={props.socialLink}
+                      />
+                    ),
+                  }}
+                />
+              </div>
             </div>
-
-            {/* Image Groups Rendered Here */}
-            {imageGroups.map((group) => (
-              <ImageGroup
-                key={group.title}
-                title={group.title}
-                images={group.images}
-              />
-            ))}
-
-            <h2 className="text-3xl font-bold mb-4">{about.titleAboveContent}</h2>
-
-            <DocumentRenderer
-              document={about.content}
-              componentBlocks={{
-                inlineCta: (props) => (
-                  <InlineCTA
-                    title={props.title}
-                    summary={props.summary}
-                    linkButton={{
-                      externalLink: props.externalLink,
-                      href: props.href,
-                      label: props.linkLabel
-                    }}
-                  />
-                ),
-                divider: (props) => <Divider noIcon={props.noIcon} />,
-                banner: (props) => (
-                  <Banner
-                    heading={props.heading}
-                    bodyText={props.bodyText}
-                    externalLink={{
-                      href: props.externalLinkHref,
-                      label: props.externalLinkLabel
-                    }}
-                  />
-                ),
-                youtubeEmbed: (props) => (
-                  <YouTubeEmbed youtubeLink={props.youtubeLink} />
-                ),
-                tweetEmbed: (props) => <TweetEmbed tweet={props.tweet} />,
-                loopingVideo: (props) => (
-                  <LoopingVideo src={props.src} caption={props.caption} />
-                ),
-                image: (props) => (
-                  <Image
-                    src={props.src}
-                    alt={props.alt}
-                    caption={props.caption}
-                  />
-                ),
-                testimonial: (props) => (
-                  <Testimonial
-                    quote={props.quote}
-                    author={props.author}
-                    workplaceOrSocial={props.workplaceOrSocial}
-                    socialLink={props.socialLink}
-                  />
-                )
-              }}
-            />
-          </div>
+          </main>
+          <Footer home={home} />
         </div>
-      </main>
-      <Footer home={home} />
-    </div>
-  );
+      </div>
+    );
+  });
 }
