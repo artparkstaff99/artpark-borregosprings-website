@@ -1,4 +1,4 @@
-import type { InferGetStaticPropsType } from "next";
+import React, { useState, useEffect } from 'react';
 import { createReader } from "@keystatic/core/reader";
 import config from "../keystatic.config";
 import { DocumentRenderer } from "@keystatic/core/renderer";
@@ -14,35 +14,10 @@ import Image from "../components/Image";
 import Testimonial from "../components/Testimonial";
 import Header from "../components/Header";
 import {
-  getAboutPage,
-  getAllAuthors,
-  getExternalArticleData,
   getHomeData,
-  getPostData,
 } from "../utils/get-static-page-utils";
 import Footer from "../components/Footer";
 
-// export async function getStaticProps() {
-//   const [home, posts, externalArticles, authors,aboutPage] = await Promise.all([
-//     getHomeData(),
-//     getPostData(),
-//     getExternalArticleData(),
-//     getAllAuthors(),
-//     getAboutPage(),
-//   ]);
-//
-//   console.log("/pages/about.tsx: aboutPage:", aboutPage)
-//
-//   return {
-//     props: {
-//       home,
-//       posts,
-//       externalArticles,
-//       authors,
-//       aboutPage,
-//     },
-//   };
-// }
 
 export async function getStaticProps() {
   const reader = createReader("", config);
