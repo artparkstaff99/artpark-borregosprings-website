@@ -13,7 +13,7 @@ import LoopingVideo from "../components/LoopingVideo";
 import Image from "../components/Image";
 import Testimonial from "../components/Testimonial";
 import Header from "../components/Header";
-import { getHomeData } from "../utils/get-static-page-utils";
+import { getAllAuthors, getHomeData } from "../utils/get-static-page-utils";
 import Footer from "../components/Footer";
 import { useLanguage } from "../components/default-language-provider";
 
@@ -96,6 +96,9 @@ export async function getStaticProps() {
   const aboutPageContentEs = await (aboutPageEs?.content() || []);
 
   const [home] = await Promise.all([getHomeData()]);
+
+  const x = await getAllAuthors();
+  console.log("/pages/about.tsx", x);
 
   return {
     props: {

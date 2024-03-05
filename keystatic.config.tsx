@@ -146,6 +146,16 @@ export default config({
           description:
             "Show this author on the site, if unchecked it will not be shown.",
         }),
+
+        authorType: fields.select({
+          label: 'Type Person',
+          options: [
+            { label: 'Kids', value: 'kid' },
+            { label: 'High School Staff', value: 'staff' },
+            { label: 'ArtPark and Community', value: 'community' },
+          ],
+          defaultValue: 'kid',
+        }),
         nameEn: fields.slug({
           name: {
             label: "Name (English)",

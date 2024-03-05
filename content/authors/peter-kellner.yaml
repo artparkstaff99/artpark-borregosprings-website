@@ -1,7 +1,8 @@
 showAuthor: true
+authorType: kid
 nameEn: Peter Kellner
 descriptionEn: Community Volunteer and Web Site Helper
 nameEs: Peter Kellner
 descriptionEs: Voluntario comunitario y ayudante del sitio web
-role: 'Voluntario comunitario'
+role: Voluntario comunitario
 avatar: avatar.jpg

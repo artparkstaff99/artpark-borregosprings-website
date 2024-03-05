@@ -14,15 +14,15 @@ export async function getHomeData() {
   };
 }
 
-export async function getAboutPage() {
-  const reader = createReader("", config);
-  const aboutPage = await reader.singletons.about.read();
-  const aboutPageContent = await (aboutPage?.content() || []);
-  return {
-    ...aboutPage,
-    content: aboutPageContent,
-  };
-}
+// export async function getAboutPage() {
+//   const reader = createReader("", config);
+//   const aboutPage = await reader.singletons.about.read();
+//   const aboutPageContent = await (aboutPage?.content() || []);
+//   return {
+//     ...aboutPage,
+//     content: aboutPageContent,
+//   };
+// }
 
 export async function getPostData() {
   const postSlugs = await reader.collections.posts.list();
