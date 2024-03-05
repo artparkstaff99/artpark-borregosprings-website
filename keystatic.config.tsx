@@ -139,16 +139,16 @@ export default config({
     authors: collection({
       label: "Authors",
       path: "content/authors/*",
-      slugField: "name",
+      slugField: "nameEn",
       schema: {
         showAuthor: fields.checkbox({
           label: "Show Author",
           description:
             "Show this author on the site, if unchecked it will not be shown.",
         }),
-        name: fields.slug({
+        nameEn: fields.slug({
           name: {
-            label: "Name",
+            label: "Name (English)",
             validation: {
               length: {
                 min: 1,
@@ -156,8 +156,15 @@ export default config({
             },
           },
         }),
-        description: fields.text({
-          label: "Description",
+        descriptionEn: fields.text({
+          label: "Description (English)",
+          multiline: true,
+        }),
+        nameEs: fields.text({
+          label: "Name (Spanish)",
+        }),
+        descriptionEs: fields.text({
+          label: "Description (Spanish)",
           multiline: true,
         }),
         role: fields.text({ label: "Role" }),

@@ -1,5 +1,7 @@
 showAuthor: true
-name: Peter Kellner
-description: description for peter here!!!
-role: asdf
+nameEn: Peter Kellner
+descriptionEn: Community Volunteer and Web Site Helper
+nameEs: Peter Kellner
+descriptionEs: Voluntario comunitario y ayudante del sitio web
+role: 'Voluntario comunitario'
 avatar: avatar.jpg
