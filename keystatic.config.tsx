@@ -12,7 +12,7 @@ const storage: LocalConfig["storage"] | GitHubConfig["storage"] =
 
 function getAboutSingletonConfig(language: string) {
   return {
-    label: "About",
+    label: `${language}/About`,
     path: `content/pages/about/${language}/`,
     schema: {
       pageTitle: fields.text({
