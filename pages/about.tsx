@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { createReader } from "@keystatic/core/reader";
 import config from "../keystatic.config";
 import { DocumentRenderer } from "@keystatic/core/renderer";
@@ -29,27 +29,10 @@ interface ImageGroup {
   images: Image[];
 }
 
-const loremIpsum =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
-const generateRandomName = function () {
-  const words = loremIpsum.split(" ");
-  const firstName = getRandomItem(words);
-  const lastName = getRandomItem(words.filter((word) => word !== firstName));
-  return `${firstName} ${lastName}`;
-};
 
-const generateRandomDescription = function () {
-  const words = loremIpsum.split(" ").filter((word) => word.length > 3); // Filter out short words
-  const sentence = [];
-  for (let i = 0; i < 4; i++) {
-    sentence.push(getRandomItem(words));
-  }
-  return sentence.join(" ");
-};
-
-const getRandomItem = (array: string[]) =>
-  array[Math.floor(Math.random() * array.length)];
+const generateDummyName = () => { return "ipsum lorum"; }
+const generateDummyDescription = () => { return "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"; }
 
 const ImageGroup: React.FC<ImageGroup> = function ({ title, images }) {
   //function ImageGroup({ title, images }: ImageGroup) {
@@ -97,8 +80,7 @@ export async function getStaticProps() {
 
   const [home] = await Promise.all([getHomeData()]);
 
-  const x = await getAllAuthors();
-  console.log("/pages/about.tsx", x);
+  const authorData = await getAllAuthors();
 
   return {
     props: {
@@ -111,6 +93,9 @@ export async function getStaticProps() {
         ...aboutPageEs,
         content: aboutPageContentEs,
       },
+      authors: {
+        ...authorData,
+      },
     },
   };
 }
@@ -119,11 +104,14 @@ export default function About({
   aboutEn,
   aboutEs,
   home,
+  authors,
 }: {
   aboutEn: any;
   aboutEs: any;
   home: any;
+  authors: any;
 }) {
+
   const imageSrc = "https://via.placeholder.com/150"; // Replace with your image placeholder
 
   const { language } = useLanguage();
@@ -131,31 +119,68 @@ export default function About({
   return ["en", "es"].map((currentLanguage: string) => {
     const about = currentLanguage === "en" ? aboutEn : aboutEs;
 
-    const groupTitles = [
-      about.group1Title,
-      about.group2Title,
-      about.group3Title,
-    ];
+    interface Author {
+      slug: string;
+      avatar: string;
+      nameEs: string;
+      nameEn: string;
+      descriptionEs: string;
+      descriptionEn: string;
+      authorType: string;
+      showAuthor: boolean;
+    }
 
-    const [imageGroups, setImageGroups] = useState<ImageGroup[]>([]);
+    interface ImageType {
+      src: string;
+      alt: string;
+      name: string;
+      description: string;
+    }
 
-    useEffect(() => {
-      const generateImageGroups = () => {
-        const groups: ImageGroup[] = groupTitles.map((title, index) => {
-          const numImages = Math.floor(Math.random() * 6) + 2; // Random between 2 and 7
-          const images = Array.from({ length: numImages }).map((_) => ({
-            src: imageSrc,
-            alt: `Image ${index + 1}`,
-            name: generateRandomName(),
-            description: generateRandomDescription(),
-          }));
-          return { title, images };
-        });
-        setImageGroups(groups);
+    interface ImageGroup {
+      title: string;
+      images: ImageType[];
+    }
+
+    let imageGroups: ImageGroup[] = [];
+
+    function createImageGroup(title: string, authorType: string, authors: Author[], language: string): ImageGroup {
+      return {
+        title,
+        images: Object.values(authors)
+          .filter(author => author.authorType === authorType && author.showAuthor)
+          .map(author => ({
+            src: `/images/authors/${author.slug}/${author.avatar}`,
+            alt: language === "es" ? author.nameEs : author.nameEn,
+            name: language === "es" ? author.nameEs : author.nameEn,
+            description: language === "es" ? author.descriptionEs : author.descriptionEn,
+          })),
       };
+    }
 
-      generateImageGroups();
-    }, []);
+    imageGroups.push(createImageGroup(about.group1Title, "kid", authors, language));
+    imageGroups.push(createImageGroup(about.group2Title, "staff", authors, language));
+    imageGroups.push(createImageGroup(about.group3Title, "community", authors, language));
+
+    if (about.addDummyImagesForTesting) {
+      // Function to add dummy images to a specific image group
+      function addDummyImagesToGroup(groupIndex: number, numImages: number) {
+        imageGroups[groupIndex].images.push(...Array.from({ length: numImages }, (_, index) => ({
+          src: imageSrc,
+          alt: `Dummy Image ${groupIndex + 1}-${index + 1}`,
+          name: generateDummyName(), // Assuming generateRandomName is intended here; replace with generateDummyName if that's a separate function
+          description: generateDummyDescription(), // Same assumption as above
+        })));
+      }
+
+      if (about.addDummyImagesForTesting) {
+        // Add dummy images to each group
+        addDummyImagesToGroup(0, 1); // Add n new dummy images to imageGroup[0]
+        addDummyImagesToGroup(1, 2); // Add n new dummy images to imageGroup[1]
+        addDummyImagesToGroup(2, 5); // Add n new dummy images to imageGroup[2]
+      }
+
+    }
 
     const showPost = language === currentLanguage;
 
@@ -181,7 +206,7 @@ export default function About({
                   <p className="text-lg">{about.pageTextBelowTitle}</p>
                 </div>
 
-                {/* Image Groups Rendered Here */}
+                {/* ImageType Groups Rendered Here */}
                 {imageGroups.map((group) => (
                   <ImageGroup
                     key={group.title}
@@ -189,6 +214,8 @@ export default function About({
                     images={group.images}
                   />
                 ))}
+
+                <Divider noIcon={false} />
 
                 <h2 className="text-3xl font-bold mb-4">
                   {about.titleAboveContent}

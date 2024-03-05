@@ -153,7 +153,7 @@ export default config({
             { label: 'Kids', value: 'kid' },
             { label: 'High School Staff', value: 'staff' },
             { label: 'ArtPark and Community', value: 'community' },
-          ],
+          ] as any,
           defaultValue: 'kid',
         }),
         nameEn: fields.slug({
@@ -210,12 +210,12 @@ export default config({
           fields.relationship({
             label: "Post author",
             collection: "authors",
-          }),
+          }) as any,
           {
             label: "Authors",
             validation: { length: { min: 1 } },
             itemLabel: (props: any) => props.value || "Please select an author",
-          },
+          } as any,
         ),
         content: fields.document({
           formatting: true,
