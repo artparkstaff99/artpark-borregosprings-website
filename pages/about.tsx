@@ -163,13 +163,12 @@ export default function About({
     imageGroups.push(createImageGroup(about.group3Title, "community", authors, language));
 
     if (about.addDummyImagesForTesting) {
-      // Function to add dummy images to a specific image group
       function addDummyImagesToGroup(groupIndex: number, numImages: number) {
         imageGroups[groupIndex].images.push(...Array.from({ length: numImages }, (_, index) => ({
           src: imageSrc,
           alt: `Dummy Image ${groupIndex + 1}-${index + 1}`,
-          name: generateDummyName(), // Assuming generateRandomName is intended here; replace with generateDummyName if that's a separate function
-          description: generateDummyDescription(), // Same assumption as above
+          name: generateDummyName(),
+          description: generateDummyDescription(),
         })));
       }
 
@@ -179,7 +178,6 @@ export default function About({
         addDummyImagesToGroup(1, 2); // Add n new dummy images to imageGroup[1]
         addDummyImagesToGroup(2, 5); // Add n new dummy images to imageGroup[2]
       }
-
     }
 
     const showPost = language === currentLanguage;
@@ -199,7 +197,6 @@ export default function About({
               <div className="mx-auto px-4 md:px-10 prose max-w-4xl">
                 <Seo title="The ArtPark at Borrego Springs" />
 
-                {/*<div className="container mx-auto px-4">*/}
                 {/* Big Title and Short Description */}
                 <div className="text-center my-10">
                   <h1 className="text-4xl font-bold mb-4">{about.pageTitle}</h1>
