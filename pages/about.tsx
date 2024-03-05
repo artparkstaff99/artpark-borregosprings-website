@@ -34,37 +34,61 @@ interface ImageGroup {
 const generateDummyName = () => { return "ipsum lorum"; }
 const generateDummyDescription = () => { return "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"; }
 
-const ImageGroup: React.FC<ImageGroup> = function ({ title, images }) {
-  //function ImageGroup({ title, images }: ImageGroup) {
+interface Image {
+  src: string;
+  alt: string;
+  name: string;
+  description: string;
+}
+
+interface ImageGroupProps {
+  title: string;
+  images: Image[];
+}
+
+const ImageGroup: React.FC<ImageGroupProps> = ({ title, images }) => {
   return (
     <div className="pt-0.5">
       <div className="mb-10 p-6 border-4 border-gray-300 rounded-lg shadow-lg relative mt-12">
-        {/* Group title adjusted to flow on the border, with more outer border padding */}
         <div className="absolute top-1 left-5 -translate-y-1/2 bg-neutral-200 px-3 -mt-4">
           <h2 className="text-xl font-semibold">{title}</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 pt-6">
-          {images.map((image, id) => (
+        {images.map((image, id) => (
+          <div
+            key={image.src}
+            className="flex bg-white border-2 border-gray-300 rounded-lg shadow overflow-hidden my-4"
+            style={{
+              flexDirection: 'row',
+            }}
+          >
+            {/* Image container */}
             <div
-              key={image.src}
-              className="flex flex-col bg-white border-2 border-gray-300 rounded-lg shadow overflow-hidden"
+              className="flex-none"
+              style={{
+                width: '40%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
-              {/* Image container with aspect ratio enforcement */}
-              <div className="aspect-w-1 aspect-h-1 w-full">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-              {/* Text container with increased padding for more breathing room */}
-              <div className="p-6">
-                <p className="font-bold">{image.name}</p>
-                <p className="text-sm">{image.description}</p>
-              </div>
+              <img
+                src={image.src}
+                alt={image.alt}
+                style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+              />
             </div>
-          ))}
-        </div>
+            {/* Text container */}
+            <div
+              className="flex-grow p-6"
+              style={{
+                minWidth: '60%',
+              }}
+            >
+              <p className="font-bold">{image.name}</p>
+              <p className="text-sm">{image.description}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -212,7 +236,7 @@ export default function About({
                   />
                 ))}
 
-                <Divider noIcon={false} />
+                {/*<Divider noIcon={false} />*/}
 
                 <h2 className="text-3xl font-bold mb-4">
                   {about.titleAboveContent}
