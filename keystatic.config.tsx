@@ -1,4 +1,11 @@
-import { collection, config, fields, GitHubConfig, LocalConfig, singleton } from "@keystatic/core";
+import {
+  collection,
+  config,
+  fields,
+  GitHubConfig,
+  LocalConfig,
+  singleton,
+} from "@keystatic/core";
 
 import { ComponentBlocks } from "./components/ComponentBlocks";
 
@@ -33,7 +40,9 @@ function getAboutSingletonConfig(language: string) {
         label: "Add Dummy Images for Testing",
       }),
 
-      titleAboveContent: fields.text({ label: "Title Above Content (Our Story)" }),
+      titleAboveContent: fields.text({
+        label: "Title Above Content (Our Story)",
+      }),
 
       content: fields.document({
         formatting: true,
@@ -57,7 +66,7 @@ function getAboutSingletonConfig(language: string) {
         componentBlocks: ComponentBlocks,
       }),
     },
-  }
+  };
 }
 
 export default config({
@@ -148,13 +157,13 @@ export default config({
         }),
 
         authorType: fields.select({
-          label: 'Type Person',
+          label: "Type Person",
           options: [
-            { label: 'Kids', value: 'kid' },
-            { label: 'High School Staff', value: 'staff' },
-            { label: 'ArtPark and Community', value: 'community' },
+            { label: "Kids", value: "kid" },
+            { label: "High School Staff", value: "staff" },
+            { label: "ArtPark and Community", value: "community" },
           ] as any,
-          defaultValue: 'kid',
+          defaultValue: "kid",
         }),
         nameEn: fields.slug({
           name: {
@@ -189,6 +198,11 @@ export default config({
       path: "content/posts/**/",
       slugField: "title",
       schema: {
+        showPost: fields.checkbox({
+          label: "Show Post",
+          description:
+            "Show this post on the site, if unchecked it will not be shown.",
+        }),
         title: fields.slug({
           name: {
             label: "Title",

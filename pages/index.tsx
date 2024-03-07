@@ -44,7 +44,7 @@ export default function Home({
   }, []);
 
   const allPosts = posts;
-  const orderedPostFeed = allPosts.sort((a, b) => {
+  const orderedPostFeed = allPosts.filter(post => post.showPost).sort((a, b) => {
     if (a?.publishedDate && b?.publishedDate) {
       return new Date(a.publishedDate).getTime() <
         new Date(b.publishedDate).getTime()
