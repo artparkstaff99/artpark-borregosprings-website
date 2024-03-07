@@ -1,0 +1,8 @@
+showPost: true
+orderBy: 0
+typeOfPost: news
+title: test news post
+summary: test news english
+publishedDate: '2024-03-07'
+authors:
+  - poncho

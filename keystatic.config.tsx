@@ -155,7 +155,6 @@ export default config({
           description:
             "Show this author on the site, if unchecked it will not be shown.",
         }),
-
         authorType: fields.select({
           label: "Type Person",
           options: [
@@ -202,6 +201,21 @@ export default config({
           label: "Show Post",
           description:
             "Show this post on the site, if unchecked it will not be shown.",
+        }),
+        orderBy: fields.number({
+          label: "Order By",
+          defaultValue: 0,
+          description:
+            "Order by this field. If left 0, then a default order will be used.",
+        }),
+        typeOfPost: fields.select({
+          label: "Type of Post",
+          description: "Select the type of post (if not specified it will be news).",
+          options: [
+            { label: "News", value: "news" },
+            { label: "Station", value: "station" },
+          ] as any,
+          defaultValue: "news",
         }),
         title: fields.slug({
           name: {

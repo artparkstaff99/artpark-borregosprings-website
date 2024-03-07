@@ -11,7 +11,12 @@ import maybeTruncateTextBlock from "../utils/maybeTruncateTextBlock";
 import { useLanguage } from "../components/default-language-provider";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { getAllAuthors, getExternalArticleData, getHomeData, getPostData } from "../utils/get-static-page-utils";
+import {
+  getAllAuthors,
+  getExternalArticleData,
+  getHomeData,
+  getPostData,
+} from "../utils/get-static-page-utils";
 import { useEffect, useState } from "react";
 
 export async function getStaticProps({ locale }: { locale: string }) {
@@ -44,16 +49,18 @@ export default function Home({
   }, []);
 
   const allPosts = posts;
-  const orderedPostFeed = allPosts.filter(post => post.showPost).sort((a, b) => {
-    if (a?.publishedDate && b?.publishedDate) {
-      return new Date(a.publishedDate).getTime() <
-        new Date(b.publishedDate).getTime()
-        ? 1
-        : -1;
-    }
+  const orderedPostFeed = allPosts
+    .filter((post) => post.showPost && post.typeOfPost === "station")
+    .sort((a, b) => {
+      if (a?.publishedDate && b?.publishedDate) {
+        return new Date(a.publishedDate).getTime() <
+          new Date(b.publishedDate).getTime()
+          ? 1
+          : -1;
+      }
 
-    return 0;
-  });
+      return 0;
+    });
 
   return (
     showResult && (
@@ -88,7 +95,7 @@ export default function Home({
                       },
                     }}
                   />
-                  <Divider />
+                  {orderedPostFeed.length > 0 && <Divider />}
                 </>
               )}
               {orderedPostFeed.length === 0 ? (
@@ -102,7 +109,10 @@ export default function Home({
                         : "en";
                       const showPost = postLanguage === language;
                       return (
-                        <div key={post.slug} style={{ display: showPost ? "block" : "none" }}>
+                        <div
+                          key={post.slug}
+                          style={{ display: showPost ? "block" : "none" }}
+                        >
                           <Card
                             image={`/images/posts/${post.slug}/${post.coverImage}`}
                             title={post.title}
