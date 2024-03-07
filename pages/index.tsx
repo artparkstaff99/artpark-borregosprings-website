@@ -12,26 +12,25 @@ import { useLanguage } from "../components/default-language-provider";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {
-  getAllAuthors,
-  getExternalArticleData,
   getHomeData,
   getPostData,
+  getStationData,
 } from "../utils/get-static-page-utils";
 import { useEffect, useState } from "react";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   // locale is "en" or "es"
-  const [home, posts, externalArticles, authors] = await Promise.all([
+  const [home, posts, stations] = await Promise.all([
     getHomeData(),
     getPostData(),
-    getExternalArticleData(),
-    getAllAuthors(),
+    getStationData(),
   ]);
 
   return {
     props: {
       home,
-      posts,
+      posts: posts ?? [],
+      stations: stations ?? [],
     },
   };
 }
@@ -39,18 +38,17 @@ export async function getStaticProps({ locale }: { locale: string }) {
 export default function Home({
   home,
   posts,
+  stations,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { language } = useLanguage();
   const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
-    //setLanguage(navigator.language === "es" ? "es" : "en");
     setShowResult(true);
   }, []);
 
-  const allPosts = posts;
-  const orderedPostFeed = allPosts
-    .filter((post) => post.showPost && post.typeOfPost === "station")
+  const stationsFiltered = stations
+    .filter((rec) => rec.show)
     .sort((a, b) => {
       if (a?.publishedDate && b?.publishedDate) {
         return new Date(a.publishedDate).getTime() <
@@ -95,36 +93,34 @@ export default function Home({
                       },
                     }}
                   />
-                  {orderedPostFeed.length > 0 && <Divider />}
+                  {stationsFiltered.length > 0 && <Divider />}
                 </>
               )}
-              {orderedPostFeed.length === 0 ? (
-                <h2>There are no posts available</h2>
+              {stationsFiltered.length === 0 ? (
+                <h2>There are no recs available</h2>
               ) : (
                 <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
-                  {orderedPostFeed.map((post) => {
-                    if (post.type === "post") {
-                      const postLanguage = post.slug.startsWith("es/")
-                        ? "es"
-                        : "en";
-                      const showPost = postLanguage === language;
-                      return (
-                        <div
-                          key={post.slug}
-                          style={{ display: showPost ? "block" : "none" }}
-                        >
-                          <Card
-                            image={`/images/posts/${post.slug}/${post.coverImage}`}
-                            title={post.title}
-                            summary={post.summary}
-                            key={post.slug}
-                            link={`/${post.slug
-                              .replace("es/", "")
-                              .replace("en/", "")}`}
-                          />
-                        </div>
-                      );
-                    }
+                  {stationsFiltered.map((rec) => {
+                    const languageOfItem = rec.slug.startsWith("es/")
+                      ? "es"
+                      : "en";
+                    const showItem = languageOfItem === language;
+                    return (
+                      <div
+                        key={rec.slug}
+                        style={{ display: showItem ? "block" : "none" }}
+                      >
+                        <Card
+                          image={`/images/stations/${rec.slug}/${rec.coverImage}`}
+                          title={rec.title}
+                          summary={rec.summary}
+                          key={rec.slug}
+                          link={`/stations/${rec.slug
+                            .replace("es/", "")
+                            .replace("en/", "")}`}
+                        />
+                      </div>
+                    );
                   })}
                 </ul>
               )}

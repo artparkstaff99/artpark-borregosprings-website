@@ -14,16 +14,6 @@ export async function getHomeData() {
   };
 }
 
-// export async function getAboutPage() {
-//   const reader = createReader("", config);
-//   const aboutPage = await reader.singletons.about.read();
-//   const aboutPageContent = await (aboutPage?.content() || []);
-//   return {
-//     ...aboutPage,
-//     content: aboutPageContent,
-//   };
-// }
-
 export async function getPostData() {
   const postSlugs = await reader.collections.posts.list();
   return await Promise.all(
@@ -40,17 +30,20 @@ export async function getPostData() {
   );
 }
 
-export async function getExternalArticleData() {
-  const externalArticles = await reader.collections.externalArticles.list();
-  const externalArticleData = await Promise.all(
-    externalArticles.map((slug) =>
-      inject(slug, reader.collections.externalArticles),
-    ),
+export async function getStationData() {
+  const stationSlugs = await reader.collections.stations.list();
+  return await Promise.all(
+    stationSlugs.map(async (slug) => {
+      const station = await reader.collections.stations.read(slug);
+      const content = (await station?.content()) || [];
+      return {
+        ...station,
+        content,
+        slug,
+        ...({ type: "station" } as const),
+      };
+    }),
   );
-  return externalArticleData.map((article) => ({
-    ...({ type: "externalArticle" } as const),
-    ...article,
-  }));
 }
 
 export async function getAllAuthors() {

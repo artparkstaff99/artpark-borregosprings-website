@@ -1,8 +1,6 @@
-showPost: true
-orderBy: .nan
-typeOfPost: station
+show: true
 title: Aquaponics in the Desert
-summary: All about Aquaponics in the desert
+summary: ' Todos Acuaponía en el desierto'
 publishedDate: '2024-02-28'
 coverImage: coverImage.png
 wordCount: 644

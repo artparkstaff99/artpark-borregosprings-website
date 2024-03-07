@@ -192,13 +192,80 @@ export default config({
         }),
       },
     }),
-    posts: collection({
-      label: "Posts",
-      path: "content/posts/**/",
+    stations: collection({
+      label: "Stations",
+      path: "content/stations/**/",
       slugField: "title",
       schema: {
-        showPost: fields.checkbox({
-          label: "Show Post",
+        show: fields.checkbox({
+          label: "Show Station",
+          description:
+            "Show this station on the site, if unchecked it will not be shown.",
+        }),
+        orderBy: fields.number({
+          label: "Order By",
+          defaultValue: 0,
+          description:
+            "Order by this field. If left 0, then a default order will be used.",
+        }),
+        title: fields.slug({
+          name: {
+            label: "Title",
+          },
+        }),
+        summary: fields.text({
+          label: "Summary",
+          validation: { length: { min: 4 } },
+        }),
+        publishedDate: fields.date({ label: "Published Date" }),
+        coverImage: fields.image({
+          label: "Image",
+          directory: "public/images/stations",
+        }),
+        wordCount: fields.integer({
+          label: "Word count",
+        }),
+        authors: fields.array(
+          fields.relationship({
+            label: "Station author",
+            collection: "authors",
+          }) as any,
+          {
+            label: "Authors",
+            validation: { length: { min: 1 } },
+            itemLabel: (props: any) => props.value || "Please select an author",
+          } as any,
+        ),
+        content: fields.document({
+          formatting: true,
+          dividers: true,
+          links: true,
+          images: {
+            directory: "public/images/stations/content",
+            publicPath: "/images/stations/content",
+            schema: {
+              alt: fields.text({ label: "Alt text" }) as any,
+              title: fields.text({ label: "Title" }) as any,
+            },
+          },
+          layouts: [
+            [1, 1],
+            [1, 1, 1],
+            [2, 1],
+            [1, 2, 1],
+          ],
+          label: "Content",
+          componentBlocks: ComponentBlocks,
+        }),
+      },
+    }),
+    posts: collection({
+      label: "Posts",
+      path: "content/stations/**/",
+      slugField: "title",
+      schema: {
+        show: fields.checkbox({
+          label: "Show Station",
           description:
             "Show this post on the site, if unchecked it will not be shown.",
         }),
@@ -209,7 +276,7 @@ export default config({
             "Order by this field. If left 0, then a default order will be used.",
         }),
         typeOfPost: fields.select({
-          label: "Type of Post",
+          label: "Type of Station",
           description: "Select the type of post (if not specified it will be news).",
           options: [
             { label: "News", value: "news" },
@@ -229,14 +296,14 @@ export default config({
         publishedDate: fields.date({ label: "Published Date" }),
         coverImage: fields.image({
           label: "Image",
-          directory: "public/images/posts",
+          directory: "public/images/stations",
         }),
         wordCount: fields.integer({
           label: "Word count",
         }),
         authors: fields.array(
           fields.relationship({
-            label: "Post author",
+            label: "Station author",
             collection: "authors",
           }) as any,
           {
@@ -250,8 +317,8 @@ export default config({
           dividers: true,
           links: true,
           images: {
-            directory: "public/images/posts/content",
-            publicPath: "/images/posts/content",
+            directory: "public/images/stations/content",
+            publicPath: "/images/stations/content",
             schema: {
               alt: fields.text({ label: "Alt text" }) as any,
               title: fields.text({ label: "Title" }) as any,
@@ -266,35 +333,6 @@ export default config({
           label: "Content",
           componentBlocks: ComponentBlocks,
         }),
-      },
-    }),
-    externalArticles: collection({
-      label: "External Article",
-      path: "content/externalArticles/*/",
-      slugField: "title",
-      schema: {
-        title: fields.slug({
-          name: {
-            label: "Title",
-            validation: { length: { min: 4 } },
-          },
-        }),
-        directLink: fields.url({
-          label: "Article Link",
-        }),
-        source: fields.text({
-          label: "Link Source",
-          defaultValue: "Read more.",
-        }),
-        coverImage: fields.image({
-          label: "Cover Image",
-          directory: "public/images/external-articles",
-        }),
-        summary: fields.text({
-          label: "Summary",
-          validation: { length: { min: 4, max: 200 } },
-        }),
-        publishedDate: fields.date({ label: "Published Date" }),
       },
     }),
   },
