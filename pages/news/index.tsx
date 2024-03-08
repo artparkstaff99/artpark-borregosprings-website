@@ -113,7 +113,9 @@ export default function NewsPage({
                       .replace("en/", "")}`;
 
                     const authorsLine = authors
-                      ?.map((author) => (language === "en" ? author?.nameEn : author?.nameEs))
+                      ?.map((author) =>
+                        language === "en" ? author?.nameEn : author?.nameEs,
+                      )
                       .join(", ");
 
                     return (
@@ -143,5 +145,3 @@ export default function NewsPage({
     )
   );
 }
-
-

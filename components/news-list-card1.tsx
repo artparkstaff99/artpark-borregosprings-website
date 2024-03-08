@@ -1,7 +1,3 @@
-import { cx } from "../utils/cx";
-import Image from "next/image";
-import maybeTruncateTextBlock from "../utils/maybeTruncateTextBlock";
-
 function formatDate(dateString: string) {
   const months = [
     "January",
