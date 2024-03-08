@@ -11,20 +11,22 @@ export async function getHomeData() {
     ...homePage,
     heading_en: await (homePage?.heading_en() || []),
     heading_es: await (homePage?.heading_es() || []),
+    heading_news_en: await (homePage?.heading_news_en() || []),
+    heading_news_es: await (homePage?.heading_news_es() || []),
   };
 }
 
-export async function getPostData() {
-  const postSlugs = await reader.collections.posts.list();
+export async function getNewsData() {
+  const postSlugs = await reader.collections.news.list();
   return await Promise.all(
     postSlugs.map(async (slug) => {
-      const post = await reader.collections.posts.read(slug);
-      const content = (await post?.content()) || [];
+      const news = await reader.collections.news.read(slug);
+      const content = (await news?.content()) || [];
       return {
-        ...post,
+        ...news,
         content,
         slug,
-        ...({ type: "post" } as const),
+        ...({ type: "news" } as const),
       };
     }),
   );

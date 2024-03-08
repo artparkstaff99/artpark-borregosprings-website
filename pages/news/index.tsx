@@ -5,40 +5,35 @@ import type { InferGetStaticPropsType } from "next";
 import { DocumentRenderer } from "@keystatic/core/renderer";
 
 // import Seo from "../components/Seo";
-import Divider from "../components/Divider";
-import { cx } from "../utils/cx";
-import maybeTruncateTextBlock from "../utils/maybeTruncateTextBlock";
-import { useLanguage } from "../components/default-language-provider";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import {
-  getHomeData,
-  getNewsData,
-  getStationData,
-} from "../utils/get-static-page-utils";
+
 import { useEffect, useState } from "react";
+import { getHomeData, getNewsData } from "../../utils/get-static-page-utils";
+import { useLanguage } from "../../components/default-language-provider";
+import Header from "../../components/Header";
+import Divider from "../../components/Divider";
+import Footer from "../../components/Footer";
+import maybeTruncateTextBlock from "../../utils/maybeTruncateTextBlock";
+import { cx } from "../../utils/cx";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   // locale is "en" or "es"
-  const [home, news, stations] = await Promise.all([
+  const [home, news] = await Promise.all([
     getHomeData(),
     getNewsData(),
-    getStationData(),
   ]);
 
   return {
     props: {
       home,
       news: news ?? [],
-      stations: stations ?? [],
     },
   };
 }
 
-export default function Home({
+export default function NewsPage({
                                home,
                                news,
-                               stations,
+
                              }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { language } = useLanguage();
   const [showResult, setShowResult] = useState(false);
@@ -47,7 +42,7 @@ export default function Home({
     setShowResult(true);
   }, []);
 
-  const stationsFiltered = stations
+  const newsFiltered = news
     .filter((rec) => rec.show)
     .sort((a, b) => {
       if (a?.publishedDate && b?.publishedDate) {
@@ -68,11 +63,11 @@ export default function Home({
           <div className="flex-1">
             <div className="px-4 md:px-28 max-w-7xl mx-auto">
               {/*<Seo />*/}
-              {home.heading_en && home.heading_es && (
+              {home.heading_news_en && home.heading_news_es && (
                 <>
                   <DocumentRenderer
                     document={
-                      language === "en" ? home.heading_en : home.heading_es
+                      language === "en" ? home.heading_news_en : home.heading_news_es
                     }
                     renderers={{
                       inline: {
@@ -93,14 +88,14 @@ export default function Home({
                       },
                     }}
                   />
-                  {stationsFiltered.length > 0 && <Divider />}
+                  {newsFiltered.length > 0 && <Divider />}
                 </>
               )}
-              {stationsFiltered.length === 0 ? (
+              {newsFiltered.length === 0 ? (
                 <h2>There are no recs available</h2>
               ) : (
                 <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
-                  {stationsFiltered.map((rec) => {
+                  {newsFiltered.map((rec) => {
                     const languageOfItem = rec.slug.startsWith("es/")
                       ? "es"
                       : "en";
@@ -111,11 +106,11 @@ export default function Home({
                         style={{ display: showItem ? "block" : "none" }}
                       >
                         <Card
-                          image={`/images/stations/${rec.slug}/${rec.coverImage}`}
+                          image={`/images/news/${rec.slug}/${rec.coverImage}`}
                           title={rec.title}
                           summary={rec.summary}
                           key={rec.slug}
-                          link={`/stations/${rec.slug
+                          link={`/news/${rec.slug
                             .replace("es/", "")
                             .replace("en/", "")}`}
                         />

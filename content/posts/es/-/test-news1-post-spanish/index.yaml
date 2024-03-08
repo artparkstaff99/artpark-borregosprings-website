@@ -1,8 +1,0 @@
-showPost: true
-orderBy: 0
-typeOfPost: news
-title: test news post
-summary: test news spanish
-publishedDate: '2024-03-07'
-authors:
-  - poncho

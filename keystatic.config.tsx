@@ -128,7 +128,7 @@ export default config({
             },
           },
           label:
-            "English Heading (note: text that is bolded will show up in blue)",
+            "English Heading Home Page (note: text that is bolded will show up in blue)",
         }),
         heading_es: fields.document({
           formatting: {
@@ -137,7 +137,25 @@ export default config({
             },
           },
           label:
-            "Spanish Heading (note: text that is bolded will show up in blue)",
+            "Spanish Heading Home Page (note: text that is bolded will show up in blue)",
+        }),
+        heading_news_en: fields.document({
+          formatting: {
+            inlineMarks: {
+              bold: true,
+            },
+          },
+          label:
+            "English Heading News Page (note: text that is bolded will show up in blue)",
+        }),
+        heading_news_es: fields.document({
+          formatting: {
+            inlineMarks: {
+              bold: true,
+            },
+          },
+          label:
+            "Spanish Heading News Page (note: text that is bolded will show up in blue)",
         }),
       },
     }),
@@ -259,30 +277,15 @@ export default config({
         }),
       },
     }),
-    posts: collection({
-      label: "Posts",
-      path: "content/stations/**/",
+    news: collection({
+      label: "News",
+      path: "content/news/**/",
       slugField: "title",
       schema: {
         show: fields.checkbox({
-          label: "Show Station",
+          label: "Show News Item",
           description:
-            "Show this post on the site, if unchecked it will not be shown.",
-        }),
-        orderBy: fields.number({
-          label: "Order By",
-          defaultValue: 0,
-          description:
-            "Order by this field. If left 0, then a default order will be used.",
-        }),
-        typeOfPost: fields.select({
-          label: "Type of Station",
-          description: "Select the type of post (if not specified it will be news).",
-          options: [
-            { label: "News", value: "news" },
-            { label: "Station", value: "station" },
-          ] as any,
-          defaultValue: "news",
+            "Show this news item on the site, if unchecked it will not be shown.",
         }),
         title: fields.slug({
           name: {
@@ -293,17 +296,20 @@ export default config({
           label: "Summary",
           validation: { length: { min: 4 } },
         }),
-        publishedDate: fields.date({ label: "Published Date" }),
+        publishedDate: fields.date({
+          label: "Published Date",
+          validation: { isRequired: true },
+        }),
         coverImage: fields.image({
           label: "Image",
-          directory: "public/images/stations",
+          directory: "public/images/news",
         }),
         wordCount: fields.integer({
           label: "Word count",
         }),
         authors: fields.array(
           fields.relationship({
-            label: "Station author",
+            label: "News author",
             collection: "authors",
           }) as any,
           {
@@ -317,8 +323,8 @@ export default config({
           dividers: true,
           links: true,
           images: {
-            directory: "public/images/stations/content",
-            publicPath: "/images/stations/content",
+            directory: "public/images/news/content",
+            publicPath: "/images/news/content",
             schema: {
               alt: fields.text({ label: "Alt text" }) as any,
               title: fields.text({ label: "Title" }) as any,
