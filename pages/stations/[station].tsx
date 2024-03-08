@@ -53,23 +53,23 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const slugEn = `en/${slug}`;
   const slugEs = `es/${slug}`;
 
-  const recEn = await reader.collections.stations.readOrThrow(slugEn, {
+  const stationEn = await reader.collections.stations.readOrThrow(slugEn, {
     resolveLinkedFiles: true,
   });
 
-  const recEs = await reader.collections.stations.readOrThrow(slugEs, {
+  const stationEs = await reader.collections.stations.readOrThrow(slugEs, {
     resolveLinkedFiles: true,
   });
 
   const authorsDataEn = await Promise.all(
-    recEn.authors.map(async (authorSlug : any) => {
+    stationEn.authors.map(async (authorSlug : any) => {
       const author = await reader.collections.authors.read(authorSlug || "");
       return { ...author, slug: authorSlug };
     }),
   );
 
   const authorsDataEs = await Promise.all(
-    recEs.authors.map(async (authorSlug : any) => {
+    stationEs.authors.map(async (authorSlug : any) => {
       const author = await reader.collections.authors.read(authorSlug || "");
       return { ...author, slug: authorSlug };
     }),
@@ -80,11 +80,11 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   return {
     props: {
       stationEn: {
-        ...recEn,
+        ...stationEn,
         slug: slugEn,
       },
       stationEs: {
-        ...recEs,
+        ...stationEs,
         slug: slugEs,
       },
       authorsEn: authorsDataEn,

@@ -2,7 +2,7 @@ import NextImage from "next/image";
 import type { GetStaticPropsContext } from "next";
 import { createReader } from "@keystatic/core/reader";
 import { DocumentRenderer } from "@keystatic/core/renderer";
-import { getHomeData } from "../../utils/get-static-page-utils";
+import { getHomeData, getNewsData } from "../../utils/get-static-page-utils";
 import Seo from "../../components/Seo";
 import config from "../../keystatic.config";
 import dateFormatter from "../../utils/dateFormatter";
@@ -21,16 +21,11 @@ import Footer from "../../components/Footer";
 import React from "react";
 import { useLanguage } from "../../components/default-language-provider";
 
-
-
-
 export async function getStaticPaths() {
   const reader = createReader("", config);
   // Get collection of all records
   const slugsAll = await reader.collections.news.list();
-  const slugs = Array.from(
-    new Set(slugsAll.map((item) => item.split("/")[1])),
-  );
+  const slugs = Array.from(new Set(slugsAll.map((item) => item.split("/")[1])));
 
   return {
     // Generate paths for each rec
@@ -45,7 +40,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const slug = params?.news;
 
   if (typeof slug !== "string") {
-    throw new Error("What? WHYYYY");
+    throw new Error("What? WHYYYYY");
   }
 
   const reader = createReader("", config);
@@ -53,23 +48,37 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const slugEn = `en/${slug}`;
   const slugEs = `es/${slug}`;
 
-  const recEn = await reader.collections.news.readOrThrow(slugEn, {
-    resolveLinkedFiles: true,
-  });
+  let newsEn;
+  let newsEs;
+  try {
+    newsEn = await reader.collections.news.readOrThrow(slugEn, {
+      resolveLinkedFiles: true,
+    });
+    newsEs = await reader.collections.news.readOrThrow(slugEs, {
+      resolveLinkedFiles: true,
+    });
+  } catch (e) {
+    console.error("one or both of slugs not found for news", slugEn, slugEs, e);
+  }
 
-  const recEs = await reader.collections.news.readOrThrow(slugEs, {
-    resolveLinkedFiles: true,
-  });
+  if (!newsEn || !newsEs) {
+    const errorString = `News not found for the news articles: ${slugEn} or ${slugEs}. Both have to be available`;
+    return {
+      props: {
+        errorString,
+      },
+    };
+  }
 
   const authorsDataEn = await Promise.all(
-    recEn.authors.map(async (authorSlug : any) => {
+    newsEn.authors.map(async (authorSlug: any) => {
       const author = await reader.collections.authors.read(authorSlug || "");
       return { ...author, slug: authorSlug };
     }),
   );
 
   const authorsDataEs = await Promise.all(
-    recEs.authors.map(async (authorSlug : any) => {
+    newsEs.authors.map(async (authorSlug: any) => {
       const author = await reader.collections.authors.read(authorSlug || "");
       return { ...author, slug: authorSlug };
     }),
@@ -80,11 +89,11 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   return {
     props: {
       newsEn: {
-        ...recEn,
+        ...newsEn,
         slug: slugEn,
       },
-      NewsEs: {
-        ...recEs,
+      newsEs: {
+        ...newsEs,
         slug: slugEs,
       },
       authorsEn: authorsDataEn,
@@ -94,25 +103,36 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   };
 };
 
-export default function Station({
+export default function News({
   newsEn,
   newsEs,
   authorsEn,
   authorsEs,
   home,
+  errorString,
 }: {
   newsEn: any;
   newsEs: any;
   authorsEn: any;
   authorsEs: any;
   home: any;
+  errorString?: string;
 }) {
-
   const { language } = useLanguage();
+
+  if (errorString) {
+    return (
+      <div>
+        Error: {errorString}.
+      </div>
+    )
+  }
 
   return ["en", "es"].map(function (currentLanguage) {
     const newsItem = currentLanguage === "en" ? newsEn : newsEs;
     const authors = currentLanguage === "en" ? authorsEn : authorsEs;
+
+    console.log("/pages/news/[news].tsx", newsItem);
 
     const names = authors.reduce(
       (acc: string[], author: any) =>
@@ -134,11 +154,11 @@ export default function Station({
             <div className="flex-1">
               <div className="max-w-4xl mx-auto px-4 md:px-10">
                 <Seo
-                  title={newsItem.title}
+                  title={newsItem?.title}
                   description={newsItem?.summary}
                   imagePath={
-                    newsItem.coverImage
-                      ? `/images/news/${newsItem.slug}/${newsItem.coverImage}`
+                    newsItem?.coverImage
+                      ? `/images/news/${newsItem.slug}/${newsItem?.coverImage}`
                       : "/images/seo-image.png"
                   }
                 />
@@ -151,26 +171,26 @@ export default function Station({
 
                 <div className="mt-4 flex justify-between">
                   <span className="flex gap-1 text-gray-700">
-                    {newsItem.publishedDate && (
+                    {newsItem?.publishedDate && (
                       <p className="">
-                        {dateFormatter(newsItem.publishedDate, "do MMM yyyy")}
+                        {dateFormatter(newsItem?.publishedDate, "do MMM yyyy")}
                       </p>
                     )}
-                    {newsItem.wordCount && newsItem.wordCount !== 0 ? (
-                      <p className="">· {readTime(newsItem.wordCount)}</p>
+                    {newsItem?.wordCount && newsItem?.wordCount !== 0 ? (
+                      <p className="">· {readTime(newsItem?.wordCount)}</p>
                     ) : null}
                   </span>
                 </div>
 
                 <div className="mt-8 prose max-w-none">
-                  <h1 className="mt-4">{newsItem.title}</h1>
-                  <p className="text-lg">{newsItem.summary}</p>
-                  {newsItem.coverImage && (
+                  <h1 className="mt-4">{newsItem?.title}</h1>
+                  <p className="text-lg">{newsItem?.summary}</p>
+                  {newsItem?.coverImage && (
                     <div className="mt-10 not-prose">
                       <NextImage
                         width={1536}
                         height={800}
-                        src={`/images/news/${newsItem.slug}/${newsItem.coverImage}`}
+                        src={`/images/news/${newsItem.slug}/${newsItem?.coverImage}`}
                         alt={`${newsItem.title} Cover image`}
                         className="w-full rounded-md"
                       />
@@ -178,7 +198,7 @@ export default function Station({
                   )}
                   <div className="mt-10">
                     <DocumentRenderer
-                      document={newsItem.content}
+                      document={newsItem?.content}
                       componentBlocks={{
                         inlineCta: (props) => (
                           <InlineCTA

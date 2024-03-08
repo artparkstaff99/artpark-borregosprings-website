@@ -290,6 +290,11 @@ export default config({
         title: fields.slug({
           name: {
             label: "Title",
+            description:
+              "The title of the news item (upper and lower case including spaces. ex: My First News Article) " +
+              "Then, for the SLUG field below, replace spaces with dashes and make all lower case and use EXACTLY this format:  " +
+              "en/2024-03-08-my-first-news-article or es/2024-03-08-my-first-news-article  For each article, both have to be created.  " +
+              "Make sure to include the date at the beginning of the slug just like this or it will not sort properly",
           },
         }),
         summary: fields.text({

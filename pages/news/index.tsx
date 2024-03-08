@@ -17,10 +17,7 @@ import { cx } from "../../utils/cx";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   // locale is "en" or "es"
-  const [home, news] = await Promise.all([
-    getHomeData(),
-    getNewsData(),
-  ]);
+  const [home, news] = await Promise.all([getHomeData(), getNewsData()]);
 
   return {
     props: {
@@ -31,10 +28,9 @@ export async function getStaticProps({ locale }: { locale: string }) {
 }
 
 export default function NewsPage({
-                               home,
-                               news,
-
-                             }: InferGetStaticPropsType<typeof getStaticProps>) {
+  home,
+  news,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const { language } = useLanguage();
   const [showResult, setShowResult] = useState(false);
 
@@ -47,13 +43,15 @@ export default function NewsPage({
     .sort((a, b) => {
       if (a?.publishedDate && b?.publishedDate) {
         return new Date(a.publishedDate).getTime() <
-        new Date(b.publishedDate).getTime()
+          new Date(b.publishedDate).getTime()
           ? 1
           : -1;
       }
 
       return 0;
     });
+
+
 
   return (
     showResult && (
@@ -67,7 +65,9 @@ export default function NewsPage({
                 <>
                   <DocumentRenderer
                     document={
-                      language === "en" ? home.heading_news_en : home.heading_news_es
+                      language === "en"
+                        ? home.heading_news_en
+                        : home.heading_news_es
                     }
                     renderers={{
                       inline: {
@@ -95,11 +95,15 @@ export default function NewsPage({
                 <h2>There are no recs available</h2>
               ) : (
                 <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
-                  {newsFiltered.map((rec) => {
+                  {newsFiltered.map(function(rec) {
                     const languageOfItem = rec.slug.startsWith("es/")
                       ? "es"
                       : "en";
                     const showItem = languageOfItem === language;
+
+                    const linkSlug = `/news/${rec.slug.replace("es/", "").replace("en/", "")}`;
+
+
                     return (
                       <div
                         key={rec.slug}
@@ -110,9 +114,7 @@ export default function NewsPage({
                           title={rec.title}
                           summary={rec.summary}
                           key={rec.slug}
-                          link={`/news/${rec.slug
-                            .replace("es/", "")
-                            .replace("en/", "")}`}
+                          link={linkSlug}
                         />
                       </div>
                     );
