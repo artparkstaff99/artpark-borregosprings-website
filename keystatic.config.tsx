@@ -167,6 +167,7 @@ export default config({
       label: "Authors",
       path: "content/authors/*",
       slugField: "nameEn",
+      columns: ['nameEn', 'showAuthor'],
       schema: {
         showAuthor: fields.checkbox({
           label: "Show Author",
@@ -214,6 +215,7 @@ export default config({
       label: "Stations",
       path: "content/stations/**/",
       slugField: "title",
+      columns: ['title', 'show'],
       schema: {
         show: fields.checkbox({
           label: "Show Station",
@@ -281,6 +283,7 @@ export default config({
       label: "News",
       path: "content/news/**/",
       slugField: "title",
+      columns: ['title', 'show'],
       schema: {
         show: fields.checkbox({
           label: "Show News Item",

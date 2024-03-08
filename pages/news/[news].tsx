@@ -132,8 +132,6 @@ export default function News({
     const newsItem = currentLanguage === "en" ? newsEn : newsEs;
     const authors = currentLanguage === "en" ? authorsEn : authorsEs;
 
-    console.log("/pages/news/[news].tsx", newsItem);
-
     const names = authors.reduce(
       (acc: string[], author: any) =>
         "name" in author ? [...acc, author.name as string] : acc,

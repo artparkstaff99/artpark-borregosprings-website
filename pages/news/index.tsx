@@ -7,22 +7,30 @@ import { DocumentRenderer } from "@keystatic/core/renderer";
 // import Seo from "../components/Seo";
 
 import { useEffect, useState } from "react";
-import { getHomeData, getNewsData } from "../../utils/get-static-page-utils";
+import {
+  getHomeData,
+  getNewsData,
+  getAllAuthors,
+} from "../../utils/get-static-page-utils";
 import { useLanguage } from "../../components/default-language-provider";
 import Header from "../../components/Header";
 import Divider from "../../components/Divider";
 import Footer from "../../components/Footer";
-import maybeTruncateTextBlock from "../../utils/maybeTruncateTextBlock";
-import { cx } from "../../utils/cx";
+import NewsListCard from "../../components/news-list-card";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   // locale is "en" or "es"
-  const [home, news] = await Promise.all([getHomeData(), getNewsData()]);
+  const [home, news, authors] = await Promise.all([
+    getHomeData(),
+    getNewsData(),
+    getAllAuthors(),
+  ]);
 
   return {
     props: {
       home,
       news: news ?? [],
+      authors: authors ?? [],
     },
   };
 }
@@ -30,6 +38,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
 export default function NewsPage({
   home,
   news,
+  authors,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { language } = useLanguage();
   const [showResult, setShowResult] = useState(false);
@@ -50,8 +59,6 @@ export default function NewsPage({
 
       return 0;
     });
-
-
 
   return (
     showResult && (
@@ -95,26 +102,53 @@ export default function NewsPage({
                 <h2>There are no recs available</h2>
               ) : (
                 <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
-                  {newsFiltered.map(function(rec) {
+                  {newsFiltered.map(function (rec) {
                     const languageOfItem = rec.slug.startsWith("es/")
                       ? "es"
                       : "en";
                     const showItem = languageOfItem === language;
 
-                    const linkSlug = `/news/${rec.slug.replace("es/", "").replace("en/", "")}`;
+                    const linkSlug = `/news/${rec.slug
+                      .replace("es/", "")
+                      .replace("en/", "")}`;
 
+                    function createAuthorDictionary(authors: any) {
+                      return authors.reduce((acc: any, author: any) => {
+                        acc[author.slug] = author;
+                        // Check for and add nested authors
+                        Object.keys(author).forEach((key) => {
+                          if (
+                            typeof author[key] === "object" &&
+                            author[key] !== null &&
+                            "slug" in author[key]
+                          ) {
+                            const nestedAuthor = author[key] as any;
+                            acc[nestedAuthor.slug] = nestedAuthor;
+                          }
+                        });
+                        return acc;
+                      }, {});
+                    }
+
+                    const authorsDict = createAuthorDictionary(authors);
+                    const authorsList = rec.authors?.map(
+                      (authorSlug: any) => authorsDict[authorSlug],
+                    );
 
                     return (
                       <div
                         key={rec.slug}
                         style={{ display: showItem ? "block" : "none" }}
                       >
-                        <Card
+                        <NewsListCard
                           image={`/images/news/${rec.slug}/${rec.coverImage}`}
                           title={rec.title}
                           summary={rec.summary}
                           key={rec.slug}
-                          link={linkSlug}
+                          slug={linkSlug}
+                          publishedDate={rec.publishedDate}
+                          authors={authorsList}
+                          language={language}
                         />
                       </div>
                     );
@@ -130,34 +164,4 @@ export default function NewsPage({
   );
 }
 
-const Card = ({ image, title, summary, link, externalLink }: any) => {
-  return (
-    <li className={cx("group", externalLink && "external-link")}>
-      <Link
-        href={link}
-        target={externalLink ? "_blank" : "_self"}
-        className="no-underline"
-      >
-        <div>
-          <div>
-            <Image
-              src={image}
-              alt=""
-              width={768}
-              height={400}
-              className="ring-1 ring-black/5 rounded-sm"
-            />
-          </div>
-          <h3 className="mt-4 text-xl font-medium group-hover:underline">
-            {title}
-          </h3>
-          {summary && (
-            <p className="mt-3 text-gray-600 line-clamp-3">
-              {maybeTruncateTextBlock(summary, 100)}
-            </p>
-          )}
-        </div>
-      </Link>
-    </li>
-  );
-};
+
