@@ -16,7 +16,7 @@ import { useLanguage } from "../../components/default-language-provider";
 import Header from "../../components/Header";
 import Divider from "../../components/Divider";
 import Footer from "../../components/Footer";
-import NewsListCard from "../../components/news-list-card";
+import NewsListCard from "../../components/news-list-card1";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   // locale is "en" or "es"
@@ -112,28 +112,9 @@ export default function NewsPage({
                       .replace("es/", "")
                       .replace("en/", "")}`;
 
-                    function createAuthorDictionary(authors: any) {
-                      return authors.reduce((acc: any, author: any) => {
-                        acc[author.slug] = author;
-                        // Check for and add nested authors
-                        Object.keys(author).forEach((key) => {
-                          if (
-                            typeof author[key] === "object" &&
-                            author[key] !== null &&
-                            "slug" in author[key]
-                          ) {
-                            const nestedAuthor = author[key] as any;
-                            acc[nestedAuthor.slug] = nestedAuthor;
-                          }
-                        });
-                        return acc;
-                      }, {});
-                    }
-
-                    const authorsDict = createAuthorDictionary(authors);
-                    const authorsList = rec.authors?.map(
-                      (authorSlug: any) => authorsDict[authorSlug],
-                    );
+                    const authorsLine = authors
+                      ?.map((author) => (language === "en" ? author?.nameEn : author?.nameEs))
+                      .join(", ");
 
                     return (
                       <div
@@ -142,13 +123,12 @@ export default function NewsPage({
                       >
                         <NewsListCard
                           image={`/images/news/${rec.slug}/${rec.coverImage}`}
-                          title={rec.title}
-                          summary={rec.summary}
+                          title={rec.title ?? ""}
+                          summary={rec.summary ?? ""}
                           key={rec.slug}
                           slug={linkSlug}
-                          publishedDate={rec.publishedDate}
-                          authors={authorsList}
-                          language={language}
+                          publishedDate={rec.publishedDate ?? "2024-01-01"}
+                          authors={authorsLine}
                         />
                       </div>
                     );

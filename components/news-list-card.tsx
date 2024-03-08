@@ -16,13 +16,11 @@ export default function NewsListCard({
   summary?: string;
   slug?: string;
   publishedDate?: string;
-  authors?: any[];
+  authors?: string;
   language?: string;
 }) {
-  console.log("authors:", authors);
-  const authorsLine = authors
-    ?.map((author) => (language === "en" ? author.nameEn : author.nameEs))
-    .join(", ");
+
+  const authorsLine = "";
   return (
     <li className={cx("group")}>
       <a href={slug} className="group">
