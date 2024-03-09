@@ -39,10 +39,6 @@ export async function getStaticPaths() {
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const slug = params?.news;
 
-  if (typeof slug !== "string") {
-    throw new Error("What? WHYYYYY");
-  }
-
   const reader = createReader("", config);
 
   const slugEn = `en/${slug}`;
