@@ -283,7 +283,7 @@ export default config({
       label: "News",
       path: "content/news/**/",
       slugField: "title",
-      columns: ['title', 'show'],
+      columns: ['title', 'show','publishedDate'],
       schema: {
         show: fields.checkbox({
           label: "Show News Item",

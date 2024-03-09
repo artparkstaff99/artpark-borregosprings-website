@@ -1,7 +1,7 @@
 show: true
 title: my first news article
 summary: en/test1 english
-publishedDate: '2024-03-07'
+publishedDate: '2024-03-08'
 coverImage: coverImage.png
 authors:
   - peter-kellner
