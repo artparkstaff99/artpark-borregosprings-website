@@ -17,6 +17,7 @@ import {
   getStationData,
 } from "../utils/get-static-page-utils";
 import { useEffect, useState } from "react";
+import Seo from "../components/Seo";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   // locale is "en" or "es"
@@ -67,7 +68,7 @@ export default function Home({
         <main className="max-w-none flex flex-1 flex-col">
           <div className="flex-1">
             <div className="px-4 md:px-28 max-w-7xl mx-auto">
-              {/*<Seo />*/}
+              <Seo />
               {home.heading_en && home.heading_es && (
                 <>
                   <DocumentRenderer

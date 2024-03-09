@@ -1,0 +1,24 @@
+import type { GetStaticPropsContext } from "next";
+
+export async function getStaticPaths() {
+  return {
+    paths: [
+      { params: { newsCategory: "newsCategory" } }, // See the "paths" section below
+    ],
+    fallback: true, // See the "fallback" section below
+  };
+}
+
+export async function getStaticProps({ params }: GetStaticPropsContext) {
+  const slug = params?.newsCategory;
+  return {
+    props: {
+      slug,
+    },
+  }
+}
+
+export default function Page({ slug }: any) {
+  // This component will not be rendered due to the redirect
+  return <div>newsCategory {slug}</div>;
+}

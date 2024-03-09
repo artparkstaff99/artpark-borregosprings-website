@@ -146,7 +146,7 @@ export default config({
             },
           },
           label:
-            "English Heading News Page (note: text that is bolded will show up in blue)",
+            "English Heading NewsCategory Page (note: text that is bolded will show up in blue)",
         }),
         heading_news_es: fields.document({
           formatting: {
@@ -155,7 +155,7 @@ export default config({
             },
           },
           label:
-            "Spanish Heading News Page (note: text that is bolded will show up in blue)",
+            "Spanish Heading NewsCategory Page (note: text that is bolded will show up in blue)",
         }),
       },
     }),
@@ -280,13 +280,13 @@ export default config({
       },
     }),
     news: collection({
-      label: "News",
+      label: "NewsCategory",
       path: "content/news/**/",
       slugField: "title",
       columns: ['title', 'show','publishedDate'],
       schema: {
         show: fields.checkbox({
-          label: "Show News Item",
+          label: "Show NewsCategory Item",
           description:
             "Show this news item on the site, if unchecked it will not be shown.",
         }),
@@ -294,7 +294,7 @@ export default config({
           name: {
             label: "Title",
             description:
-              "The title of the news item (upper and lower case including spaces. ex: My First News Article) " +
+              "The title of the news item (upper and lower case including spaces. ex: My First NewsCategory Article) " +
               "Then, for the SLUG field below, replace spaces with dashes and make all lower case and use EXACTLY this format:  " +
               "en/2024-03-08-my-first-news-article or es/2024-03-08-my-first-news-article  For each article, both have to be created.  " +
               "Make sure to include the date at the beginning of the slug just like this or it will not sort properly",
@@ -306,7 +306,7 @@ export default config({
         }),
         newsCategories: fields.array(
           fields.relationship({
-            label: "News Categories",
+            label: "NewsCategory Categories",
             collection: "newsCategories",
           }) as any,
           {
@@ -328,7 +328,7 @@ export default config({
         }),
         authors: fields.array(
           fields.relationship({
-            label: "News author",
+            label: "NewsCategory author",
             collection: "authors",
           }) as any,
           {
@@ -361,7 +361,7 @@ export default config({
       },
     }),
     newsCategories: collection({
-      label: "News Categories",
+      label: "NewsCategory Categories",
       path: "content/newsCategories/*",
       slugField: "categoryNameEn",
       columns: ['categoryNameEn', 'categoryNameEs'],

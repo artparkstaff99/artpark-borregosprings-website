@@ -28,13 +28,13 @@ export async function getStaticProps({ locale }: { locale: string }) {
     getAllNewsCategories(),
   ]);
 
-  //console.log("/pages/news/index.tsx getStaticProps news", news);
+  //console.log("/pages/news/index.tsx.txt getStaticProps news", news);
 
   //const newsCategoriesListAll = await reader.collections.newsCategories.list();
 
-  //console.log("/pages/news/index.tsx getStaticProps newsCategoriesList", newsCategoriesListAll);
+  //console.log("/pages/news/index.tsx.txt getStaticProps newsCategoriesList", newsCategoriesListAll);
 
-  //console.log("/pages/news/index.tsx getStaticProps news", news.newsCategories);
+  //console.log("/pages/news/index.tsx.txt getStaticProps news", news.newsCategories);
 
   // const x = await Promise.all(
   //   news.newsCategories.map(async (slug : any) => {

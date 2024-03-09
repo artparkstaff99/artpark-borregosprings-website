@@ -41,7 +41,7 @@ export async function getStaticPaths() {
   };
 }
 
-export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
+export async function getStaticProps({ params }: GetStaticPropsContext) {
   const slug = params?.station;
 
   if (typeof slug !== "string") {
@@ -54,25 +54,25 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const slugEs = `es/${slug}`;
 
   const stationEn = await reader.collections.stations.readOrThrow(slugEn, {
-    resolveLinkedFiles: true,
+    resolveLinkedFiles: true
   });
 
   const stationEs = await reader.collections.stations.readOrThrow(slugEs, {
-    resolveLinkedFiles: true,
+    resolveLinkedFiles: true
   });
 
   const authorsDataEn = await Promise.all(
-    stationEn.authors.map(async (authorSlug : any) => {
+    stationEn.authors.map(async (authorSlug: any) => {
       const author = await reader.collections.authors.read(authorSlug || "");
       return { ...author, slug: authorSlug };
-    }),
+    })
   );
 
   const authorsDataEs = await Promise.all(
-    stationEs.authors.map(async (authorSlug : any) => {
+    stationEs.authors.map(async (authorSlug: any) => {
       const author = await reader.collections.authors.read(authorSlug || "");
       return { ...author, slug: authorSlug };
-    }),
+    })
   );
 
   const [home] = await Promise.all([getHomeData()]);
@@ -81,18 +81,18 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     props: {
       stationEn: {
         ...stationEn,
-        slug: slugEn,
+        slug: slugEn
       },
       stationEs: {
         ...stationEs,
-        slug: slugEs,
+        slug: slugEs
       },
       authorsEn: authorsDataEn,
       authorsEs: authorsDataEs,
-      home,
-    },
+      home
+    }
   };
-};
+}
 
 export default function Station({
   stationEn,

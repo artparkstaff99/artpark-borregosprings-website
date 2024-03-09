@@ -35,7 +35,7 @@ export default function ArticleCard({
         <div className="flex justify-between items-center mt-4">
           <div>
             {newsCategories.map((rec) => (
-              <a href={`/news?category=${rec.slug}`} key={rec.slug}>
+              <a href={`/news/category/${rec.slug}`} key={rec.slug}>
                 <button
                   key={rec.slug}
                   className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-gray-300"
