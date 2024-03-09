@@ -36,10 +36,10 @@ export async function getStaticProps({ locale }: { locale: string }) {
 }
 
 export default function Home({
-                               home,
-                               news,
-                               stations,
-                             }: InferGetStaticPropsType<typeof getStaticProps>) {
+  home,
+  news,
+  stations,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const { language } = useLanguage();
   const [showResult, setShowResult] = useState(false);
 
@@ -52,7 +52,7 @@ export default function Home({
     .sort((a, b) => {
       if (a?.publishedDate && b?.publishedDate) {
         return new Date(a.publishedDate).getTime() <
-        new Date(b.publishedDate).getTime()
+          new Date(b.publishedDate).getTime()
           ? 1
           : -1;
       }

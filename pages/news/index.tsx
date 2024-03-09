@@ -6,6 +6,7 @@ import {
   getHomeData,
   getNewsData,
   getAllAuthors,
+  getAllNewsCategories,
 } from "../../utils/get-static-page-utils";
 import { useLanguage } from "../../components/default-language-provider";
 import Header from "../../components/Header";
@@ -13,20 +14,41 @@ import Divider from "../../components/Divider";
 import Footer from "../../components/Footer";
 import NewsListCard from "../../components/news-list-card";
 import Seo from "../../components/Seo";
+import config from "../../keystatic.config";
+import { createReader } from "@keystatic/core/reader";
 
 export async function getStaticProps({ locale }: { locale: string }) {
+  const reader = createReader("", config);
+
   // locale is "en" or "es"
-  const [home, news, authors] = await Promise.all([
+  const [home, news, authors, newsCategories] = await Promise.all([
     getHomeData(),
     getNewsData(),
     getAllAuthors(),
+    getAllNewsCategories(),
   ]);
+
+  //console.log("/pages/news/index.tsx getStaticProps news", news);
+
+  //const newsCategoriesListAll = await reader.collections.newsCategories.list();
+
+  //console.log("/pages/news/index.tsx getStaticProps newsCategoriesList", newsCategoriesListAll);
+
+  //console.log("/pages/news/index.tsx getStaticProps news", news.newsCategories);
+
+  // const x = await Promise.all(
+  //   news.newsCategories.map(async (slug : any) => {
+  //     const author = await reader.collections.newsCategories.read(slug || "");
+  //     return { ...author, slug: slug };
+  //   }),
+  // );
 
   return {
     props: {
       home,
       news: news ?? [],
       authors: authors ?? [],
+      newsCategories: newsCategories ?? [],
     },
   };
 }
@@ -35,6 +57,7 @@ export default function NewsPage({
   home,
   news,
   authors,
+  newsCategories,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { language } = useLanguage();
   const [showResult, setShowResult] = useState(false);
@@ -114,6 +137,17 @@ export default function NewsPage({
                       )
                       .join(", ");
 
+                    const newsCategoriesForPost = rec.newsCategories?.map(
+                      (slug) => {
+                        const newsCategory = newsCategories.find(
+                          (nc) => nc?.slug === slug,
+                        );
+                        return language === "en"
+                          ? { description: newsCategory?.categoryNameEn ?? "", slug: newsCategory?.slug ?? "" }
+                          : { description: newsCategory?.categoryNameEs ?? "", slug: newsCategory?.slug ?? "" };
+                      },
+                    );
+
                     return (
                       <div
                         key={rec.slug}
@@ -130,6 +164,7 @@ export default function NewsPage({
                             slug={linkSlug}
                             publishedDate={rec.publishedDate ?? "2024-01-01"}
                             authors={authorsLine}
+                            newsCategories={newsCategoriesForPost ?? [{ description: "No-description", slug: "no-category" }]}
                           />
                         </a>
                       </div>

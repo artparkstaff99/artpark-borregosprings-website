@@ -28,7 +28,7 @@ const blogs = [
   // Add more blogs as needed
 ];
 
-const handleCategoryClick = (category) => {
+const handleCategoryClick = (category:string) => {
   console.log(`Category clicked: ${category}`);
 };
 

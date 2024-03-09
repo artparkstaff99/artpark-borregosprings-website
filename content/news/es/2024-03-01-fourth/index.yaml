@@ -1,6 +1,8 @@
 show: true
 title: second post here SPANISH
 summary: this is the second post in spanish with a
+newsCategories:
+  - weather-en
 publishedDate: '2024-03-01'
 coverImage: coverImage.png
 wordCount: 222

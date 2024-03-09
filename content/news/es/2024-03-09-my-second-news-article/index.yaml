@@ -1,6 +1,8 @@
 show: true
 title: second post here SPANISH
 summary: 'this is the second post in spanish with a nice summary below. '
+newsCategories:
+  - plants-en
 publishedDate: '2024-03-09'
 coverImage: coverImage.png
 wordCount: 222

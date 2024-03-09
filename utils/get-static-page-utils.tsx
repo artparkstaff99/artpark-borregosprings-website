@@ -54,3 +54,10 @@ export async function getAllAuthors() {
     authorsList.map((slug) => inject(slug, reader.collections.authors)),
   );
 }
+
+export async function getAllNewsCategories() {
+  const list = await reader.collections.newsCategories.list();
+  return await Promise.all(
+    list.map((slug) => inject(slug, reader.collections.newsCategories)),
+  );
+}

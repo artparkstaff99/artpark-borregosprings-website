@@ -304,6 +304,17 @@ export default config({
           label: "Summary",
           validation: { length: { min: 4 } },
         }),
+        newsCategories: fields.array(
+          fields.relationship({
+            label: "News Categories",
+            collection: "newsCategories",
+          }) as any,
+          {
+            label: "Categories",
+            validation: { length: { min: 1 } },
+            itemLabel: (props: any) => props.value || "Please select a category",
+          } as any,
+        ),
         publishedDate: fields.date({
           label: "Published Date",
           validation: { isRequired: true },
@@ -347,6 +358,33 @@ export default config({
           label: "Content",
           componentBlocks: ComponentBlocks,
         }),
+      },
+    }),
+    newsCategories: collection({
+      label: "News Categories",
+      path: "content/newsCategories/*",
+      slugField: "categoryNameEn",
+      columns: ['categoryNameEn', 'categoryNameEs'],
+      schema: {
+        categoryNameEn: fields.slug({
+          name: {
+            label: "Category Name (English)",
+            validation: {
+              length: {
+                min: 1,
+              },
+            },
+          },
+        }),
+        categoryNameEs: fields.text({
+          label: "Category Name (Spanish)",
+          validation: {
+            length: {
+              min: 1,
+            },
+          },
+        }),
+
       },
     }),
   },

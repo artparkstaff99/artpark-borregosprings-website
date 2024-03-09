@@ -13,10 +13,22 @@ export default function formatDate(dateString: string) {
     "November",
     "December",
   ];
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = months[date.getMonth()];
-  const day = date.getDate();
+
+  // Manually parse the dateString assuming the format is YYYY-MM-DD
+  const parts = dateString.split('-');
+  if (parts.length !== 3) {
+    throw new Error('Invalid date format. Expected YYYY-MM-DD.');
+  }
+
+  const year = parts[0];
+  const monthIndex = parseInt(parts[1], 10) - 1;
+  const day = parseInt(parts[2], 10);
+
+  if (monthIndex < 0 || monthIndex > 11) {
+    throw new Error('Month is out of range.');
+  }
+
+  const month = months[monthIndex];
 
   let daySuffix;
   switch (day) {
