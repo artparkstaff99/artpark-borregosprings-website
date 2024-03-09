@@ -1,52 +1,38 @@
-import { cx } from "../utils/cx";
-import Image from "next/image";
-import maybeTruncateTextBlock from "../utils/maybeTruncateTextBlock";
+import formatDate from "../utils/format-date";
+import React from "react";
 
-export default function NewsListCard({
-  image,
-  title,
-  summary,
+export default function ArticleCard({
   slug,
   publishedDate,
   authors,
-  language,
-}: {
-  image: string;
-  title: string;
-  summary: string;
-  slug: string;
-  publishedDate: string;
-  authors: string;
-  language: string;
-}) {
-  const authorsLine = "";
+  title,
+  summary,
+}: any) {
+  // Use the formatDate function to format the publishedDate
+  const niceDate = formatDate(publishedDate);
+
+  const categories = ["Category 1", "Category 2", "Category 3"];
+
+  const handleCategoryClick = (category : string) => {
+    console.log(`Category clicked: ${category}`);
+  };
+
   return (
-
-      <li className={cx("group flex flex-col")}>
-        <a href={slug} className="group flex flex-col">
-          <div>{publishedDate}</div>
-          <div>{authorsLine}</div>
-          <div className="flex flex-col flex-grow">
-            <div className="flex-grow">
-              <Image
-                src={image}
-                alt=""
-                width={768}
-                height={400}
-                className="ring-1 ring-black/5 rounded-sm object-cover w-full"
-              />
-            </div>
-            <h3 className="mt-4 text-xl font-medium group-hover:underline">
-              {title}
-            </h3>
-            {summary && (
-              <p className="mt-3 text-gray-600 line-clamp-3">
-                {maybeTruncateTextBlock(summary, 100)}
-              </p>
-            )}
+    <div key={slug} className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl my-4">
+      <div className="p-8">
+        <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{niceDate}</div>
+        <a href="#" className="block mt-1 text-lg leading-tight font-medium text-black hover:underline">{title}</a>
+        <p className="mt-2 text-gray-500">{summary}</p>
+        <div className="flex justify-between items-center mt-4">
+          <div>
+            {categories.map((category, index) => (
+              <button key={index} onClick={() => handleCategoryClick(category)}
+                      className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-gray-300">{category}</button>
+            ))}
           </div>
-        </a>
-      </li>
-
+          <div className="text-sm text-gray-600">By {authors}</div>
+        </div>
+      </div>
+    </div>
   );
 }

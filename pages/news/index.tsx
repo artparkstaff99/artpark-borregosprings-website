@@ -1,11 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { InferGetStaticPropsType } from "next";
-
 import { DocumentRenderer } from "@keystatic/core/renderer";
-
-// import Seo from "../components/Seo";
-
 import { useEffect, useState } from "react";
 import {
   getHomeData,
@@ -16,7 +11,8 @@ import { useLanguage } from "../../components/default-language-provider";
 import Header from "../../components/Header";
 import Divider from "../../components/Divider";
 import Footer from "../../components/Footer";
-import NewsListCard from "../../components/news-list-card1";
+import NewsListCard from "../../components/news-list-card";
+import Seo from "../../components/Seo";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   // locale is "en" or "es"
@@ -67,7 +63,7 @@ export default function NewsPage({
         <main className="max-w-none flex flex-1 flex-col">
           <div className="flex-1">
             <div className="px-4 md:px-28 max-w-7xl mx-auto">
-              {/*<Seo />*/}
+              <Seo />
               {home.heading_news_en && home.heading_news_es && (
                 <>
                   <DocumentRenderer
@@ -101,7 +97,7 @@ export default function NewsPage({
               {newsFiltered.length === 0 ? (
                 <h2>There are no recs available</h2>
               ) : (
-                <div className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
+                <div className="container mx-auto px-4">
                   {newsFiltered.map(function (rec) {
                     const languageOfItem = rec.slug.startsWith("es/")
                       ? "es"
@@ -123,15 +119,19 @@ export default function NewsPage({
                         key={rec.slug}
                         style={{ display: showItem ? "block" : "none" }}
                       >
-                        <NewsListCard
-                          image={`/images/news/${rec.slug}/${rec.coverImage}`}
-                          title={rec.title ?? ""}
-                          summary={rec.summary ?? ""}
-                          key={rec.slug}
-                          slug={linkSlug}
-                          publishedDate={rec.publishedDate ?? "2024-01-01"}
-                          authors={authorsLine}
-                        />
+                        <a
+                          href={linkSlug}
+                          className="block mt-1 text-lg leading-tight font-medium text-black hover:underline"
+                        >
+                          <NewsListCard
+                            title={rec.title ?? ""}
+                            summary={rec.summary ?? ""}
+                            key={rec.slug}
+                            slug={linkSlug}
+                            publishedDate={rec.publishedDate ?? "2024-01-01"}
+                            authors={authorsLine}
+                          />
+                        </a>
                       </div>
                     );
                   })}
