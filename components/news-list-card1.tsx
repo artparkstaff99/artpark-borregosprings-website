@@ -60,7 +60,7 @@ export default function ArticleCard({
   const niceDate = formatDate(publishedDate);
 
   return (
-    <li className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 ease-in-out overflow-hidden">
+    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 ease-in-out overflow-hidden">
       <a href={slug} className="block">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
@@ -71,8 +71,7 @@ export default function ArticleCard({
             <img
               src={image}
               alt=""
-              style={{ width: "100%", height: "auto", objectFit: "cover" }}
-              className="mb-4 rounded-lg"
+              className="mb-4 rounded-lg h-[200px] w-auto object-cover"
             />
             <h3 className="text-xl font-medium group-hover:underline">
               {title}
@@ -81,6 +80,6 @@ export default function ArticleCard({
           </div>
         </div>
       </a>
-    </li>
+    </div>
   );
 }

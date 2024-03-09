@@ -101,7 +101,7 @@ export default function NewsPage({
               {newsFiltered.length === 0 ? (
                 <h2>There are no recs available</h2>
               ) : (
-                <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
+                <div className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
                   {newsFiltered.map(function (rec) {
                     const languageOfItem = rec.slug.startsWith("es/")
                       ? "es"
@@ -135,7 +135,7 @@ export default function NewsPage({
                       </div>
                     );
                   })}
-                </ul>
+                </div>
               )}
             </div>
           </div>
