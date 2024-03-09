@@ -1,24 +1,15 @@
-import Link from "next/link";
 import type { InferGetStaticPropsType } from "next";
 import { DocumentRenderer } from "@keystatic/core/renderer";
 import { useEffect, useState } from "react";
-import {
-  getHomeData,
-  getNewsData,
-  getAllAuthors,
-  getAllNewsCategories,
-} from "../../utils/get-static-page-utils";
+import { getAllAuthors, getAllNewsCategories, getHomeData, getNewsData } from "../../utils/get-static-page-utils";
 import { useLanguage } from "../../components/default-language-provider";
 import Header from "../../components/Header";
 import Divider from "../../components/Divider";
 import Footer from "../../components/Footer";
 import NewsListCard from "../../components/news-list-card";
 import Seo from "../../components/Seo";
-import config from "../../keystatic.config";
-import { createReader } from "@keystatic/core/reader";
 
 export async function getStaticProps({ locale }: { locale: string }) {
-  const reader = createReader("", config);
 
   // locale is "en" or "es"
   const [home, news, authors, newsCategories] = await Promise.all([
@@ -27,21 +18,6 @@ export async function getStaticProps({ locale }: { locale: string }) {
     getAllAuthors(),
     getAllNewsCategories(),
   ]);
-
-  //console.log("/pages/news/index.tsx.txt getStaticProps news", news);
-
-  //const newsCategoriesListAll = await reader.collections.newsCategories.list();
-
-  //console.log("/pages/news/index.tsx.txt getStaticProps newsCategoriesList", newsCategoriesListAll);
-
-  //console.log("/pages/news/index.tsx.txt getStaticProps news", news.newsCategories);
-
-  // const x = await Promise.all(
-  //   news.newsCategories.map(async (slug : any) => {
-  //     const author = await reader.collections.newsCategories.read(slug || "");
-  //     return { ...author, slug: slug };
-  //   }),
-  // );
 
   return {
     props: {

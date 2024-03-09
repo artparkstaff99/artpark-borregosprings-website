@@ -22,8 +22,6 @@ import React from "react";
 import { useLanguage } from "../../components/default-language-provider";
 
 
-
-
 export async function getStaticPaths() {
   const reader = createReader("", config);
   // Get collection of all stations

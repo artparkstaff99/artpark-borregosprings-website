@@ -2,7 +2,7 @@ import NextImage from "next/image";
 import type { GetStaticPropsContext } from "next";
 import { createReader } from "@keystatic/core/reader";
 import { DocumentRenderer } from "@keystatic/core/renderer";
-import { getHomeData, getNewsData } from "../../utils/get-static-page-utils";
+import { getHomeData } from "../../utils/get-static-page-utils";
 import Seo from "../../components/Seo";
 import config from "../../keystatic.config";
 import dateFormatter from "../../utils/dateFormatter";
