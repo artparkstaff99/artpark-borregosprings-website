@@ -6,8 +6,18 @@ import Footer from "./Footer";
 import { DocumentRenderer } from "@keystatic/core/renderer";
 
 export default function NewsListRender({
-  home,language,newsFiltered,authors,newsCategories
-                                       } : any) {
+  home,
+  language,
+  newsFiltered,
+  authors,
+  newsCategories,
+}: {
+  home: any;
+  language: string;
+  newsFiltered: any;
+  authors: any;
+  newsCategories: any;
+}) {
   return (
     <div className="flex min-h-screen flex-col font-sans bg-neutral-200">
       <Header home={home} />
@@ -49,7 +59,7 @@ export default function NewsListRender({
               <h2>There are no recs available</h2>
             ) : (
               <div className="container mx-auto px-4">
-                {newsFiltered.map(function (rec : any) {
+                {newsFiltered.map(function (rec: any) {
                   const languageOfItem = rec.slug.startsWith("es/")
                     ? "es"
                     : "en";
@@ -60,15 +70,15 @@ export default function NewsListRender({
                     .replace("en/", "")}`;
 
                   const authorsLine = authors
-                    ?.map((author : any) =>
+                    ?.map((author: any) =>
                       language === "en" ? author?.nameEn : author?.nameEs,
                     )
                     .join(", ");
 
                   const newsCategoriesForPost = rec.newsCategories?.map(
-                    (slug : string) => {
+                    (slug: string) => {
                       const newsCategory = newsCategories.find(
-                        (nc : any) => nc?.slug === slug,
+                        (nc: any) => nc?.slug === slug,
                       );
                       return language === "en"
                         ? {

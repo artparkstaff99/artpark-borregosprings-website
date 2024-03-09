@@ -8,11 +8,6 @@ import {
   getNewsData,
 } from "../../utils/get-static-page-utils";
 import { useLanguage } from "../../components/default-language-provider";
-import Header from "../../components/Header";
-import Divider from "../../components/Divider";
-import Footer from "../../components/Footer";
-import NewsListCard from "../../components/news-list-card";
-import Seo from "../../components/Seo";
 import NewsListRender from "../../components/news-list-render";
 
 export async function getStaticProps() {
