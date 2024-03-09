@@ -1,7 +1,12 @@
 import type { InferGetStaticPropsType } from "next";
 import { DocumentRenderer } from "@keystatic/core/renderer";
 import { useEffect, useState } from "react";
-import { getAllAuthors, getAllNewsCategories, getHomeData, getNewsData } from "../../utils/get-static-page-utils";
+import {
+  getAllAuthors,
+  getAllNewsCategories,
+  getHomeData,
+  getNewsData,
+} from "../../utils/get-static-page-utils";
 import { useLanguage } from "../../components/default-language-provider";
 import Header from "../../components/Header";
 import Divider from "../../components/Divider";
@@ -9,9 +14,7 @@ import Footer from "../../components/Footer";
 import NewsListCard from "../../components/news-list-card";
 import Seo from "../../components/Seo";
 
-export async function getStaticProps({ locale }: { locale: string }) {
-
-  // locale is "en" or "es"
+export async function getStaticProps() {
   const [home, news, authors, newsCategories] = await Promise.all([
     getHomeData(),
     getNewsData(),
@@ -119,8 +122,14 @@ export default function NewsPage({
                           (nc) => nc?.slug === slug,
                         );
                         return language === "en"
-                          ? { description: newsCategory?.categoryNameEn ?? "", slug: newsCategory?.slug ?? "" }
-                          : { description: newsCategory?.categoryNameEs ?? "", slug: newsCategory?.slug ?? "" };
+                          ? {
+                              description: newsCategory?.categoryNameEn ?? "",
+                              slug: newsCategory?.slug ?? "",
+                            }
+                          : {
+                              description: newsCategory?.categoryNameEs ?? "",
+                              slug: newsCategory?.slug ?? "",
+                            };
                       },
                     );
 
@@ -140,7 +149,14 @@ export default function NewsPage({
                             slug={linkSlug}
                             publishedDate={rec.publishedDate ?? "2024-01-01"}
                             authors={authorsLine}
-                            newsCategories={newsCategoriesForPost ?? [{ description: "No-description", slug: "no-category" }]}
+                            newsCategories={
+                              newsCategoriesForPost ?? [
+                                {
+                                  description: "No-description",
+                                  slug: "no-category",
+                                },
+                              ]
+                            }
                           />
                         </a>
                       </div>
