@@ -14,7 +14,7 @@ const storage: LocalConfig["storage"] | GitHubConfig["storage"] =
     ? { kind: "local" }
     : {
         kind: "github",
-        repo: "pkellner/artpark-nextjs-proto1",
+        repo: "artparkstaff99/artpark-borregosprings-website",
       };
 
 function getAboutSingletonConfig(language: string) {
