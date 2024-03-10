@@ -15,9 +15,9 @@ export default function formatDate(dateString: string) {
   ];
 
   // Manually parse the dateString assuming the format is YYYY-MM-DD
-  const parts = dateString.split('-');
+  const parts = dateString.split("-");
   if (parts.length !== 3) {
-    throw new Error('Invalid date format. Expected YYYY-MM-DD.');
+    throw new Error("Invalid date format. Expected YYYY-MM-DD.");
   }
 
   const year = parts[0];
@@ -25,7 +25,7 @@ export default function formatDate(dateString: string) {
   const day = parseInt(parts[2], 10);
 
   if (monthIndex < 0 || monthIndex > 11) {
-    throw new Error('Month is out of range.');
+    throw new Error("Month is out of range.");
   }
 
   const month = months[monthIndex];

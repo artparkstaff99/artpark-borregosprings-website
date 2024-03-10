@@ -1,15 +1,26 @@
 const dateFormatter = (
   date: string,
-  structure: "do MMM yyyy" | "MMM do yyyy"
+  structure: "do MMM yyyy" | "MMM do yyyy",
 ) => {
   // Directly split the input date string
-  const [year, month, day] = date.split('-').map(num => parseInt(num, 10));
-
-  //console.log("/utils/dateFormatter.tsx dateFormatter in", year, month, day);
+  const [year, month, day] = date.split("-").map((num) => parseInt(num, 10));
 
   // Helper function to get the month name
   const getMonthName = (month: number): string => {
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
     return months[month - 1]; // Adjust because array is 0-indexed but month is 1-indexed
   };
 
@@ -24,8 +35,6 @@ const dateFormatter = (
 
   const monthName = getMonthName(month);
   const dayWithOrdinal = formatDayWithOrdinal(day);
-
-  //console.log("/utils/dateFormatter.tsx dateFormatter out", `${dayWithOrdinal} ${monthName} ${year}`);
 
   if (structure === "do MMM yyyy") {
     return `${dayWithOrdinal} ${monthName} ${year}`;

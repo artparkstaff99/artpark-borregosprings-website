@@ -1,8 +1,12 @@
 show: true
-title: test1
-summary: es/test1 spanish
+title: my first news article in SPANISH
+summary: test1 spanish
+newsCategories:
+  - irrigation
+  - plants
 publishedDate: '2024-03-08'
 coverImage: coverImage.png
-wordCount: 333
+wordCount: 343
 authors:
   - peter-kellner
+  - sylvia-maas

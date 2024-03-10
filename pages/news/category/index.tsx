@@ -1,7 +1,7 @@
 export async function getServerSideProps() {
   return {
     redirect: {
-      destination: "/", // The destination URL
+      destination: "/news/", // The destination URL
       permanent: false, // Temporary redirect (set to true for a permanent redirect). may want to change this later
     },
   };

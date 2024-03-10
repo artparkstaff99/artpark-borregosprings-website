@@ -167,7 +167,7 @@ export default config({
       label: "Authors",
       path: "content/authors/*",
       slugField: "nameEn",
-      columns: ['nameEn', 'showAuthor'],
+      columns: ["nameEn", "showAuthor"],
       schema: {
         showAuthor: fields.checkbox({
           label: "Show Author",
@@ -215,7 +215,7 @@ export default config({
       label: "Stations",
       path: "content/stations/**/",
       slugField: "title",
-      columns: ['title', 'show'],
+      columns: ["title", "show"],
       schema: {
         show: fields.checkbox({
           label: "Show Station",
@@ -280,10 +280,10 @@ export default config({
       },
     }),
     news: collection({
-      label: "NewsCategory",
+      label: "News",
       path: "content/news/**/",
       slugField: "title",
-      columns: ['title', 'show','publishedDate'],
+      columns: ["title", "show", "publishedDate"],
       schema: {
         show: fields.checkbox({
           label: "Show NewsCategory Item",
@@ -312,7 +312,8 @@ export default config({
           {
             label: "Categories",
             validation: { length: { min: 1 } },
-            itemLabel: (props: any) => props.value || "Please select a category",
+            itemLabel: (props: any) =>
+              props.value || "Please select a category",
           } as any,
         ),
         publishedDate: fields.date({
@@ -361,10 +362,10 @@ export default config({
       },
     }),
     newsCategories: collection({
-      label: "NewsCategory Categories",
+      label: "NewsCategories",
       path: "content/newsCategories/*",
       slugField: "categoryNameEn",
-      columns: ['categoryNameEn', 'categoryNameEs'],
+      columns: ["categoryNameEn", "categoryNameEs"],
       schema: {
         categoryNameEn: fields.slug({
           name: {
@@ -384,7 +385,6 @@ export default config({
             },
           },
         }),
-
       },
     }),
   },

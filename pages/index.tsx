@@ -11,7 +11,11 @@ import maybeTruncateTextBlock from "../utils/maybeTruncateTextBlock";
 import { useLanguage } from "../components/default-language-provider";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { getHomeData, getNewsData, getStationData } from "../utils/get-static-page-utils";
+import {
+  getHomeData,
+  getNewsData,
+  getStationData,
+} from "../utils/get-static-page-utils";
 import { useEffect, useState } from "react";
 import Seo from "../components/Seo";
 

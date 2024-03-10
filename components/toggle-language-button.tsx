@@ -10,7 +10,8 @@ function ToggleLanguageButton() {
   };
 
   // Hover titles for accessibility and user guidance
-  const hoverTitle = language === "en" ? "cambiar al español" : "Switch to English";
+  const hoverTitle =
+    language === "en" ? "cambiar al español" : "Switch to English";
 
   return (
     <div
@@ -19,8 +20,12 @@ function ToggleLanguageButton() {
       title={hoverTitle} // Adding title for hover effect
     >
       <div
-        className={`w-12 h-12 rounded-full shadow flex items-center justify-center ${language === "en" ? "bg-white translate-x-6" : "bg-white -translate-x-6"}`}
-        style={{ transition: 'transform 0.3s ease-in-out' }}
+        className={`w-12 h-12 rounded-full shadow flex items-center justify-center ${
+          language === "en"
+            ? "bg-white translate-x-6"
+            : "bg-white -translate-x-6"
+        }`}
+        style={{ transition: "transform 0.3s ease-in-out" }}
       >
         {/* Only display the flag */}
         {language === "en" ? (

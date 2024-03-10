@@ -21,14 +21,10 @@ import Footer from "../../components/Footer";
 import React from "react";
 import { useLanguage } from "../../components/default-language-provider";
 
-
 export async function getStaticPaths() {
   const reader = createReader("", config);
-  // Get collection of all stations
   const slugsAll = await reader.collections.stations.list();
-  const slugs = Array.from(
-    new Set(slugsAll.map((item) => item.split("/")[1])),
-  );
+  const slugs = Array.from(new Set(slugsAll.map((item) => item.split("/")[1])));
 
   return {
     // Generate paths for each rec
@@ -52,25 +48,25 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   const slugEs = `es/${slug}`;
 
   const stationEn = await reader.collections.stations.readOrThrow(slugEn, {
-    resolveLinkedFiles: true
+    resolveLinkedFiles: true,
   });
 
   const stationEs = await reader.collections.stations.readOrThrow(slugEs, {
-    resolveLinkedFiles: true
+    resolveLinkedFiles: true,
   });
 
   const authorsDataEn = await Promise.all(
     stationEn.authors.map(async (authorSlug: any) => {
       const author = await reader.collections.authors.read(authorSlug || "");
       return { ...author, slug: authorSlug };
-    })
+    }),
   );
 
   const authorsDataEs = await Promise.all(
     stationEs.authors.map(async (authorSlug: any) => {
       const author = await reader.collections.authors.read(authorSlug || "");
       return { ...author, slug: authorSlug };
-    })
+    }),
   );
 
   const [home] = await Promise.all([getHomeData()]);
@@ -79,16 +75,16 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     props: {
       stationEn: {
         ...stationEn,
-        slug: slugEn
+        slug: slugEn,
       },
       stationEs: {
         ...stationEs,
-        slug: slugEs
+        slug: slugEs,
       },
       authorsEn: authorsDataEn,
       authorsEs: authorsDataEs,
-      home
-    }
+      home,
+    },
   };
 }
 
@@ -105,7 +101,6 @@ export default function Station({
   authorsEs: any;
   home: any;
 }) {
-
   const { language } = useLanguage();
 
   return ["en", "es"].map(function (currentLanguage) {

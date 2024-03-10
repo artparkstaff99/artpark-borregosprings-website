@@ -23,7 +23,7 @@ const AvatarList = ({ authors }: Props) => {
               height={80}
             />
           </li>
-        ) : null
+        ) : null,
       )}
     </ul>
   );

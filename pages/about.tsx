@@ -29,10 +29,12 @@ interface ImageGroup {
   images: Image[];
 }
 
-
-
-const generateDummyName = () => { return "ipsum lorum"; }
-const generateDummyDescription = () => { return "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"; }
+const generateDummyName = () => {
+  return "ipsum lorum";
+};
+const generateDummyDescription = () => {
+  return "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
+};
 
 interface Image {
   src: string;
@@ -58,30 +60,30 @@ const ImageGroup: React.FC<ImageGroupProps> = ({ title, images }) => {
             key={image.src}
             className="flex bg-white border-2 border-gray-300 rounded-lg shadow overflow-hidden my-4"
             style={{
-              flexDirection: 'row',
+              flexDirection: "row",
             }}
           >
             {/* Image container */}
             <div
               className="flex-none"
               style={{
-                width: '40%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+                width: "40%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <img
                 src={image.src}
                 alt={image.alt}
-                style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+                style={{ width: "100%", height: "auto", objectFit: "cover" }}
               />
             </div>
             {/* Text container */}
             <div
               className="flex-grow p-6"
               style={{
-                minWidth: '60%',
+                minWidth: "60%",
               }}
             >
               <p className="font-bold">{image.name}</p>
@@ -135,7 +137,6 @@ export default function About({
   home: any;
   authors: any;
 }) {
-
   const imageSrc = "https://via.placeholder.com/150"; // Replace with your image placeholder
 
   const { language } = useLanguage();
@@ -168,32 +169,48 @@ export default function About({
 
     let imageGroups: ImageGroup[] = [];
 
-    function createImageGroup(title: string, authorType: string, authors: Author[], language: string): ImageGroup {
+    function createImageGroup(
+      title: string,
+      authorType: string,
+      authors: Author[],
+      language: string,
+    ): ImageGroup {
       return {
         title,
         images: Object.values(authors)
-          .filter(author => author.authorType === authorType && author.showAuthor)
-          .map(author => ({
+          .filter(
+            (author) => author.authorType === authorType && author.showAuthor,
+          )
+          .map((author) => ({
             src: `/images/authors/${author.slug}/${author.avatar}`,
             alt: language === "es" ? author.nameEs : author.nameEn,
             name: language === "es" ? author.nameEs : author.nameEn,
-            description: language === "es" ? author.descriptionEs : author.descriptionEn,
+            description:
+              language === "es" ? author.descriptionEs : author.descriptionEn,
           })),
       };
     }
 
-    imageGroups.push(createImageGroup(about.group1Title, "kid", authors, language));
-    imageGroups.push(createImageGroup(about.group2Title, "staff", authors, language));
-    imageGroups.push(createImageGroup(about.group3Title, "community", authors, language));
+    imageGroups.push(
+      createImageGroup(about.group1Title, "kid", authors, language),
+    );
+    imageGroups.push(
+      createImageGroup(about.group2Title, "staff", authors, language),
+    );
+    imageGroups.push(
+      createImageGroup(about.group3Title, "community", authors, language),
+    );
 
     if (about.addDummyImagesForTesting) {
       function addDummyImagesToGroup(groupIndex: number, numImages: number) {
-        imageGroups[groupIndex].images.push(...Array.from({ length: numImages }, (_, index) => ({
-          src: imageSrc,
-          alt: `Dummy Image ${groupIndex + 1}-${index + 1}`,
-          name: generateDummyName(),
-          description: generateDummyDescription(),
-        })));
+        imageGroups[groupIndex].images.push(
+          ...Array.from({ length: numImages }, (_, index) => ({
+            src: imageSrc,
+            alt: `Dummy Image ${groupIndex + 1}-${index + 1}`,
+            name: generateDummyName(),
+            description: generateDummyDescription(),
+          })),
+        );
       }
 
       if (about.addDummyImagesForTesting) {

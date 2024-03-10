@@ -1,6 +1,6 @@
 export default function maybeTruncateTextBlock(
   textBlock: string,
-  charLimit: number
+  charLimit: number,
 ) {
   if (textBlock.length > 200) {
     return `${textBlock.slice(0, charLimit)}…`;

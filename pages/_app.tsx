@@ -5,7 +5,7 @@ import "../styles/scoped-preflight.css";
 
 import { LanguageProvider } from "../components/default-language-provider";
 
-export async function getStaticProps({ locale } : { locale: string }) {
+export async function getStaticProps({ locale }: { locale: string }) {
   return {
     props: {
       locale, // this is from build system

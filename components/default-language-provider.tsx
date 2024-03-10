@@ -23,9 +23,9 @@ export interface ILanguageProviderProps {
 }
 
 export function LanguageProvider({
-                                   children,
-                                   defaultLanguage,
-                                 }: ILanguageProviderProps) {
+  children,
+  defaultLanguage,
+}: ILanguageProviderProps) {
   const [language, setLang] = useState<AllowedLanguage>(defaultLanguage);
   //const [language, setLanguage] = useLocalStorage<AllowedLanguage>("language", defaultLanguage)
 

@@ -11,12 +11,14 @@ export default function NewsListRender({
   newsFiltered,
   authors,
   newsCategories,
+  category,
 }: {
   home: any;
   language: string;
   newsFiltered: any;
   authors: any;
   newsCategories: any;
+  category?: string;
 }) {
   return (
     <div className="flex min-h-screen flex-col font-sans bg-neutral-200">
@@ -59,53 +61,64 @@ export default function NewsListRender({
               <h2>There are no recs available</h2>
             ) : (
               <div className="container mx-auto px-4">
-                {newsFiltered.map(function (rec: any) {
-                  const languageOfItem = rec.slug.startsWith("es/")
-                    ? "es"
-                    : "en";
-                  const showItem = languageOfItem === language;
+                {newsFiltered
+                  .filter((rec: any) => rec.show)
+                  .filter(
+                    (rec: any) =>
+                      rec.newsCategories.includes(category) || !category,
+                  )
+                  .sort((a: any, b: any) => {
+                    if (a?.publishedDate && b?.publishedDate) {
+                      return new Date(a.publishedDate).getTime() <
+                        new Date(b.publishedDate).getTime()
+                        ? 1
+                        : -1;
+                    }
+                    return 0;
+                  })
+                  .map(function (rec: any) {
+                    const languageOfItem = rec.slug.startsWith("es/")
+                      ? "es"
+                      : "en";
+                    const showItem = languageOfItem === language;
 
-                  const linkSlug = `/news/${rec.slug
-                    .replace("es/", "")
-                    .replace("en/", "")}`;
+                    const linkSlug = `/news/${rec.slug
+                      .replace("es/", "")
+                      .replace("en/", "")}`;
 
-                  const authorsLine = authors
-                    ?.map((author: any) =>
-                      language === "en" ? author?.nameEn : author?.nameEs,
-                    )
-                    .join(", ");
+                    const authorsLine = authors
+                      ?.map((author: any) =>
+                        language === "en" ? author?.nameEn : author?.nameEs,
+                      )
+                      .join(", ");
 
-                  const newsCategoriesForPost = rec.newsCategories?.map(
-                    (slug: string) => {
-                      const newsCategory = newsCategories.find(
-                        (nc: any) => nc?.slug === slug,
-                      );
-                      return language === "en"
-                        ? {
-                            description: newsCategory?.categoryNameEn ?? "",
-                            slug: newsCategory?.slug ?? "",
-                          }
-                        : {
-                            description: newsCategory?.categoryNameEs ?? "",
-                            slug: newsCategory?.slug ?? "",
-                          };
-                    },
-                  );
+                    const newsCategoriesForPost = rec.newsCategories?.map(
+                      (slug: string) => {
+                        const newsCategory = newsCategories.find(
+                          (nc: any) => nc?.slug === slug,
+                        );
+                        return language === "en"
+                          ? {
+                              description: newsCategory?.categoryNameEn ?? "",
+                              slug: newsCategory?.slug ?? "",
+                            }
+                          : {
+                              description: newsCategory?.categoryNameEs ?? "",
+                              slug: newsCategory?.slug ?? "",
+                            };
+                      },
+                    );
 
-                  return (
-                    <div
-                      key={rec.slug}
-                      style={{ display: showItem ? "block" : "none" }}
-                    >
-                      <a
-                        href={linkSlug}
-                        className="block mt-1 text-lg leading-tight font-medium text-black hover:underline"
+                    return (
+                      <div
+                        key={rec.slug}
+                        style={{ display: showItem ? "block" : "none" }}
                       >
                         <NewsListCard
                           title={rec.title ?? ""}
                           summary={rec.summary ?? ""}
                           key={rec.slug}
-                          slug={linkSlug}
+                          linkSlug={linkSlug}
                           publishedDate={rec.publishedDate ?? "2024-01-01"}
                           authors={authorsLine}
                           newsCategories={
@@ -117,10 +130,9 @@ export default function NewsListRender({
                             ]
                           }
                         />
-                      </a>
-                    </div>
-                  );
-                })}
+                      </div>
+                    );
+                  })}
               </div>
             )}
           </div>

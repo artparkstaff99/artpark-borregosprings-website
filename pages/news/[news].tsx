@@ -117,11 +117,7 @@ export default function News({
   const { language } = useLanguage();
 
   if (errorString) {
-    return (
-      <div>
-        Error: {errorString}.
-      </div>
-    )
+    return <div>Error: {errorString}.</div>;
   }
 
   return ["en", "es"].map(function (currentLanguage) {

@@ -11,8 +11,7 @@ type MetaData = {
 
 const defaultMeta = {
   title: "The ArtPark in Borrego Springs",
-  description:
-    "The ArtPark is a place for artists to come together and create",
+  description: "The ArtPark is a place for artists to come together and create",
   imagePath: "/images/seo-image.png",
   imageAlt: "The ArtPark",
 };
