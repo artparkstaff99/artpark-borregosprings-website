@@ -15,6 +15,7 @@ const storage: LocalConfig["storage"] | GitHubConfig["storage"] =
     : {
         kind: "github",
         repo: "artparkstaff99/artpark-borregosprings-website",
+        branchPrefix: "dev",
       };
 
 function getAboutSingletonConfig(language: string) {
