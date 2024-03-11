@@ -12,9 +12,10 @@ import { useLanguage } from "../components/default-language-provider";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {
+  getAllAuthors,
   getHomeData,
   getNewsData,
-  getStationData,
+  getStationData
 } from "../utils/get-static-page-utils";
 import React, { useEffect, useState } from "react";
 import Seo from "../components/Seo";
@@ -24,10 +25,11 @@ import CardNews from "../components/card-news";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   // locale is "en" or "es"
-  const [home, news, stations] = await Promise.all([
+  const [home, news, stations, authors] = await Promise.all([
     getHomeData(),
     getNewsData(),
     getStationData(),
+    getAllAuthors(),
   ]);
 
   return {
@@ -35,6 +37,7 @@ export async function getStaticProps({ locale }: { locale: string }) {
       home,
       news: news ?? [],
       stations: stations ?? [],
+      authors: authors ?? [],
     },
   };
 }
@@ -43,6 +46,7 @@ export default function Home({
   home,
   news,
   stations,
+  authors,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { language } = useLanguage();
   const [showResult, setShowResult] = useState(false);
@@ -152,6 +156,7 @@ export default function Home({
                             style={{ display: showItem ? "block" : "none" }}
                           >
                             <CardNews
+                              authors={authors}
                               image={`/images/news/${rec.slug}/${rec.coverImage}`}
                               title={rec.title ?? ""}
                               summary={rec.summary ?? ""}
