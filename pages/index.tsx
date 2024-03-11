@@ -145,11 +145,12 @@ export default function Home({
                     </h1>
 
                     <div className="container mx-auto px-4">
-                      {news.map((rec) => {
+                      {news.map((rec : any) => {
                         const languageOfItem = rec.slug.startsWith("es/")
                           ? "es"
                           : "en";
                         const showItem = languageOfItem === language;
+
                         return (
                           <div
                             key={rec.slug}
@@ -157,6 +158,7 @@ export default function Home({
                           >
                             <CardNews
                               authors={authors}
+                              newsAuthors={rec.authors}
                               image={`/images/news/${rec.slug}/${rec.coverImage}`}
                               title={rec.title ?? ""}
                               summary={rec.summary ?? ""}

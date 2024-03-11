@@ -11,6 +11,7 @@ export default function CardNews({
   link,
   publishedDate,
   authors,
+  newsAuthors
 }: {
   image: string;
   title: string;
@@ -18,13 +19,14 @@ export default function CardNews({
   link: string;
   publishedDate: string;
   authors: any;
+  newsAuthors: string[];
 }) {
 
   const { language } = useLanguage();
 
-  console.log("authors", authors);
-
-  const authorsLine = authors.filter((author : any) => authors?.includes(author.slug))
+  const authorsLine = authors.filter((author : any) => {
+    return newsAuthors.includes(author.slug);
+  })
     ?.map((author: any) =>
       language === "en" ? author?.nameEn : author?.nameEs,
     )
@@ -38,7 +40,8 @@ export default function CardNews({
       >
         <div className="flex h-full">
           <div className="flex-none w-1/3 relative">
-            <Image src={image} alt="" layout="fill" objectFit="cover" />
+            <Image src={image} alt="" layout="fill"  priority
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{objectFit:"cover"}}/>
           </div>
           <div className="flex-auto p-6">
             <div>
@@ -49,8 +52,8 @@ export default function CardNews({
                 <span className="block mt-1 text-lg leading-tight font-medium text-black">
                   {title}
                 </span>
-                <span className="block mt-1 text-lg leading-tight font-medium text-black">
-                  {authorsLine}xxx
+                <span className="block mt-1 text-sm leading-tight font-light text-black">
+                  Author{newsAuthors.length > 1 ? "s": ""}: {authorsLine}
                 </span>
               </Link>
               <p className="mt-2 text-gray-500">{summary}</p>
