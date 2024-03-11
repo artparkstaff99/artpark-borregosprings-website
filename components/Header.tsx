@@ -27,12 +27,23 @@ const Header = ({ home }: { home: any }) => {
       slug: "/",
       description: "",
     },
+    ...(process.env.NEXT_PUBLIC_SHOW_NEWS === "true"
+      ? [
+          {
+            name: language === "en" ? home.menu_news_en : home.menu_news_es,
+            slug: "/news",
+            description: "",
+          },
+        ]
+      : []),
     {
       name: language === "en" ? home.menu_about_en : home.menu_about_es,
       slug: "/about",
       description: "",
     },
   ];
+
+
 
   const MobileMenu = () => {
     return (

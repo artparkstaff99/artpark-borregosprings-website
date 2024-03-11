@@ -87,6 +87,14 @@ export default config({
           label: "Special Banner at Top of Page (Spanish)",
         }),
 
+        //news_banner_top_en
+        news_banner_top_en: fields.text({
+          label: "Home Page News Title 'Top News' (English)",
+        }),
+        news_banner_top_es: fields.text({
+          label: "Home Page News Title 'Top News' (Spanish)",
+        }),
+
         top_left_header_en: fields.text({
           label: "Message in header top left (English)",
         }),
@@ -120,6 +128,13 @@ export default config({
         }),
         menu_about_es: fields.text({
           label: "About Menu Item (Spanish)",
+        }),
+
+        menu_news_en: fields.text({
+          label: "News Menu Item (English)",
+        }),
+        menu_news_es: fields.text({
+          label: "News Menu Item (Spanish)",
         }),
 
         heading_en: fields.document({

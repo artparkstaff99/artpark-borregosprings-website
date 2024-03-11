@@ -61,6 +61,10 @@ export default function Home({
       return 0;
     });
 
+  const showStations = process.env.NEXT_PUBLIC_SHOW_STATIONS === "true";
+
+  const showNews = process.env.NEXT_PUBLIC_SHOW_NEWS === "true";
+
   return (
     showResult && (
       <div className="flex min-h-screen flex-col font-sans bg-neutral-200">
@@ -97,9 +101,8 @@ export default function Home({
                   {stationsFiltered.length > 0 && <Divider />}
                 </>
               )}
-              {stationsFiltered.length === 0 ? (
-                <h2>There are no recs available</h2>
-              ) : (
+
+              {stationsFiltered.length > 0 && showStations ? (
                 <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
                   {stationsFiltered.map((rec) => {
                     const languageOfItem = rec.slug.startsWith("es/")
@@ -124,6 +127,46 @@ export default function Home({
                     );
                   })}
                 </ul>
+              ) : null}
+              {showNews && news.length > 0 && (
+                <>
+                  <Divider />
+                  <div>
+                    <h1
+                      className="text-center font-bold text-2xl max-w-xs sm:text-5xl sm:max-w-2xl lg:text-7xl lg:max-w-[60rem] mx-auto">
+                      {language === "en"
+                        ? home.news_banner_top_en
+                        : home.news_banner_top_es}
+                    </h1>
+
+                    <div className="mt-12">
+                      <ul
+                        className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
+                        {news.map((rec) => {
+                          const languageOfItem = rec.slug.startsWith("es/")
+                            ? "es"
+                            : "en";
+                          const showItem = languageOfItem === language;
+                          return (
+                            <div
+                              key={rec.slug}
+                              style={{ display: showItem ? "block" : "none" }}
+                            >
+                              <Card
+                                image={`/images/news/${rec.slug}/${rec.coverImage}`}
+                                title={rec.title}
+                                summary={rec.summary}
+                                link={`/news/${rec.slug
+                                  .replace("es/", "")
+                                  .replace("en/", "")}`}
+                              />
+                            </div>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                </>
               )}
             </div>
           </div>

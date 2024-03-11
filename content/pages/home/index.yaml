@@ -1,6 +1,8 @@
 special_banner_top_show: true
 special_banner_top_en: We are open, come on down and enjoy the park today!!
 special_banner_top_es: Estamos cerrados hoy debido a fuertes vientos. Por favor, manténgase a salvo.
+news_banner_top_en: Top News
+news_banner_top_es: Las Noticias Más Importantes
 top_left_header_en: Brought to you by BH Kids
 top_left_header_es: ¡Bienvenidos al ArtPark!
 copyright_message_after_c_en: Borrego High School
@@ -11,3 +13,5 @@ menu_home_en: Home
 menu_home_es: Inicio
 menu_about_en: About
 menu_about_es: Acerca de
+menu_news_en: News
+menu_news_es: Noticias

@@ -12,7 +12,9 @@ module.exports = {
 
     const redirectArray = [];
 
-    if (process.env.HIDEKEYSTATIC === "true") {
+
+    // PRODUCTION! Add redirects for production
+    if (process.env.ENVIRONMENT === "production") {
       redirectArray.push(
         {
           source: '/keystatic',
@@ -21,7 +23,14 @@ module.exports = {
         });
     }
 
+    // NOT PRODUCTION! Add redirects for development
     if (process.env.ENVIRONMENT !== "production") {
+      redirectArray.push(
+        {
+          source: '/admin',
+          destination: '/keystatic',
+          permanent: false, // Set to true if this is a permanent redirect
+        });
       redirectArray.push(
         {
           source: '/robots.txt',
