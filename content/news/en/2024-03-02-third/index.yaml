@@ -6,6 +6,8 @@ summary: >-
   spanish with a nice summary below. this is the second post in spanish with a
   nice summary below. this is the second post in spanish with a nice summary
   below. this is the second post in spanish with a nice summary below.
+newsCategories:
+  - plants
 publishedDate: '2024-03-02'
 coverImage: coverImage.png
 wordCount: 222

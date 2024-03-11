@@ -19,6 +19,8 @@ import {
 import React, { useEffect, useState } from "react";
 import Seo from "../components/Seo";
 import formatDate from "../utils/format-date";
+import CardStation from "../components/card-station";
+import CardNews from "../components/card-news";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   // locale is "en" or "es"
@@ -184,73 +186,3 @@ export default function Home({
   );
 }
 
-function CardNews({
-  image,
-  title,
-  summary,
-  link,
-  publishedDate,
-}: {
-  image: string;
-  title: string;
-  summary: string;
-  link: string;
-  publishedDate: string;
-}) {
-  return (
-    <Link href={link} target="_self" className="no-underline">
-      <div className="p-8">
-        <Link
-          href={link}
-          className="block mt-1 text-lg leading-tight font-medium text-black hover:underline"
-        >
-          <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
-            {formatDate(publishedDate)}
-          </div>
-          <span className="block mt-1 text-lg leading-tight font-medium text-black">
-            {title}
-          </span>
-          <p className="mt-2 text-gray-500">{summary}</p>
-        </Link>
-      </div>
-    </Link>
-  );
-}
-
-function CardStation({
-  image,
-  title,
-  summary,
-  link,
-}: {
-  image: string;
-  title: string;
-  summary: string;
-  link: string;
-}) {
-  return (
-    <li className="group">
-      <Link href={link} target="_self" className="no-underline">
-        <div>
-          <div>
-            <Image
-              src={image}
-              alt=""
-              width={768}
-              height={400}
-              className="ring-1 ring-black/5 rounded-sm"
-            />
-          </div>
-          <h3 className="mt-4 text-xl font-medium group-hover:underline">
-            {title}
-          </h3>
-          {summary && (
-            <p className="mt-3 text-gray-600 line-clamp-3">
-              {maybeTruncateTextBlock(summary, 100)}
-            </p>
-          )}
-        </div>
-      </Link>
-    </li>
-  );
-}
