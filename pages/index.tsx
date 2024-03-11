@@ -168,7 +168,9 @@ export default function Home({
                       href="/news"
                       className="block text-center text-cyan-700 mt-8 font-bold lg:text-5xl"
                     >
-                      {language === "en" ? "More News" : "Más Noticias"}
+                      {language === "en"
+                        ? home.news_banner_bottom_more_en
+                        : home.news_banner_bottom_more_es}
                     </Link>
                   </div>
                 </>

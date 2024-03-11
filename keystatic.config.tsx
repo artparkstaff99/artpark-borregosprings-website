@@ -87,12 +87,18 @@ export default config({
           label: "Special Banner at Top of Page (Spanish)",
         }),
 
-        //news_banner_top_en
         news_banner_top_en: fields.text({
           label: "Home Page News Title 'Top News' (English)",
         }),
         news_banner_top_es: fields.text({
           label: "Home Page News Title 'Top News' (Spanish)",
+        }),
+
+        news_banner_bottom_more_en: fields.text({
+          label: "Home Page More News Text 'More News' (English)",
+        }),
+        news_banner_bottom_more_es: fields.text({
+          label: "Home Page More News Text 'More News' (Spanish)",
         }),
 
         top_left_header_en: fields.text({
