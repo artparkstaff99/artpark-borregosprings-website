@@ -9,15 +9,27 @@ module.exports = {
     defaultLocale: "en",
   },
   async redirects() {
+
+    const redirectArray = [];
+
     if (process.env.HIDEKEYSTATIC === "true") {
-      return [
+      redirectArray.push(
         {
           source: '/keystatic',
           destination: '/about',
           permanent: false, // Set to true if this is a permanent redirect
-        },
-      ]
+        });
     }
-    return [];
+
+    if (process.env.ENVIRONMENT !== "production") {
+      redirectArray.push(
+        {
+          source: '/robots.txt',
+          destination: '/robots/robots-no-crawl.txt',
+          permanent: false, // Set to true if this is a permanent redirect
+        });
+    }
+
+    return redirectArray;
   },
 };
