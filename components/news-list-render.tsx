@@ -58,7 +58,7 @@ export default function NewsListRender({
               </>
             )}
             {newsFiltered.length === 0 ? (
-              <h2>There are no recs available</h2>
+              <h2>No News Available</h2>
             ) : (
               <div className="container mx-auto px-4">
                 {newsFiltered

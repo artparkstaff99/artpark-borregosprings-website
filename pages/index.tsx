@@ -16,8 +16,9 @@ import {
   getNewsData,
   getStationData,
 } from "../utils/get-static-page-utils";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Seo from "../components/Seo";
+import formatDate from "../utils/format-date";
 
 export async function getStaticProps({ locale }: { locale: string }) {
   // locale is "en" or "es"
@@ -137,30 +138,29 @@ export default function Home({
                         : home.news_banner_top_es}
                     </h1>
 
-                    <div className="mt-12">
-                      <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
-                        {news.map((rec) => {
-                          const languageOfItem = rec.slug.startsWith("es/")
-                            ? "es"
-                            : "en";
-                          const showItem = languageOfItem === language;
-                          return (
-                            <div
-                              key={rec.slug}
-                              style={{ display: showItem ? "block" : "none" }}
-                            >
-                              <CardStation
-                                image={`/images/news/${rec.slug}/${rec.coverImage}`}
-                                title={rec.title ?? ""}
-                                summary={rec.summary ?? ""}
-                                link={`/news/${rec.slug
-                                  .replace("es/", "")
-                                  .replace("en/", "")}`}
-                              />
-                            </div>
-                          );
-                        })}
-                      </ul>
+                    <div className="container mx-auto px-4">
+                      {news.map((rec) => {
+                        const languageOfItem = rec.slug.startsWith("es/")
+                          ? "es"
+                          : "en";
+                        const showItem = languageOfItem === language;
+                        return (
+                          <div
+                            key={rec.slug}
+                            style={{ display: showItem ? "block" : "none" }}
+                          >
+                            <CardNews
+                              image={`/images/news/${rec.slug}/${rec.coverImage}`}
+                              title={rec.title ?? ""}
+                              summary={rec.summary ?? ""}
+                              link={`/news/${rec.slug
+                                .replace("es/", "")
+                                .replace("en/", "")}`}
+                              publishedDate={rec.publishedDate ?? ""}
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                   <div>
@@ -181,6 +181,39 @@ export default function Home({
         <Footer home={home} />
       </div>
     )
+  );
+}
+
+function CardNews({
+  image,
+  title,
+  summary,
+  link,
+  publishedDate,
+}: {
+  image: string;
+  title: string;
+  summary: string;
+  link: string;
+  publishedDate: string;
+}) {
+  return (
+    <Link href={link} target="_self" className="no-underline">
+      <div className="p-8">
+        <Link
+          href={link}
+          className="block mt-1 text-lg leading-tight font-medium text-black hover:underline"
+        >
+          <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+            {formatDate(publishedDate)}
+          </div>
+          <span className="block mt-1 text-lg leading-tight font-medium text-black">
+            {title}
+          </span>
+          <p className="mt-2 text-gray-500">{summary}</p>
+        </Link>
+      </div>
+    </Link>
   );
 }
 
