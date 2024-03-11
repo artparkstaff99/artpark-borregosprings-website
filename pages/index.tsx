@@ -114,10 +114,10 @@ export default function Home({
                         key={rec.slug}
                         style={{ display: showItem ? "block" : "none" }}
                       >
-                        <Card
+                        <CardStation
                           image={`/images/stations/${rec.slug}/${rec.coverImage}`}
-                          title={rec.title}
-                          summary={rec.summary}
+                          title={rec?.title ?? ""}
+                          summary={rec?.summary ?? ""}
                           key={rec.slug}
                           link={`/stations/${rec.slug
                             .replace("es/", "")
@@ -130,18 +130,15 @@ export default function Home({
               ) : null}
               {showNews && news.length > 0 && (
                 <>
-                  <Divider />
-                  <div>
-                    <h1
-                      className="text-center font-bold text-2xl max-w-xs sm:text-5xl sm:max-w-2xl lg:text-7xl lg:max-w-[60rem] mx-auto">
+                  <div className="mt-10">
+                    <h1 className="text-center font-bold text-2xl max-w-xs sm:text-5xl sm:max-w-2xl lg:text-7xl lg:max-w-[60rem] mx-auto">
                       {language === "en"
                         ? home.news_banner_top_en
                         : home.news_banner_top_es}
                     </h1>
 
                     <div className="mt-12">
-                      <ul
-                        className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
+                      <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
                         {news.map((rec) => {
                           const languageOfItem = rec.slug.startsWith("es/")
                             ? "es"
@@ -152,10 +149,10 @@ export default function Home({
                               key={rec.slug}
                               style={{ display: showItem ? "block" : "none" }}
                             >
-                              <Card
+                              <CardStation
                                 image={`/images/news/${rec.slug}/${rec.coverImage}`}
-                                title={rec.title}
-                                summary={rec.summary}
+                                title={rec.title ?? ""}
+                                summary={rec.summary ?? ""}
                                 link={`/news/${rec.slug
                                   .replace("es/", "")
                                   .replace("en/", "")}`}
@@ -165,6 +162,14 @@ export default function Home({
                         })}
                       </ul>
                     </div>
+                  </div>
+                  <div>
+                    <Link
+                      href="/news"
+                      className="block text-center text-cyan-700 mt-8 font-bold lg:text-5xl"
+                    >
+                      {language === "en" ? "More News" : "Más Noticias"}
+                    </Link>
                   </div>
                 </>
               )}
@@ -177,14 +182,20 @@ export default function Home({
   );
 }
 
-const Card = ({ image, title, summary, link, externalLink }: any) => {
+function CardStation({
+  image,
+  title,
+  summary,
+  link,
+}: {
+  image: string;
+  title: string;
+  summary: string;
+  link: string;
+}) {
   return (
-    <li className={cx("group", externalLink && "external-link")}>
-      <Link
-        href={link}
-        target={externalLink ? "_blank" : "_self"}
-        className="no-underline"
-      >
+    <li className="group">
+      <Link href={link} target="_self" className="no-underline">
         <div>
           <div>
             <Image
@@ -207,4 +218,4 @@ const Card = ({ image, title, summary, link, externalLink }: any) => {
       </Link>
     </li>
   );
-};
+}
