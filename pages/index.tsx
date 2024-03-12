@@ -15,7 +15,7 @@ import {
   getAllAuthors,
   getHomeData,
   getNewsData,
-  getStationData
+  getStationData,
 } from "../utils/get-static-page-utils";
 import React, { useEffect, useState } from "react";
 import Seo from "../components/Seo";
@@ -111,28 +111,32 @@ export default function Home({
 
               {stationsFiltered.length > 0 && showStations ? (
                 <ul className="grid grid-cols-1 gap-4 md:gap-x-6 gap-y-20 sm:gap-y-16 md:grid-cols-2 xl:grid-cols-3 pl-0">
-                  {stationsFiltered.map((rec) => {
-                    const languageOfItem = rec.slug.startsWith("es/")
-                      ? "es"
-                      : "en";
-                    const showItem = languageOfItem === language;
-                    return (
-                      <div
-                        key={rec.slug}
-                        style={{ display: showItem ? "block" : "none" }}
-                      >
-                        <CardStation
-                          image={`/images/stations/${rec.slug}/${rec.coverImage}`}
-                          title={rec?.title ?? ""}
-                          summary={rec?.summary ?? ""}
+                  {stationsFiltered
+                    .sort((a: any, b: any) => {
+                      return (a.orderBy ?? "").localeCompare(b.orderBy ?? "");
+                    })
+                    .map((rec) => {
+                      const languageOfItem = rec.slug.startsWith("es/")
+                        ? "es"
+                        : "en";
+                      const showItem = languageOfItem === language;
+                      return (
+                        <div
                           key={rec.slug}
-                          link={`/stations/${rec.slug
-                            .replace("es/", "")
-                            .replace("en/", "")}`}
-                        />
-                      </div>
-                    );
-                  })}
+                          style={{ display: showItem ? "block" : "none" }}
+                        >
+                          <CardStation
+                            image={`/images/stations/${rec.slug}/${rec.coverImage}`}
+                            title={rec?.title ?? ""}
+                            summary={rec?.summary ?? ""}
+                            key={rec.slug}
+                            link={`/stations/${rec.slug
+                              .replace("es/", "")
+                              .replace("en/", "")}`}
+                          />
+                        </div>
+                      );
+                    })}
                 </ul>
               ) : null}
               {showNews && news.length > 0 && (
@@ -145,31 +149,39 @@ export default function Home({
                     </h1>
 
                     <div className="container mx-auto px-4">
-                      {news.map((rec : any) => {
-                        const languageOfItem = rec.slug.startsWith("es/")
-                          ? "es"
-                          : "en";
-                        const showItem = languageOfItem === language;
+                      {news
+                        .sort((a: any, b: any) => {
+                          return (
+                            new Date(b.publishedDate).getTime() -
+                            new Date(a.publishedDate).getTime()
+                          );
+                        })
+                        .slice(0, 6) // assuming there is one for en and one for es, 6 means really top 3
+                        .map((rec: any) => {
+                          const languageOfItem = rec.slug.startsWith("es/")
+                            ? "es"
+                            : "en";
+                          const showItem = languageOfItem === language;
 
-                        return (
-                          <div
-                            key={rec.slug}
-                            style={{ display: showItem ? "block" : "none" }}
-                          >
-                            <CardNews
-                              authors={authors}
-                              newsAuthors={rec.authors}
-                              image={`/images/news/${rec.slug}/${rec.coverImage}`}
-                              title={rec.title ?? ""}
-                              summary={rec.summary ?? ""}
-                              link={`/news/${rec.slug
-                                .replace("es/", "")
-                                .replace("en/", "")}`}
-                              publishedDate={rec.publishedDate ?? ""}
-                            />
-                          </div>
-                        );
-                      })}
+                          return (
+                            <div
+                              key={rec.slug}
+                              style={{ display: showItem ? "block" : "none" }}
+                            >
+                              <CardNews
+                                authors={authors}
+                                newsAuthors={rec.authors}
+                                image={`/images/news/${rec.slug}/${rec.coverImage}`}
+                                title={rec.title ?? ""}
+                                summary={rec.summary ?? ""}
+                                link={`/news/${rec.slug
+                                  .replace("es/", "")
+                                  .replace("en/", "")}`}
+                                publishedDate={rec.publishedDate ?? ""}
+                              />
+                            </div>
+                          );
+                        })}
                     </div>
                   </div>
                   <div>
@@ -192,4 +204,3 @@ export default function Home({
     )
   );
 }
-

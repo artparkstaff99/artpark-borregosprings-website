@@ -237,18 +237,18 @@ export default config({
       label: "Stations",
       path: "content/stations/**/",
       slugField: "title",
-      columns: ["title", "show"],
+      columns: ["title","orderBy", "show"],
       schema: {
         show: fields.checkbox({
           label: "Show Station",
           description:
             "Show this station on the site, if unchecked it will not be shown.",
         }),
-        orderBy: fields.number({
+        orderBy: fields.text({
           label: "Order By",
-          defaultValue: 0,
+          defaultValue: "",
           description:
-            "Order by this field. If left 0, then a default order will be used.",
+            "Order by this field (Suggest always use the same length for all items, something like 001,002,003,..)",
         }),
         title: fields.slug({
           name: {
