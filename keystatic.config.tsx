@@ -87,6 +87,20 @@ export default config({
           label: "Special Banner at Top of Page (Spanish)",
         }),
 
+        news_banner_top_en: fields.text({
+          label: "Home Page News Title 'Top News' (English)",
+        }),
+        news_banner_top_es: fields.text({
+          label: "Home Page News Title 'Top News' (Spanish)",
+        }),
+
+        news_banner_bottom_more_en: fields.text({
+          label: "Home Page More News Text 'More News' (English)",
+        }),
+        news_banner_bottom_more_es: fields.text({
+          label: "Home Page More News Text 'More News' (Spanish)",
+        }),
+
         top_left_header_en: fields.text({
           label: "Message in header top left (English)",
         }),
@@ -120,6 +134,13 @@ export default config({
         }),
         menu_about_es: fields.text({
           label: "About Menu Item (Spanish)",
+        }),
+
+        menu_news_en: fields.text({
+          label: "News Menu Item (English)",
+        }),
+        menu_news_es: fields.text({
+          label: "News Menu Item (Spanish)",
         }),
 
         heading_en: fields.document({
@@ -216,18 +237,18 @@ export default config({
       label: "Stations",
       path: "content/stations/**/",
       slugField: "title",
-      columns: ["title", "show"],
+      columns: ["title","orderBy", "show"],
       schema: {
         show: fields.checkbox({
           label: "Show Station",
           description:
             "Show this station on the site, if unchecked it will not be shown.",
         }),
-        orderBy: fields.number({
+        orderBy: fields.text({
           label: "Order By",
-          defaultValue: 0,
+          defaultValue: "",
           description:
-            "Order by this field. If left 0, then a default order will be used.",
+            "Order by this field (Suggest always use the same length for all items, something like 001,002,003,..)",
         }),
         title: fields.slug({
           name: {

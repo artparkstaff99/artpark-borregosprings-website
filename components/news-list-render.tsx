@@ -20,6 +20,7 @@ export default function NewsListRender({
   newsCategories: any;
   category?: string;
 }) {
+
   return (
     <div className="flex min-h-screen flex-col font-sans bg-neutral-200">
       <Header home={home} />
@@ -58,7 +59,7 @@ export default function NewsListRender({
               </>
             )}
             {newsFiltered.length === 0 ? (
-              <h2>There are no recs available</h2>
+              <h2>No News Available</h2>
             ) : (
               <div className="container mx-auto px-4">
                 {newsFiltered
@@ -86,7 +87,7 @@ export default function NewsListRender({
                       .replace("es/", "")
                       .replace("en/", "")}`;
 
-                    const authorsLine = authors
+                    const authorsLine = authors.filter((author : any) => rec.authors?.includes(author.slug))
                       ?.map((author: any) =>
                         language === "en" ? author?.nameEn : author?.nameEs,
                       )

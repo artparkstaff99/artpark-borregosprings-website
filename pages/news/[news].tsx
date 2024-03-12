@@ -2,7 +2,7 @@ import NextImage from "next/image";
 import type { GetStaticPropsContext } from "next";
 import { createReader } from "@keystatic/core/reader";
 import { DocumentRenderer } from "@keystatic/core/renderer";
-import { getHomeData } from "../../utils/get-static-page-utils";
+import { getAllAuthors, getHomeData } from "../../utils/get-static-page-utils";
 import Seo from "../../components/Seo";
 import config from "../../keystatic.config";
 import dateFormatter from "../../utils/dateFormatter";
@@ -80,7 +80,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     }),
   );
 
-  const [home] = await Promise.all([getHomeData()]);
+  const [home,authors] = await Promise.all([getHomeData(),getAllAuthors()]);
 
   return {
     props: {
@@ -95,6 +95,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
       authorsEn: authorsDataEn,
       authorsEs: authorsDataEs,
       home,
+      authors,
     },
   };
 };
@@ -105,6 +106,7 @@ export default function News({
   authorsEn,
   authorsEs,
   home,
+  authors,
   errorString,
 }: {
   newsEn: any;
@@ -113,8 +115,16 @@ export default function News({
   authorsEs: any;
   home: any;
   errorString?: string;
+  authors: any;
 }) {
   const { language } = useLanguage();
+
+  const authorsLocalized = language === "en" ? authorsEn : authorsEs;
+  const authorsLine = authorsLocalized
+    ?.map((author: any) =>
+      language === "en" ? author?.nameEn : author?.nameEs,
+    )
+    .join(", ");
 
   if (errorString) {
     return <div>Error: {errorString}.</div>;
@@ -124,15 +134,15 @@ export default function News({
     const newsItem = currentLanguage === "en" ? newsEn : newsEs;
     const authors = currentLanguage === "en" ? authorsEn : authorsEs;
 
-    const names = authors.reduce(
-      (acc: string[], author: any) =>
-        "name" in author ? [...acc, author.name as string] : acc,
-      [],
-    );
-
-    const formattedNames = new Intl.ListFormat("en")
-      .format(names)
-      .replace("and", "&");
+    // const names = authors.reduce(
+    //   (acc: string[], author: any) =>
+    //     "name" in author ? [...acc, author.name as string] : acc,
+    //   [],
+    // );
+    //
+    // const formattedNames = new Intl.ListFormat("en")
+    //   .format(names)
+    //   .replace("and", "&");
 
     const show = language === currentLanguage;
 
@@ -154,9 +164,10 @@ export default function News({
                 />
                 <div className="flex gap-3 items-center flex-wrap">
                   {authors && <AvatarList authors={authors} />}
-                  <p className="font-semibold text-gray-900">
-                    {formattedNames}
+                  <p className="font-light text-gray-900">
+                    {authorsLine}
                   </p>
+
                 </div>
 
                 <div className="mt-4 flex justify-between">
