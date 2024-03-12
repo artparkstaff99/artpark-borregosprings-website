@@ -21,7 +21,7 @@ export default function CardStation({
           <div>
             <Image
               src={image}
-              alt=""
+              alt={`Station Image: ${title}`}
               width={768}
               height={400}
               className="ring-1 ring-black/5 rounded-sm"

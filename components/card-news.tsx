@@ -40,8 +40,15 @@ export default function CardNews({
       >
         <div className="flex h-full">
           <div className="flex-none w-1/3 relative">
-            <Image src={image} alt="" layout="fill"  priority
-                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{objectFit:"cover"}}/>
+            {/*<Image src={image} alt="" layout="fill"  priority*/}
+            {/*       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" style={{objectFit:"cover"}}/>*/}
+            <Image src={image} alt={`News Image: ${title}`}
+                   fill
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                   style={{
+                     objectFit: 'contain',
+                   }}
+            />
           </div>
           <div className="flex-auto p-6">
             <div>
