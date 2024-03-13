@@ -156,6 +156,7 @@ export default function Home({
                             new Date(a.publishedDate).getTime()
                           );
                         })
+                        .filter((rec) => rec.show === true)
                         .slice(0, 6) // assuming there is one for en and one for es, 6 means really top 3
                         .map((rec: any) => {
                           const languageOfItem = rec.slug.startsWith("es/")

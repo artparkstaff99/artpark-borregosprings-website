@@ -134,16 +134,6 @@ export default function News({
     const newsItem = currentLanguage === "en" ? newsEn : newsEs;
     const authors = currentLanguage === "en" ? authorsEn : authorsEs;
 
-    // const names = authors.reduce(
-    //   (acc: string[], author: any) =>
-    //     "name" in author ? [...acc, author.name as string] : acc,
-    //   [],
-    // );
-    //
-    // const formattedNames = new Intl.ListFormat("en")
-    //   .format(names)
-    //   .replace("and", "&");
-
     const show = language === currentLanguage;
 
     return (
