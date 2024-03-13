@@ -1,11 +1,12 @@
 show: true
-title: second post here ENGLISH
-summary: 'SPANISH this is the second post in spanish with a nice summary below. '
+title: March newsletter
+summary: "March is a blooming good time in the ArtPark!\_ Volunteers have planted thousands of seeds for spring veggies and flow Hummingbirds are loving the aloe bloom. "
 newsCategories:
   - plants
   - soil
+  - plants
 publishedDate: '2024-03-09'
-coverImage: coverImage.png
+coverImage: coverImage.jpg
 wordCount: 222
 authors:
   - peter-kellner
