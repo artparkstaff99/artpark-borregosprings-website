@@ -1,9 +1,11 @@
 show: false
-title: second post here SPANISH
-summary: 'this is the second post in spanish with a nice summary below. '
+title: boletín de marzo
+summary: >-
+  ¡Marzo es un buen momento para florecer en ArtPark! Los voluntarios han
+  plantado miles de semillas de verduras de primavera y a los colibríes les
+  encanta la floración del aloe.
 newsCategories:
   - weather
-  - soil
   - plants
 publishedDate: '2024-03-09'
 coverImage: coverImage.png
