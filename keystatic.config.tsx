@@ -308,7 +308,7 @@ export default config({
       columns: ["title", "show", "publishedDate"],
       schema: {
         show: fields.checkbox({
-          label: "Show NewsCategory Item",
+          label: "Show News Item",
           description:
             "Show this news item on the site, if unchecked it will not be shown.",
         }),

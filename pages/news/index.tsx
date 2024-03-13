@@ -42,7 +42,7 @@ export default function NewsPage({
   }, []);
 
   const newsFiltered = news
-    .filter((rec) => rec.show)
+    .filter((rec) => rec.show === true)
     .sort((a, b) => {
       if (a?.publishedDate && b?.publishedDate) {
         return new Date(a.publishedDate).getTime() <

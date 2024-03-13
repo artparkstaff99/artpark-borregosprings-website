@@ -1,0 +1,14 @@
+show: true
+title: boletín de marzo
+summary: >-
+  ¡Marzo es un buen momento para florecer en ArtPark! Los voluntarios han
+  plantado miles de semillas de verduras de primavera y a los colibríes les
+  encanta la floración del aloe.
+newsCategories:
+  - weather
+  - plants
+publishedDate: '2024-03-09'
+coverImage: coverImage.webp
+wordCount: 222
+authors:
+  - wade-beane
